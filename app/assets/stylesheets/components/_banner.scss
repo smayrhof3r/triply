@@ -1,0 +1,22 @@
+.banner {
+    background-size: cover;
+    background-position: center;
+    padding: 100px 0;
+  }
+  
+  .banner h1 {
+    margin: 0;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    font-size: 42px;
+    font-weight: bold;
+    // text-align: center;
+    text-shadow: 2px 2px rgba(0,0,0,0.4);
+    padding-bottom: 8px
+  }
+
+.card-placeholder {
+  background-color: rgba(250,250,250,0.4);
+  padding: 80px;
+  border-radius: 16px;
+}
