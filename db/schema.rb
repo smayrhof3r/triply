@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_19_222951) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_20_124619) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -65,6 +65,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_19_222951) do
     t.datetime "updated_at", null: false
     t.index ["arrival_city_id"], name: "index_flights_on_arrival_city_id"
     t.index ["departure_city_id"], name: "index_flights_on_departure_city_id"
+  end
+
+  create_table "images", force: :cascade do |t|
+    t.string "url"
+    t.bigint "location_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["location_id"], name: "index_images_on_location_id"
   end
 
   create_table "itineraries", force: :cascade do |t|
@@ -125,6 +133,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_19_222951) do
   add_foreign_key "bookings", "passenger_groups"
   add_foreign_key "flights", "locations", column: "arrival_city_id"
   add_foreign_key "flights", "locations", column: "departure_city_id"
+  add_foreign_key "images", "locations"
   add_foreign_key "itineraries", "locations", column: "destination_id"
   add_foreign_key "passenger_groups", "itineraries"
   add_foreign_key "passenger_groups", "locations", column: "origin_city_id"
