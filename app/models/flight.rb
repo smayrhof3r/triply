@@ -1,4 +1,4 @@
 class Flight < ApplicationRecord
   has_many :bookings
-  has_many :locations, through: :aiports
+  has_many :airports
 end
