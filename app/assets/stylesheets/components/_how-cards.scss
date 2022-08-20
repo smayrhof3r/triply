@@ -1,0 +1,22 @@
+.how-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding-top: 8px;
+  grid-gap: 24px;
+}
+
+.panel {
+  padding: 20px;
+  border-radius: 16px;;
+  background-color: white;
+
+  .panel-icon img{
+    width: 25%;
+  }
+}
+
+@media(max-width: 992px){
+  .how-cards {
+    grid-template-columns: 1fr;
+  }
+}
