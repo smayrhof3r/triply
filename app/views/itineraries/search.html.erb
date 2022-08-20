@@ -1,9 +1,75 @@
-This is the search page
-collapisble section 1
- <%= render 'itineraries/group_form' %>
- collapisble section 1
- <%= render 'itineraries/dates_form' %>
- collapisble section 1
- <%= render 'itineraries/destination_form' %>
- collapisble section 1
- <%= render 'itineraries/budget_form' %>
+<h1 class = "text-center text-success border-bottom border-primary my-5">
+  <strong>Find your <span class="text-primary">perfect</span> holiday destination</strong>
+</h1>
+
+<div class="container p-3">
+  <div class="accordion">
+    <div class="card mb-3">
+      <div class="card-header bg-success">
+        <h2 class="mb-0">
+          <button class="btn btn-link text-white text-decoration-none w-100" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <div class="d-flex justify-content-between">
+              <div>Passenger groups</div>
+              <div><i class="fas fa-plus"></i></div>
+            </div>
+          </button>
+        </h2>
+      </div>
+
+      <div class="collapse show" aria-labelledby="groups" data-parent="#accordionExample">
+        <div class="card-body">
+          <%= render 'itineraries/group_form' %>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-header bg-success">
+        <h2 class="mb-0">
+          <button class="btn btn-link text-white text-decoration-none w-100" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <div class="d-flex justify-content-between">
+              <div>Travel Dates</div>
+              <div><i class="fas fa-plus"></i></div>
+            </div>
+          </button>
+        </h2>
+      </div>
+      <div class="collapse show" aria-labelledby="dates" data-parent="#accordionExample">
+        <div class="card-body">
+          <%= render 'itineraries/dates_form' %>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-header rounded bg-secondary">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed text-white text-decoration-none w-100" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            <div class="d-flex justify-content-between">
+              <div>Destinations</div>
+              <div><i class="fas fa-minus"></i></div>
+            </div>
+          </button>
+        </h2>
+      </div>
+      <div class="collapse" aria-labelledby="destinations" data-parent="#accordionExample">
+        <div class="card-body">
+          <%= render 'itineraries/destination_form' %></div>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-header rounded bg-secondary">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed text-white text-decoration-none w-100" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            <div class="d-flex justify-content-between">
+              <div>Budget</div>
+              <div><i class="fas fa-minus"></i></div>
+            </div>
+          </button>
+        </h2>
+      </div>
+      <div class="collapse" aria-labelledby="budget" data-parent="#accordionExample">
+        <div class="card-body">
+          <%= render 'itineraries/budget_form' %></div>
+      </div>
+    </div>
+  </div>
+</div>

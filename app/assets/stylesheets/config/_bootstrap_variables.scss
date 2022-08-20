@@ -24,3 +24,7 @@ $border-radius-lg: 16px;
 $border-radius-sm: 4px;
 
 // Override other variables below!
+.container {
+  box-shadow: $shadow;
+  border-radius: $border-radius-lg;
+}
