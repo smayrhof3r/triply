@@ -26,16 +26,16 @@ locations = [
   ['San Francisco', 'USA', 'North America'],
   ['Beijing', 'China', 'Asia'],
   ['Los Angelos', 'USA', 'North America'],
-  ['Chicago', 'USA', 'North America'],
-  ['Barcelona', 'Spain', 'Europe'],
-  ['Abu Dhabi', 'UAE', 'Middle East'],
-  ['Amsterdam', 'Netherlands', 'Europe'],
-  ['Madrid', 'Spain', 'Europe'],
-  ['Sydney', 'Australia', 'Asia'],
-  ['San Miguel de Allende', 'Mexico', 'North America'],
-  ['Lisbon', 'Portugal', 'Europe'],
-  ['Vienna', 'Austria', 'Germany'],
-  ['Johannesburg', 'South Africa', 'Africa']
+  # ['Chicago', 'USA', 'North America'],
+  # ['Barcelona', 'Spain', 'Europe'],
+  # ['Abu Dhabi', 'UAE', 'Middle East'],
+  # ['Amsterdam', 'Netherlands', 'Europe'],
+  # ['Madrid', 'Spain', 'Europe'],
+  # ['Sydney', 'Australia', 'Asia'],
+  # ['San Miguel de Allende', 'Mexico', 'North America'],
+  # ['Lisbon', 'Portugal', 'Europe'],
+  # ['Vienna', 'Austria', 'Germany'],
+  # ['Johannesburg', 'South Africa', 'Africa']
 ]
 
 
