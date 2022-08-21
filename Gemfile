@@ -84,3 +84,6 @@ end
 
 gem "devise"
 gem "unsplash"
+
+# Gem for flight API
+gem 'amadeus'
