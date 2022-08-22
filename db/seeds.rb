@@ -51,13 +51,17 @@
 #   puts l
 # end
 
+# Location.all.each do |l|
+#   res = Faraday.get("https://api.mapbox.com/geocoding/v5/mapbox.places/#{l.city.gsub(' ', '%20')},#{l.country.gsub(' ', '%20')}.json?types=address&fuzzyMatch=true&autocomplete=true&limit=1&access_token=#{ENV['MAPBOX_KEY']}")
+#   json = JSON.parse(res.body)
+#   if !json["features"].empty?
+#     gps = json["features"].first["geometry"]["coordinates"]
+#     l.longitude = gps[0]
+#     l.latitude = gps[1]
+#     l.save
+#   end
+# end
+
 Location.all.each do |l|
-  res = Faraday.get("https://api.mapbox.com/geocoding/v5/mapbox.places/#{l.city.gsub(' ', '%20')},#{l.country.gsub(' ', '%20')}.json?types=address&fuzzyMatch=true&autocomplete=true&limit=1&access_token=#{ENV['MAPBOX_KEY']}")
-  json = JSON.parse(res.body)
-  if !json["features"].empty?
-    gps = json["features"].first["geometry"]["coordinates"]
-    l.longitude = gps[0]
-    l.latitude = gps[1]
-    l.save
-  end
+
 end
