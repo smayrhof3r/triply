@@ -87,3 +87,7 @@ gem "unsplash"
 
 # Gem for flight API
 gem 'amadeus'
+
+# for http request
+# gem 'faraday'
+# gem 'faraday-http'
