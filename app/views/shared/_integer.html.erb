@@ -1,6 +1,7 @@
-<div class="container integer-container" data-controller="int-button">
+<div class="container d-flex align-items-center justify-content-center integer-container p-1" data-controller="int-button">
+    <div class = "me-3"><%= label %></div>
     <div data-action="click->int-button#updateMinus"><i class="round-button fas fa-minus" id="round-button-minus"></i></div>
-    <p data-int-button-target="integer">0</p>
+    <div data-int-button-target="integer" class = "mx-1">0</div>
     <%= number_field_tag field_name, 0, class: 'd-none', data: {int_button_target: 'form'} %>
     <div data-action="click->int-button#updatePlus"><i class="round-button fas fa-plus" id="round-button-plus"></i></div>
 </div>

@@ -2,13 +2,15 @@
   display: flex;
 
   .round-button {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    color: $blue;
-    border: 2px solid $blue;
+    padding: 8px;
+    color: #264653;
+    border: 1px solid #264653;
     border-radius: 50%;
     font-size: 15px;
+  }
+
+  .round-button:hover {
+    cursor: pointer;
   }
 
   p {
@@ -18,4 +20,3 @@
     width: 40px;
     }
 }
-

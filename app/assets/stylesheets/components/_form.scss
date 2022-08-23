@@ -1,0 +1,10 @@
+.section-header button {
+  outline: none !important;
+  border: none !important;
+
+  .btn, .x-btn:focus, .button:focus, [type="submit"]:focus {
+    outline: none !important;
+    border: none !important;
+  }
+
+}
