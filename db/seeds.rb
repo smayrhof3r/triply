@@ -62,6 +62,32 @@
 #   end
 # end
 
-Location.all.each do |l|
+amadeus = Amadeus::Client.new({
+  client_id: ENV['AMADEUS_TEST_KEY'],
+  client_secret: ENV['AMADEUS_TEST_API_SECRET']
+})
 
+Location.all.each do |location|
+  if location.airports.empty? && location.longitude && location.latitude
+    sleep(2)
+    airports = amadeus.reference_data.locations.airports.get(longitude: location.longitude, latitude: location.latitude)
+    local_airports = airports.data.filter do |airport|
+      airport["address"]["cityName"] == location.city.upcase
+    end
+
+    local_airports = [airports.data.first] if local_airports.empty?
+
+    local_airports.each do |airport|
+      if airport && airport["name"] && airport["iataCode"]
+        a = Airport.new(name: airport["name"], code: airport["iataCode"])
+        a.location = location
+        a.save
+      end
+    end
+  end
+
+  if location.airports.empty?
+    location.images.each {|i| i.delete}
+    location.delete
+  end
 end
