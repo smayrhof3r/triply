@@ -4,6 +4,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   connect() {
     console.log('search form controller active');
+
   }
   static values = {
     section: Number
