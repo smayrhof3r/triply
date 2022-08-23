@@ -12,6 +12,12 @@ gem "sprockets-rails"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 
+#Security for secret key
+gem "dotenv-rails", groups: [:development, :test]
+
+# Cloudinary
+gem "cloudinary"
+
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
 
@@ -77,3 +83,7 @@ group :test do
 end
 
 gem "devise"
+gem "unsplash"
+
+# Gem for flight API
+gem 'amadeus'

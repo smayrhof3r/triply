@@ -1,2 +1,30 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url('<%= image_path 'banner.jpg' %>')">
+  <div class="container">
+    <h1>Let the journey begin</h1>
+    <div class= "card-placeholder">SEARCH PLACEHOLDER</div>
+  </div>
+</div>
+
+
+<div class="container pt-5 text-center">
+  <h1>How it works</h1>
+  <div class="how-cards">
+    <div class="panel border-radius-lg ">
+        <div class="panel-icon"><%= image_tag "group.png"%></div>
+        <h3>Set up a travel group</h3>
+        <p>Set up a travel group with your friends. Tell us where you are all travelling from, preferred region and budget.</p>
+    </div>
+
+    <div class="panel border-radius-lg ">
+        <div class="panel-icon"><%= image_tag "destination.png"%></div>
+        <h3>We recommend the perfect destination</h3>
+        <p>Our destinations optimise cost and flight duration for all of your trevellers, finding the best locations for you as a group.</p>
+    </div>
+
+    <div class="panel border-radius-lg ">
+        <div class="panel-icon"><%= image_tag "itinerary.png"%></div>
+        <h3>Colaborate on your itinerary</h3>
+        <p>Share flight details with your travel group and plan activities for your holidatys.</p>
+    </div>
+  </div>
+</div>
