@@ -1,7 +1,7 @@
 <div class="row">
 <div class="col-12 col-md-6"><%= text_field_tag 'origin_city', '', placeholder: 'Departure City', class: 'w-100' %></div>
-<div class="col-12 col-md-3"><div class="d-flex">Adults: <%= render 'shared/integer' %></div></div>
-<div class="col-12 col-md-3"><div class="d-flex">Children: <%= render 'shared/integer' %></div></div>
+<div class="col-12 col-md-3"><div class="d-flex">Adults: <%= render 'shared/integer', field_name: 'adults' %></div></div>
+<div class="col-12 col-md-3"><div class="d-flex">Children: <%= render 'shared/integer', field_name: 'children' %></div></div>
 </div>
 
 <%# <form>
