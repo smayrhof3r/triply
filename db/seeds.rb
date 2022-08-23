@@ -31,18 +31,16 @@ locations = [
   ['Johannesburg', 'South Africa', 'Africa']
 ]
 
-
-locations.each do |location|
-  l = Location.create(city: location[0], country: location[1], region: location[2])
-  photos = Unsplash::Photo.search(location[0])
-                          .first(5)
-                          .map { |result| result.urls["raw"] }
-  photos.each do |photo|
-    i = Image.create(url: photo, location: l)
-  end
-
-  puts l
-end
+# locations.each do |location|
+#   l = Location.create(city: location[0], country: location[1], region: location[2])
+#   photos = Unsplash::Photo.search(location[0])
+#                           .first(5)
+#                           .map { |result| result.urls["raw"] }
+#   photos.each do |photo|
+#     i = Image.create(url: photo, location: l)
+#   end
+#   puts l
+# end
 
 Location.all.each do |l|
   res = Faraday.get("https://api.mapbox.com/geocoding/v5/mapbox.places/#{l.city.gsub(' ', '%20')},#{l.country.gsub(' ', '%20')}.json?types=address&fuzzyMatch=true&autocomplete=true&limit=1&access_token=#{ENV['MAPBOX_KEY']}")

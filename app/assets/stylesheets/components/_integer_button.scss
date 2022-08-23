@@ -1,0 +1,21 @@
+.integer-container {
+  display: flex;
+
+  .round-button {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    color: $blue;
+    border: 2px solid $blue;
+    border-radius: 50%;
+    font-size: 15px;
+  }
+
+  p {
+    text-align: center;
+    font-size: 20px;
+    color: $gray5;
+    width: 40px;
+    }
+}
+
