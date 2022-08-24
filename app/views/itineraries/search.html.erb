@@ -13,54 +13,56 @@
 
   <div class="container p-3">
     <div class="accordion" data-controller="search-form" data-action="click->search-form#updateButton input->search-form#updateButton">
-      <div class="text-end mb-3">
-
-      </div>
-      <div class="card mb-3 shadow" id = "searchFormSection1Parent">
-        <div class="card-header bg-success">
-          <h2 class="mb-0">
-            <button class="section-header btn btn-link text-white text-decoration-none w-100" type="button" data-action = "click->search-form#toggleCollapse" id = "searchFormSection1">
-              <div class="d-flex justify-content-between">
-                <div>Passenger groups</div>
-                <div><i class="fas fa-minus"></i></div>
+      <div class="row">
+        <div class="col-6 mb-3">
+          <div class="card h-100 shadow" id = "searchFormSection2Parent">
+            <div class="card-header bg-success">
+              <h2 class="mb-0">
+                <button class="btn btn-link text-white text-decoration-none w-100" type="button" data-action = "click->search-form#toggleCollapse" id = "searchFormSection2">
+                  <div class="d-flex justify-content-between">
+                    <div>Travel Dates</div>
+                    <div><i class="fas fa-minus"></i></div>
+                  </div>
+                </button>
+              </h2>
+            </div>
+            <div class="collapse show">
+              <div class="card-body">
+                <%= render 'itineraries/dates_form' %>
               </div>
-            </button>
-          </h2>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 mb-3">
+          <div class="card h-100 shadow" id = "searchFormSection1Parent">
+            <div class="card-header bg-success">
+              <h2 class="mb-0">
+                <button class="section-header btn btn-link text-white text-decoration-none w-100" type="button" data-action = "click->search-form#toggleCollapse" id = "searchFormSection1">
+                  <div class="d-flex justify-content-between">
+                    <div>Passenger groups</div>
+                    <div><i class="fas fa-minus"></i></div>
+                  </div>
+                </button>
+              </h2>
+            </div>
+
+            <div class="collapse show" data-search-form-target="passengerGroups">
+              <div class="card-body border-bottom for-removal d-none" data-search-form-target="passengerGroupPartial" data-controller="remove-section" data-remove-section-target = "section">
+                <%= render 'itineraries/group_form', count: 0 %>
+              </div>
+              <div class="card-body border-bottom" data-search-form-target="passengerGroupPartial" data-controller="remove-section" data-remove-section-target = "section">
+                <%= render 'itineraries/group_form', count: 1 %>
+              </div>
+              <div class="clickable card-body d-flex" data-action="click->search-form#addPassengerGroup">
+                  <div class = "me-3"><i class="fas fa-plus"></i></div>
+                  <div>Add passenger group</div>
+                  <%= number_field_tag 'passenger_group_count', 2, class: 'd-none', data: {search_form_target: 'passengerCount'} %>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="collapse show" data-search-form-target="passengerGroups">
-          <div class="card-body border-bottom for-removal d-none" data-search-form-target="passengerGroupPartial" data-controller="remove-section" data-remove-section-target = "section">
-            <%= render 'itineraries/group_form', count: 0 %>
-          </div>
-          <div class="card-body border-bottom" data-search-form-target="passengerGroupPartial" data-controller="remove-section" data-remove-section-target = "section">
-            <%= render 'itineraries/group_form', count: 1 %>
-          </div>
-          <div class="card-body border-bottom" data-search-form-target="passengerGroupPartial" data-controller="remove-section" data-remove-section-target = "section">
-            <%= render 'itineraries/group_form', count: 2 %>
-          </div>
-          <div class="clickable card-body d-flex" data-action="click->search-form#addPassengerGroup">
-              <div class = "me-3"><i class="fas fa-plus"></i></div>
-              <div>Add passenger group</div>
-              <%= number_field_tag 'passenger_group_count', 2, class: 'd-none', data: {search_form_target: 'passengerCount'} %>
-          </div>
-        </div>
-      </div>
-      <div class="card mb-3 shadow" id = "searchFormSection2Parent">
-        <div class="card-header bg-success">
-          <h2 class="mb-0">
-            <button class="btn btn-link text-white text-decoration-none w-100" type="button" data-action = "click->search-form#toggleCollapse" id = "searchFormSection2">
-              <div class="d-flex justify-content-between">
-                <div>Travel Dates</div>
-                <div><i class="fas fa-minus"></i></div>
-              </div>
-            </button>
-          </h2>
-        </div>
-        <div class="collapse show">
-          <div class="card-body">
-            <%= render 'itineraries/dates_form' %>
-          </div>
-        </div>
+
       </div>
       <div class="card mb-3 shadow" id = "searchFormSection3Parent">
         <div class="card-header rounded bg-secondary">
