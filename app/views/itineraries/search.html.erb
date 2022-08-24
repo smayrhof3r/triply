@@ -20,8 +20,11 @@
           </h2>
         </div>
 
-        <div class="collapse show">
-          <div class="card-body border-bottom" data-search-form-target="passengerGroupPartial" data-controller="remove-section" data-remove-section-target = "section">
+        <div class="collapse show" data-search-form-target="passengerGroups">
+          <div class="card-body border-bottom for-removal d-none" data-search-form-target="passengerGroupPartial" data-controller="remove-section" data-remove-section-target = "section">
+            <%= render 'itineraries/group_form', count: 0 %>
+          </div>
+          <div class="card-body border-bottom" data-controller="remove-section" data-remove-section-target = "section">
             <%= render 'itineraries/group_form', count: 1 %>
           </div>
           <div class="card-body border-bottom" data-controller="remove-section" data-remove-section-target = "section">
@@ -30,7 +33,7 @@
           <div class="clickable card-body d-flex" data-action="click->search-form#addPassengerGroup">
               <div class = "me-3"><i class="fas fa-plus"></i></div>
               <div>Add passenger group</div>
-              <%= number_field_tag params[:passenger_group_count], 1, class: 'd-none', data: {search_form_target: 'passengerCount'} %>
+              <%= number_field_tag 'passenger_group_count', 2, class: 'd-none', data: {search_form_target: 'passengerCount'} %>
           </div>
         </div>
       </div>

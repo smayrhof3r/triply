@@ -9,5 +9,6 @@ export default class extends Controller {
   static targets = ["section"]
   remove (event) {
     this.sectionTarget.outerHTML = ""
+    document.getElementById('passenger_group_count').value -= 1
   }
 }

@@ -2,6 +2,6 @@
     <div class = "me-3"><%= label %></div>
     <div data-action="click->int-button#updateMinus"><i class="clickable round-button fas fa-minus" id="round-button-minus"></i></div>
     <div data-int-button-target="integer" class = "mx-1">0</div>
-    <%= number_field_tag field_name, 0, class: 'd-none', data: {int_button_target: 'form'} %>
+    <%= number_field_tag field_name, 0, class: "d-none #{form_field_class}", data: {int_button_target: 'form'} %>
     <div data-action="click->int-button#updatePlus"><i class="clickable round-button fas fa-plus" id="round-button-plus"></i></div>
 </div>

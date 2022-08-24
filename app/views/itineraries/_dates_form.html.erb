@@ -8,6 +8,6 @@
     <div>Flexible Date Range</div>
     <%= date_field_tag :start_date_range, params[:start_date_range], class: "form-control mb-3", min: Date.today + 1%>
     <%= date_field_tag :end_date_range, params[:end_date_range], class: "form-control mb-3", min: Date.today + 1%>
-    <%= render 'shared/integer', label: "Trip length (days)", field_name: "trip_length_days" %>
+    <%= render 'shared/integer', label: "Trip length (days)", field_name: "trip_length_days", form_field_class: "trip-days" %>
  </div>
 </div>

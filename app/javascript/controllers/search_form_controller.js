@@ -23,11 +23,32 @@ export default class extends Controller {
   }
 
   addPassengerGroup (event) {
-    let newPassengerGroup = this.passengerGroupPartialTarget.outerHTML
-    //console.log(typeOf(newPassengerGroup))
-    newPassengerGroup = newPassengerGroup.replace("trash d-none", "")
-    event.currentTarget.insertAdjacentHTML("beforebegin", newPassengerGroup)
-    this.passengerCountTarget.value = parseInt(this.passengerCountTarget.value) + 1
+    console.log(5)
+    this.#insertPassengerGroupHTML(event)
+    this.#updateGroupCount()
+    this.#updateNewSectionNames()
+  }
+
+  #updateGroupCount() {
+    this.groupCount = parseInt(this.passengerCountTarget.value) + 1
+    this.passengerCountTarget.value = this.groupCount
+  }
+
+  #updateNewSectionNames() {
+    let newSection = this.passengerGroupPartialTargets[this.passengerGroupPartialTargets.length - 1]
+
+    newSection.querySelector('.origin-city').name = `origin_city${this.groupCount}`
+    newSection.querySelector('.adults').name = `adults${this.groupCount}`
+    newSection.querySelector('.adults').name = `children${this.groupCount}`
+
+    newSection.querySelector('.origin-city').id = `origin_city${this.groupCount}`
+    newSection.querySelector('.adults').id = `adults${this.groupCount}`
+    newSection.querySelector('.adults').id = `children${this.groupCount}`
+  }
+
+  #insertPassengerGroupHTML(event) {
+    let newPassengerGroupHTML = this.passengerGroupPartialTarget.outerHTML.replaceAll("for-removal d-none", "")
+    event.currentTarget.insertAdjacentHTML("beforebegin", newPassengerGroupHTML)
   }
 
   #openSection () {
