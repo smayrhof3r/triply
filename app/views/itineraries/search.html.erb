@@ -21,10 +21,10 @@
         </div>
 
         <div class="collapse show">
-          <div class="card-body border-bottom">
+          <div class="card-body border-bottom" data-search-form-target="passengerGroupPartial" data-controller="remove-section" data-remove-section-target = "section">
             <%= render 'itineraries/group_form', count: 1 %>
           </div>
-          <div class="card-body border-bottom" data-search-form-target="passengerGroupPartial">
+          <div class="card-body border-bottom" data-controller="remove-section" data-remove-section-target = "section">
             <%= render 'itineraries/group_form', count: 2 %>
           </div>
           <div class="clickable card-body d-flex" data-action="click->search-form#addPassengerGroup">

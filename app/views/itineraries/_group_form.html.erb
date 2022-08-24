@@ -3,10 +3,8 @@
     <div class="col-12 col-md-7"><%= text_field_tag "origin_city#{count}", '', placeholder: 'Departure City', class: 'w-100' %></div>
     <div class="col-12 col-md-2"><%= render 'shared/integer', label: 'Adults', field_name: "adults#{count}" %></div>
     <div class="col-12 col-md-2"><%= render 'shared/integer', label: 'Children', field_name: "children#{count}" %></div>
-    <div class="col-12 col-md-1 text-center text-secondary clickable">
-      <% if count > 1 %>
-        <i class="fas fa-trash-alt"></i>
-      <% end %>
+    <div class="col-12 col-md-1 text-center text-secondary clickable <%='trash d-none' if count == 1 %>" data-action="click->remove-section#remove">
+      <i class="fas fa-trash-alt"></i>
     </div>
   </div>
 </div>

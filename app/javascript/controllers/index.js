@@ -10,5 +10,8 @@ application.register("hello", HelloController)
 import IntButtonController from "./int_button_controller"
 application.register("int-button", IntButtonController)
 
+import RemoveSectionController from "./remove_section_controller"
+application.register("remove-section", RemoveSectionController)
+
 import SearchFormController from "./search_form_controller"
 application.register("search-form", SearchFormController)

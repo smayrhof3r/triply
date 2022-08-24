@@ -24,6 +24,8 @@ export default class extends Controller {
 
   addPassengerGroup (event) {
     let newPassengerGroup = this.passengerGroupPartialTarget.outerHTML
+    //console.log(typeOf(newPassengerGroup))
+    newPassengerGroup = newPassengerGroup.replace("trash d-none", "")
     event.currentTarget.insertAdjacentHTML("beforebegin", newPassengerGroup)
     this.passengerCountTarget.value = parseInt(this.passengerCountTarget.value) + 1
   }
