@@ -3,10 +3,10 @@
 </h1>
 
 <%= form_tag itineraries_path, :method => :get do %>
-  <div class="container p-3 ">
-    <div class="accordion" data-controller="search-form">
+  <div class="container p-3">
+    <div class="accordion" data-controller="search-form" data-action="click->search-form#updateButton">
       <div class="text-end mb-3">
-        <%= submit_tag "Let's fly!", class: "btn btn-success text-white" %>
+        <%= submit_tag "Let's fly!", class: "btn btn-success text-white", id: "submit", disabled: true%>
       </div>
       <div class="card mb-3 shadow" id = "searchFormSection1Parent">
         <div class="card-header bg-success">
@@ -24,10 +24,10 @@
           <div class="card-body border-bottom for-removal d-none" data-search-form-target="passengerGroupPartial" data-controller="remove-section" data-remove-section-target = "section">
             <%= render 'itineraries/group_form', count: 0 %>
           </div>
-          <div class="card-body border-bottom" data-controller="remove-section" data-remove-section-target = "section">
+          <div class="card-body border-bottom" data-search-form-target="passengerGroupPartial" data-controller="remove-section" data-remove-section-target = "section">
             <%= render 'itineraries/group_form', count: 1 %>
           </div>
-          <div class="card-body border-bottom" data-controller="remove-section" data-remove-section-target = "section">
+          <div class="card-body border-bottom" data-search-form-target="passengerGroupPartial" data-controller="remove-section" data-remove-section-target = "section">
             <%= render 'itineraries/group_form', count: 2 %>
           </div>
           <div class="clickable card-body d-flex" data-action="click->search-form#addPassengerGroup">

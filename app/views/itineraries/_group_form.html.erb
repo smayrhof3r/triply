@@ -1,7 +1,7 @@
 <div class="row">
   <div class="d-flex align-items-center">
-    <div class="col-12 col-md-7"><%= text_field_tag "origin_city#{count}", '', placeholder: 'Departure City', class: 'w-100 origin-city' %></div>
-    <div class="col-12 col-md-2"><%= render 'shared/integer', label: 'Adults', field_name: "adults#{count}", form_field_class: 'adults' %></div>
+    <div class="col-12 col-md-7"><%= text_field_tag "origin_city#{count}", '', placeholder: 'Departure City', class: 'w-100 origin-city', data: {search_form_target: "city"} %></div>
+    <div class="col-12 col-md-2" data-search-form-target="adults"><%= render 'shared/integer', label: 'Adults', field_name: "adults#{count}", form_field_class: 'adults'%></div>
     <div class="col-12 col-md-2"><%= render 'shared/integer', label: 'Children', field_name: "children#{count}", form_field_class: 'children' %></div>
     <div class="col-12 col-md-1 text-center text-secondary clickable <%='for-removal d-none' if count < 2 %>" data-action="click->remove-section#remove">
       <i class="fas fa-trash-alt"></i>

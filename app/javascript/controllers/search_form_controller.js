@@ -29,6 +29,23 @@ export default class extends Controller {
     this.#updateNewSectionNames()
   }
 
+  updateButton() {
+    console.log('button check..')
+    if (this.#hasPassengerGroup() && this.#hasDates()) {
+      document.getElementById('submit').disabled = false
+    } else {
+      document.getElementById('submit').disabled = true
+    }
+  }
+
+  #hasPassengerGroup() {
+    return true
+  }
+
+  #hasDates() {
+    return true
+  }
+
   #updateGroupCount() {
     this.groupCount = parseInt(this.passengerCountTarget.value) + 1
     this.passengerCountTarget.value = this.groupCount
