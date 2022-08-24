@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-12 col-md-6 border-end">
     <div>Trip Dates</div>
-    <%= date_field_tag :start_date, params[:start_date], class: "form-control mb-3", min: Date.today + 1, data: {search_form_target: "startDate"}%>
+    <%= date_field_tag :start_date, params[:start_date], class: "start-date form-control mb-3", min: Date.today + 1, data: {search_form_target: "startDate"}%>
     <%= date_field_tag :end_date, params[:end_date], class: "form-control mb-3", min: Date.today + 1%>
   </div>
   <div class="col-12 col-md-6" >
     <div>Flexible Date Range</div>
-    <%= date_field_tag :start_date_range, params[:start_date_range], class: "form-control mb-3", min: Date.today + 1, data: {search_form_target: "startDateRange"}%>
-    <%= date_field_tag :end_date_range, params[:end_date_range], class: "form-control mb-3", min: Date.today + 1, data: {search_form_target: "endDateRange"}%>
+    <%= date_field_tag :start_date_range, params[:start_date_range], class: "date-range-start form-control mb-3", min: Date.today + 1 %>
+    <%= date_field_tag :end_date_range, params[:end_date_range], class: "date-range-end form-control mb-3", min: Date.today + 1 %>
     <div data-search_form_target="dayCount"><%= render 'shared/integer', label: "Trip length (days)", field_name: "trip_length_days", form_field_class: "trip-days"%></div>
  </div>
 </div>
