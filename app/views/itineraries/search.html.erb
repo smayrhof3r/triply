@@ -21,15 +21,13 @@
         </div>
 
         <div class="collapse show">
-          <div class="card-body border-bottom">
+          <div class="card-body border-bottom" data-search-form-target="passengerGroupPartial">
             <%= render 'itineraries/group_form', count: 1 %>
           </div>
-          <div class="card-body border-bottom">
-            <%= render 'itineraries/group_form', count: 2 %>
-          </div>
-          <div class="card-body d-flex">
+          <div class="clickable card-body d-flex" data-action="click->search-form#addPassengerGroup">
               <div class = "me-3"><i class="fas fa-plus"></i></div>
               <div>Add passenger group</div>
+              <%= number_field_tag params[:passenger_group_count], 1, class: 'd-none', data: {search_form_target: 'passengerCount'} %>
           </div>
         </div>
       </div>
