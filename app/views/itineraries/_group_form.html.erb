@@ -1,10 +1,10 @@
 <div class="row">
     <% if count == 1 %>
-      <div class="col-12"><div class="d-flex align-items-center"><%= text_field_tag "origin_city#{count}", '', placeholder: 'Departure City', class: 'w-100 origin-city' %></div></div>
+      <div class="col-12"><div class="d-flex align-items-center"><%= text_field_tag "origin_city#{count}", '', placeholder: 'Departure City', class: 'w-100 origin-city form-control' %></div></div>
       <div class="col-6 mt-3"><div class="d-flex align-items-center"><%= render 'shared/integer', label: 'Adults', field_name: "adults#{count}", form_field_class: 'adults'%></div></div>
       <div class="col-6 mt-3"><div class="d-flex align-items-center"><%= render 'shared/integer', label: 'Children', field_name: "children#{count}", form_field_class: 'children' %></div></div>
     <% else %>
-      <div class="col-10"><div class="d-flex align-items-center"><%= text_field_tag "origin_city#{count}", '', placeholder: 'Departure City', class: 'w-100 origin-city' %></div></div>
+      <div class="col-10"><div class="d-flex align-items-center"><%= text_field_tag "origin_city#{count}", '', placeholder: 'Departure City', class: 'w-100 origin-city form-control' %></div></div>
       <div class="col-5 mt-3"><div class="d-flex align-items-center"><%= render 'shared/integer', label: 'Adults', field_name: "adults#{count}", form_field_class: 'adults'%></div></div>
       <div class="col-5 mt-3"><div class="d-flex align-items-center"><%= render 'shared/integer', label: 'Children', field_name: "children#{count}", form_field_class: 'children' %></div></div>
       <div class="col-2" data-action="click->remove-section#remove"><div class="text-secondary clickable d-flex flex-column justify-content-center align-items-center">
@@ -12,6 +12,7 @@
       </div>
     <% end %></div>
 </div>
+
 
 <%# <form>
   <label for="start">Adults:</label>
