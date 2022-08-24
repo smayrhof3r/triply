@@ -10,6 +10,8 @@ export default class extends Controller {
     section: Number
   }
 
+  static targets = ["passengerCount", "passengerGroupPartial"]
+
   toggleCollapse (event) {
     this.section = document.getElementById(`${event.currentTarget.id}Parent`)
     this.icon = this.section.querySelector("i")
@@ -18,6 +20,35 @@ export default class extends Controller {
     this.collapsed = this.icon.classList.contains("fa-plus")
 
     this.collapsed ? this.#openSection() : this.#closeSection()
+  }
+
+  addPassengerGroup (event) {
+    console.log(5)
+    this.#insertPassengerGroupHTML(event)
+    this.#updateGroupCount()
+    this.#updateNewSectionNames()
+  }
+
+  #updateGroupCount() {
+    this.groupCount = parseInt(this.passengerCountTarget.value) + 1
+    this.passengerCountTarget.value = this.groupCount
+  }
+
+  #updateNewSectionNames() {
+    let newSection = this.passengerGroupPartialTargets[this.passengerGroupPartialTargets.length - 1]
+
+    newSection.querySelector('.origin-city').name = `origin_city${this.groupCount}`
+    newSection.querySelector('.adults').name = `adults${this.groupCount}`
+    newSection.querySelector('.adults').name = `children${this.groupCount}`
+
+    newSection.querySelector('.origin-city').id = `origin_city${this.groupCount}`
+    newSection.querySelector('.adults').id = `adults${this.groupCount}`
+    newSection.querySelector('.adults').id = `children${this.groupCount}`
+  }
+
+  #insertPassengerGroupHTML(event) {
+    let newPassengerGroupHTML = this.passengerGroupPartialTarget.outerHTML.replaceAll("for-removal d-none", "")
+    event.currentTarget.insertAdjacentHTML("beforebegin", newPassengerGroupHTML)
   }
 
   #openSection () {
