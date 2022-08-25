@@ -66,12 +66,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_25_182348) do
   create_table "flights", force: :cascade do |t|
     t.datetime "departure_time"
     t.datetime "arrival_time"
+    t.bigint "departure_airport_id"
+    t.bigint "arrival_airport_id"
     t.float "cost_per_head"
     t.string "flight_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "departure_airport_id"
-    t.bigint "arrival_airport_id"
     t.index ["arrival_airport_id"], name: "index_flights_on_arrival_airport_id"
     t.index ["departure_airport_id"], name: "index_flights_on_departure_airport_id"
   end
@@ -148,8 +148,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_25_182348) do
   add_foreign_key "airports", "locations"
   add_foreign_key "bookings", "flights"
   add_foreign_key "bookings", "passenger_groups"
-  add_foreign_key "flights", "locations", column: "arrival_airport_id"
-  add_foreign_key "flights", "locations", column: "departure_airport_id"
+  add_foreign_key "flights", "airports", column: "arrival_airport_id"
+  add_foreign_key "flights", "airports", column: "departure_airport_id"
   add_foreign_key "images", "locations"
   add_foreign_key "itineraries", "locations", column: "destination_id"
   add_foreign_key "passenger_groups", "itineraries"
