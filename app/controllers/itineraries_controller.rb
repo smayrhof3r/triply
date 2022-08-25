@@ -3,6 +3,9 @@ class ItinerariesController < ApplicationController
   end
 
   def index
+    @itineraries = Itinerary.all
+    @loc = Location.find(@itineraries.first.destination_id)
+   
     @p = params
     @count = params["passenger_group_count"].to_i
     cities = origin_cities

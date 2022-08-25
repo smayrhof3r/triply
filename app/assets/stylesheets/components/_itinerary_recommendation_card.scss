@@ -1,0 +1,35 @@
+.card-itinerary-recommendation {
+    overflow: hidden;
+    height: 240px;
+    background: white;
+    box-shadow: $shadow;
+    display: flex;
+    align-items: center;
+    border-radius: 16px;
+
+    .card-itinerary-recommendation-infos {
+      padding: 16px;
+      width: 100%;
+      text-align: right;
+    }
+  }
+  
+  .card-itinerary-recommendation img {
+    height: 100%;
+    width: 400px;
+    object-fit: cover;
+  }
+
+
+  .card-itinerary-recommendation .city-name {
+    color: $green;
+  }
+  
+  .card-itinerary-recommendation p {
+    font-size: 18px;
+    line-height: 1.4;
+    opacity: .7;
+    margin-bottom: 0;
+    margin-top: 8px;
+  }
+  
