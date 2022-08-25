@@ -4,12 +4,8 @@ class ItinerariesController < ApplicationController
 
   def index
     @p = params
-    @count = params["passenger_group_count"].to_i
-    cities = origin_cities
 
-    @starting_airports = Airport.all.filter do |airport|
-      cities.include? airport.location.city.upcase
-    end
+
 
     # passengers = createPassengerGroups
   end
