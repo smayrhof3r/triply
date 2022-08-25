@@ -1,6 +1,8 @@
+
 Image.delete_all
 Airport.delete_all
 Location.delete_all
+
 
 f = File.open('airports.json')
 locations = JSON.parse(f.read)
@@ -17,6 +19,7 @@ locations = JSON.parse(f.read)
 #     "isORBDestination": "true",
 #     "excludedCountries": ""
 #   },
+
 
 locations["ORBAirportList"].each do |location|
   # create location
