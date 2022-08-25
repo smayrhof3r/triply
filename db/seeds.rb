@@ -27,7 +27,7 @@ locations = [
   ['Sydney', 'Australia', 'Asia'],
   ['San Miguel de Allende', 'Mexico', 'North America'],
   ['Lisbon', 'Portugal', 'Europe'],
-  ['Vienna', 'Austria', 'Germany'],
+  ['Vienna', 'Austria', 'Europe'],
   ['Johannesburg', 'South Africa', 'Africa']
 ]
 
@@ -43,7 +43,7 @@ locations = [
 # end
 
 Location.all.each do |l|
-  res = Faraday.get("https://api.mapbox.com/geocoding/v5/mapbox.places/#{l.city.gsub(' ', '%20')},#{l.country.gsub(' ', '%20')}.json?types=address&fuzzyMatch=true&autocomplete=true&limit=1&access_token=#{ENV['MAPBOX_KEY']}")
+  res = Faraday.get("https://api.mapbox.com/geocoding/v5/mapbox.places/#{l.city.gsub(' ', '%20')}.json?types=place&limit=1&access_token=#{ENV['MAPBOX_KEY']}")
   json = JSON.parse(res.body)
   if !json["features"].empty?
     gps = json["features"].first["geometry"]["coordinates"]
@@ -58,27 +58,45 @@ amadeus = Amadeus::Client.new({
   client_secret: ENV['AMADEUS_TEST_API_SECRET']
 })
 
-Location.all.each do |location|
-  if location.airports.empty? && location.longitude && location.latitude
-    sleep(2)
-    airports = amadeus.reference_data.locations.airports.get(longitude: location.longitude, latitude: location.latitude)
-    local_airports = airports.data.filter do |airport|
-      airport["address"]["cityName"] == location.city.upcase
-    end
+# DELETE AIRPORTS
 
-    local_airports = [airports.data.first] if local_airports.empty?
+# Location.all.each do |location|
+#   if location.airports.empty? && location.longitude && location.latitude
+#     sleep(2)
+#     airports = amadeus.reference_data.locations.airports.get(longitude: location.longitude, latitude: location.latitude)
+#     local_airports = airports.data.filter do |airport|
+#       airport["address"]["cityName"] == location.city.upcase
+#     end
 
-    local_airports.each do |airport|
-      if airport && airport["name"] && airport["iataCode"]
-        a = Airport.new(name: airport["name"], code: airport["iataCode"])
-        a.location = location
-        a.save
-      end
-    end
-  end
+#     local_airports = [airports.data.first] if local_airports.empty?
 
-  if location.airports.empty?
-    location.images.each {|i| i.delete}
-    location.delete
-  end
-end
+#     local_airports.each do |airport|
+#       if airport && airport["name"] && airport["iataCode"]
+#         a = Airport.new(name: airport["name"], code: airport["iataCode"])
+#         a.location = location
+#         a.save
+#       end
+#     end
+#   end
+
+#   if location.airports.empty?
+#     location.images.each {|i| i.delete}
+#     location.delete
+#   end
+
+# Location.all.each do |location|
+#   unless location.city_code
+#     sleep(2)
+#     airports = amadeus.reference_data.locations.airports.get(longitude: location.longitude, latitude: location.latitude)
+#       local_airports = airports.data.filter do |airport|
+#         airport["address"]["cityName"] == location.city.upcase
+#       end
+
+#       local_airports = [airports.data.first] if local_airports.empty?
+
+#       unless local_airports.empty?
+#         location.city_code = local_airports.first["address"]["cityCode"]
+#         location.save
+#       end
+#   end
+# end
