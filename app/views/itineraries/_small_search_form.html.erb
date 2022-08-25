@@ -1,0 +1,24 @@
+<%= form_tag itineraries_path, :method => :get do %>
+  <div class="card h-100 shadow">
+    <div class="collapse show">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6 border-end">
+            <%= render 'shared/fixed_date_form' %>
+          </div>
+          <div class="col-6">
+            <div class = "text-center mb-3"><strong>Starting Cities</strong></div>
+            <div class="d-flex align-items-center mb-3"><%= text_field_tag "origin_city1", '', placeholder: 'First Departure City', class: 'w-100 origin-city form-control' %></div>
+            <div class="d-flex align-items-center mb-3"><%= text_field_tag "origin_city2", '', placeholder: 'Second Departure City', class: 'w-100 origin-city form-control' %></div>
+          </div>
+        </div>
+        <div class="text-end">
+          <a href='/search' class="btn btn-link">Advanced Search</a>
+          <button class="btn btn-success text-white">Lets fly! <i class="fas fa-plane-departure"></i></button>
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

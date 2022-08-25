@@ -10,7 +10,7 @@ export default class extends Controller {
     section: Number
   }
 
-  static targets = ["passengerCount", "passengerGroupPartial"]
+  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults"]
 
   toggleCollapse (event) {
     this.section = document.getElementById(`${event.currentTarget.id}Parent`)
@@ -27,6 +27,43 @@ export default class extends Controller {
     this.#insertPassengerGroupHTML(event)
     this.#updateGroupCount()
     this.#updateNewSectionNames()
+  }
+
+  updateButton() {
+    console.log('button check..')
+    let check1 = this.#hasPassengerGroup()
+    let check2 = this.#hasDates()
+
+    if (check1 && check2) {
+      document.getElementById('submit').disabled = false
+    } else {
+      document.getElementById('submit').disabled = true
+    }
+  }
+
+  #hasPassengerGroup() {
+    console.log('there')
+    let check = false
+    this.passengerGroupPartialTargets.forEach((group) => {
+      if (group.querySelector('.origin-city').value.length >= 3 && group.querySelector('.adults').value > 0) {
+        check = true
+      }
+    })
+    return check
+  }
+
+  #hasDates() {
+    console.log(document.querySelector('.start-date').value)
+    if (document.querySelector('.start-date').value) { return true }
+
+    let hasStart = document.querySelector('.date-range-start').value
+    let hasEnd = document.querySelector('.date-range-end').value
+    let tripDays = document.querySelector('.trip-days').value
+    console.log(`${hasStart} ${hasEnd} ${tripDays}`)
+    if (hasStart && hasEnd && tripDays > 0) { return true }
+
+
+    return false
   }
 
   #updateGroupCount() {
