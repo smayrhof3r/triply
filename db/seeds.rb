@@ -1,8 +1,7 @@
 
-# Image.delete_all
-# Airport.delete_all
-# Location.delete_all
-
+Image.delete_all
+Airport.delete_all
+Location.delete_all
 
 f = File.open('airports.json')
 locations = JSON.parse(f.read)
@@ -53,13 +52,13 @@ locations["ORBAirportList"].each do |location|
 end
 
 # get some images if its a destination we need
-# Search::DESTINATIONS.each do |location|
-#   l = Location.find_by_city_code(location)
+Search::DESTINATIONS.each do |location|
+  l = Location.find_by_city_code(location)
 
-#   photos = Unsplash::Photo.search(l.city)
-#                           .first(5)
-#                           .map { |result| result.urls["raw"] }
-#   photos.each do |photo|
-#     Image.create(url: photo, location: l)
-#   end
-# end
+  photos = Unsplash::Photo.search(l.city)
+                          .first(5)
+                          .map { |result| result.urls["raw"] }
+  photos.each do |photo|
+    Image.create(url: photo, location: l)
+  end
+end
