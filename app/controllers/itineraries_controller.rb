@@ -76,6 +76,7 @@ class ItinerariesController < ApplicationController
   end
 
   def new_search(flights, search_criteria)
+    # adjust to handle a hash where flights are groups by itineraries and arriving/departing
     search = Search.create(search_criteria)
     flights.each do |flight|
       SearchResult.create(search: search, flight: flight)
@@ -109,10 +110,15 @@ class ItinerariesController < ApplicationController
   end
 
   def flights(search_result, group, destination)
-    flight_for_search = []
+    # make the flights an array of hashes, where each hash is {
+      # :going_there
+      # :coming_back
+      #}
+    }
+    flight_for_search = {}
     search_result.each do |result|
       result["itineraries"].each do |itinerary|
-        result["segements"].each do |segment|
+        result["segments"].each do |segment|
           flights_for_search << new_or_found_flight(segment, group, destination)
         end
       end
