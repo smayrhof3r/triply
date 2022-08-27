@@ -8,6 +8,9 @@ class ItinerariesController < ApplicationController
   def search
   end
 
+  def show
+  end
+
   def index
 
     count = params["passenger_group_count"].to_i

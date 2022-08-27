@@ -1,4 +1,3 @@
-
 Image.delete_all
 Airport.delete_all
 Location.delete_all
