@@ -1,8 +1,6 @@
-
 Image.delete_all
 Airport.delete_all
 Location.delete_all
-
 
 f = File.open('airports.json')
 locations = JSON.parse(f.read)
@@ -33,15 +31,6 @@ locations["ORBAirportList"].each do |location|
       country_code: location["countryCode"]
     )
 
-    # get some images
-    sleep(0.5)
-    photos = Unsplash::Photo.search(l.city)
-                            .first(5)
-                            .map { |result| result.urls["raw"] }
-    photos.each do |photo|
-      Image.create(url: photo, location: l)
-    end
-
     # get coordinates
     res = Faraday.get("https://api.mapbox.com/geocoding/v5/mapbox.places/#{l.city.gsub(' ', '%20')}.json?country=#{l.country_code}&limit=1&types=place&access_token=#{ENV['MAPBOX_KEY']}")
     json = JSON.parse(res.body)
@@ -59,4 +48,16 @@ locations["ORBAirportList"].each do |location|
     code: location["airportCode"],
     location: l
   )
+end
+
+# get some images if its a destination we need
+Search::DESTINATIONS.each do |location|
+  l = Location.find_by_city_code(location)
+
+  photos = Unsplash::Photo.search(l.city)
+                          .first(5)
+                          .map { |result| result.urls["raw"] }
+  photos.each do |photo|
+    Image.create(url: photo, location: l)
+  end
 end

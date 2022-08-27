@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_26_150307) do
+
+ActiveRecord::Schema[7.0].define(version: 2022_08_26_193256) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -126,6 +128,25 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_26_150307) do
     t.index ["user_id"], name: "index_permissions_on_user_id"
   end
 
+  create_table "search_results", force: :cascade do |t|
+    t.bigint "search_id", null: false
+    t.bigint "flight_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["flight_id"], name: "index_search_results_on_flight_id"
+    t.index ["search_id"], name: "index_search_results_on_search_id"
+  end
+
+  create_table "searches", force: :cascade do |t|
+    t.string "origin"
+    t.string "destination"
+    t.string "date"
+    t.string "adults"
+    t.string "children"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -155,5 +176,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_26_150307) do
   add_foreign_key "passenger_groups", "locations", column: "origin_city_id"
   add_foreign_key "permissions", "itineraries"
   add_foreign_key "permissions", "users"
+  add_foreign_key "search_results", "flights"
+  add_foreign_key "search_results", "searches"
   add_foreign_key "users", "locations", column: "home_city_id"
 end
