@@ -10,9 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema[7.0].define(version: 2022_08_26_193256) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_08_27_131251) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -55,18 +53,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_26_193256) do
 
   create_table "bookings", force: :cascade do |t|
     t.bigint "passenger_group_id", null: false
-    t.bigint "flight_id", null: false
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["flight_id"], name: "index_bookings_on_flight_id"
+    t.bigint "search_result_id"
     t.index ["passenger_group_id"], name: "index_bookings_on_passenger_group_id"
+    t.index ["search_result_id"], name: "index_bookings_on_search_result_id"
   end
 
   create_table "flights", force: :cascade do |t|
     t.datetime "departure_time"
     t.datetime "arrival_time"
-    t.float "cost_per_head"
     t.string "flight_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -133,6 +130,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_26_193256) do
     t.bigint "flight_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "return_flight"
+    t.float "cost_per_head"
+    t.integer "offer_index"
     t.index ["flight_id"], name: "index_search_results_on_flight_id"
     t.index ["search_id"], name: "index_search_results_on_search_id"
   end
@@ -166,7 +166,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_26_193256) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "airports", "locations"
-  add_foreign_key "bookings", "flights"
   add_foreign_key "bookings", "passenger_groups"
   add_foreign_key "flights", "locations", column: "arrival_airport_id"
   add_foreign_key "flights", "locations", column: "departure_airport_id"

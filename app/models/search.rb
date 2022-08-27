@@ -1,4 +1,37 @@
 class Search < ApplicationRecord
   has_many :search_results
   has_many :flights, through: :search_results
+
+  DESTINATIONS = ["MIA",
+    "NYC",
+    "SAO",
+    "BUE",
+    "YTO",
+    "YVR",
+    "MEX",
+    "MAD",
+    "OPO",
+    "NCE",
+    "PAR",
+    "ATH",
+    "ROM",
+    "LON",
+    "BCN",
+    "OSL",
+    "STO",
+    "CPH",
+    "CAI",
+    "CPT",
+    "ZNZ",
+    "JRO",
+    "TPE",
+    "BJS",
+    "DPS",
+    "BKK",
+    "TYO",
+    "SIN",
+    "SGN",
+    "SYD",
+    "AKL",
+    "NAN"]
 end
