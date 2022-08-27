@@ -1,5 +1,5 @@
 <%= params %>
 <br>
-<% @starting_airports.each_with_index do |airport, i| %>
-<div><%= "#{i+1}. #{airport.name} .. #{airport.location.city}" %></div>
+<% @city_codes.each_with_index do |code, i| %>
+<div><%= "#{i+1}. #{code}" %></div>
 <% end %>
