@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_26_193256) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_27_085255) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -135,13 +135,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_26_193256) do
   end
 
   create_table "searches", force: :cascade do |t|
-    t.string "origin"
-    t.string "destination"
-    t.string "date"
+    t.string "originLocationCode"
+    t.string "destinationLocationCode"
+    t.string "departureDate"
     t.string "adults"
     t.string "children"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "returnDate"
   end
 
   create_table "users", force: :cascade do |t|

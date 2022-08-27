@@ -60,14 +60,18 @@ class ItinerariesController < ApplicationController
   def top_flights(group, destination)
     # collect top flights
     search_criteria = {
-      originLocationCode: group["location"].city_code,
+      originLocationCode: group[:location].city_code,
       destinationLocationCode: destination,
       departureDate: params["start_date"],
-      adults: group["adults"],
-      children: group["children"]
+      returnDate: params["end_date"],
+      adults: group[:adults],
+      children: group[:children]
     }
 
-    search = Search.find_by(search_criteria) || new_search(flights(amadeus_search_result), search_criteria)
+    search = Search.find_by(search_criteria) || new_search(
+      flights(amadeus_search_result(search_criteria), group, destination),
+      search_criteria
+    )
     search.flights
   end
 
@@ -98,23 +102,34 @@ class ItinerariesController < ApplicationController
     }
   end
 
-  def amadeus_search_result
-    AMADEUS.shopping.flight_offers_search.get(search_criteria.merge({max: 10})).data
+  def amadeus_search_result(search_criteria)
+    result = AMADEUS.shopping.flight_offers_search.get(search_criteria.merge({max: 10}))
+    raise
+    result.data
   end
 
-  def flights(search_result)
-    search_result.map do |flight|
-      Flight.find_by(
-        flight_code: flight["itineraries"].first["segments"].map {|s| "#{s["carrierCode"]} #{s["number"]}"}.flatten,
-        departure_time: flight["itineraries"].first["segments"].first["departure"]["at"]
-      ) || Flight.create(
-        departure_time: flight["itineraries"].first["segments"].first["departure"]["at"],
-        arrival_time: flight["itineraries"].last["segments"].last["arrival"]["at"],
-        departure_airport: Airport.find_by_code(flight["itineraries"].first["segments"].first["departure"]["iataCode"]) || Airport.create(code: flight["itineraries"].first["segments"].first["departure"]["iataCode"], city: group["location"]),
-        arrival_airport: Airport.find_by_code(flight["itineraries"].last["segments"].last["arrival"]["iataCode"]),
-        cost_per_head: flight["price"]["total"].to_f/flight["travelerPricings"].count,
-        flight_code: flight["itineraries"].first["segments"].map {|s| "#{s["carrierCode"]} #{s["number"]}"}.flatten
-      )
+  def flights(search_result, group, destination)
+    flight_for_search = []
+    search_result.each do |result|
+      result["itineraries"].each do |itinerary|
+        result["segements"].each do |segment|
+          flights_for_search << new_or_found_flight(segment, group, destination)
+        end
+      end
     end
+  end
+
+  def new_or_found_flight(segment, origin_location)
+      Flight.find_by(
+        flight_code: segment.map { |s| "#{s['carrierCode']} #{s['number']}" },
+        departure_time: segment["departure"]["at"]
+      ) || Flight.create(
+        departure_time: segment["departure"]["at"],
+        arrival_time: segment["arrival"]["at"],
+        departure_airport: Airport.find_by_code(segment["departure"]["iataCode"]) || Airport.create(code: segment["departure"]["iataCode"], city: group["location"]),
+        arrival_airport: Airport.find_by_code(segement["arrival"]["iataCode"]) || Airport.create(code: segment["arrival"]["iataCode"], city: Location.find_by_city_code(destination)),
+        cost_per_head: flight["price"]["total"].to_f/flight["travelerPricings"].count,
+        flight_code: segment.map { |s| "#{s['carrierCode']} #{s['number']}" }
+      )
   end
 end
