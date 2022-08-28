@@ -76,11 +76,11 @@ export default class extends Controller {
 
     newSection.querySelector('.origin-city').name = `origin_city${this.groupCount}`
     newSection.querySelector('.adults').name = `adults${this.groupCount}`
-    newSection.querySelector('.adults').name = `children${this.groupCount}`
+    newSection.querySelector('.children').name = `children${this.groupCount}`
 
     newSection.querySelector('.origin-city').id = `origin_city${this.groupCount}`
     newSection.querySelector('.adults').id = `adults${this.groupCount}`
-    newSection.querySelector('.adults').id = `children${this.groupCount}`
+    newSection.querySelector('.children').id = `children${this.groupCount}`
   }
 
   #insertPassengerGroupHTML(event) {
