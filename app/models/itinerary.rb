@@ -8,8 +8,12 @@ class Itinerary < ApplicationRecord
     total = 0
     passenger_groups.each do |p|
       b = Booking.find_by(status: "suggested", passenger_group: p)
-      total += b.search_result.cost_per_head if b
+      total += b.search_result.cost_per_head * (p.adults + p.children) if b
     end
-    total.round(2)
+    total
+  end
+
+  def avg_cost
+    total_cost / passenger_groups.map { |p| p.adults + p.children }.sum
   end
 end

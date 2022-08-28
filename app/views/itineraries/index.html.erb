@@ -1,10 +1,20 @@
-<h1> What do you fancy? </h1>
-<% @itineraries.each_with_index do |itinerary, i| %>
-<% destination = Location.find(itinerary.destination_id) %>
-<div style = "padding: 20px; background-image: url('<%= destination.images.sample.url%>')">
-<h3><%= "#{i+1}. #{destination.city}" %></h3>
-<p>total cost: <%= itinerary.total_cost %></p>
+<%= link_to "back", session[:previous_request_url] %>
+<div class="container container-fixed h-100"><h1> What do you fancy? </h1>
+<h2>Re-used data: <%= @re_used %></h2>
+  <div class="container-scroll border">
+    <% @itineraries.each_with_index do |itinerary, i| %>
+      <% destination = Location.find(itinerary.destination_id) %>
+      <%= link_to itinerary_path(itinerary), class: "text-decoration-none" do %>
+        <div class="d-flex mb-3 border-bottom">
+          <% destination.images.each do |image| %>
+            <div style = "height: 100px; width: 100px; object-fit: cover; background-size: 100px 100px; background-image: url('<%=image.url%>')"></div>
+          <% end %>
+          <div class = "p-3">
+            <h3><%= "#{i+1}. #{destination.city}" %></h3>
+            <p>total: €<%= itinerary.total_cost.round(2) %> <em>(€ <%= itinerary.avg_cost.round(2) %>pp)</em></p>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
 </div>
-
-
-<% end %>

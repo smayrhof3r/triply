@@ -1,4 +1,5 @@
 class ItinerariesController < ApplicationController
+  before_action :update_session_url, only: [:search, :index]
 
   AMADEUS = Amadeus::Client.new({
     client_id: ENV['AMADEUS_TEST_KEY'],
@@ -12,47 +13,83 @@ class ItinerariesController < ApplicationController
   end
 
   def index
-    @itineraries = []
-    count = params["passenger_group_count"].to_i
+    if session[:params] == params
+      @itineraries = session[:itineraries].map { |i| Itinerary.find(i) }
+      @re_used = true
+    else
+      @re_used = false
+      @itineraries = []
+      count = params["passenger_group_count"].to_i
 
-    # try each destination
-    possible_destinations.each do |destination|
+      # try each destination
+      possible_destinations.each do |destination|
 
-      valid_destination = true
-      groups = (1..count).to_a.map { |i| passenger_group_params(i) }
+        valid_destination = true
+        groups = (1..count).to_a.map { |i| passenger_group_params(i) }
 
-      next if groups.map { |g| g[:location].city_code }.include?(destination)
+        next if groups.map { |g| g[:location].city_code }.include?(destination)
 
-      # find valid destinations and create itineraries
-      groups.each do |group|
-        # retrieve or find & save top flights
-        group[:search] = top_search_results(group, destination)
+        # find valid destinations and create itineraries
+        groups.each do |group|
+          # retrieve or find & save top flights
+          group[:search] = top_search_results(group, destination)
 
-        # skip to next destination if not all groups can fly there
-        if group[:search].search_results.empty?
-          valid_destination = false
-          break
+          # skip to next destination if not all groups can fly there
+          if group[:search].search_results.empty?
+            valid_destination = false
+            break
+          end
         end
-      end
 
-      @itineraries << create_itinerary_and_bookings_for(groups, Location.find_by_city_code(destination)) if valid_destination
+        @itineraries << create_itinerary_and_bookings_for(groups, Location.find_by_city_code(destination)) if valid_destination
+      end
+      @itineraries.sort! {|a,b| a.total_cost <=> b.total_cost}
+      update_session_variables
     end
-    @itineraries.sort! {|a,b| a.total_cost <=> b.total_cost}
   end
 
   private
+
+  def update_session_url
+    session[:previous_request_url] = session[:current_request_url]
+    session[:current_request_url] = request.url
+  end
+
+  def update_session_variables
+    # should be able to destroy underlying models by destroying itineraries, but not working so we nest in
+    delete_itineraries if session[:itineraries]
+
+    session[:itineraries] = @itineraries.map(&:id)
+    session[:params] = params
+  end
+
+  def delete_itineraries
+    session[:itineraries].each do |i|
+      itinerary = Itinerary.find_by(id: i)
+      if itinerary
+        itinerary.passenger_groups.each do |p|
+          p.bookings.each do |b|
+            b.delete
+          end
+          p.delete
+        end
+        itinerary.delete
+      end
+    end
+  end
 
   def create_itinerary_and_bookings_for(groups, destination)
     # for each destination we only create ONE itinerary and set of passenger groups but MANY bookings
     itinerary = Itinerary.create(destination_id: destination.id, start_date: params["start_date"], end_date: params["end_date"])
     groups.each do |group|
       passenger_group = new_passenger_group(group, itinerary)
+      min_offer_index = group[:search].search_results.map(&:offer_index).min
       group[:search].search_results.each do |search_result, index|
-          Booking.create(
-            passenger_group: passenger_group,
-            search_result_id: search_result.id,
-            status: search_result[:offer_index].zero? ? "suggested" : "alternative"
-          )
+        Booking.create(
+          passenger_group: passenger_group,
+          search_result_id: search_result.id,
+          status: search_result[:offer_index] == min_offer_index ? "suggested" : "alternative"
+        )
       end
     end
 
