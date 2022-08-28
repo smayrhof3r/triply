@@ -10,19 +10,19 @@
   <div class="col-12 col-sm-8 col-md-8 border-start border-sucess">
     <div class="ps-2 pe-5">
         <h1 class="text-center pb-5">Top Recommendations</h1>
-    
-    <% @loc.each do |location| %>
+
+    <% @itineraries.each do |itinerary| %>
       <div class="pb-3">
         <div class="card-itinerary-recommendation">
-          <%= image_tag(location.images.first.url) %>
+          <%= image_tag(itinerary.destination.images.first.url) %>
           <div class="card-itinerary-recommendation-infos">
-            <h2 class="city-name"><strong><%= location.city %></strong></h2>     
+            <h2 class="city-name"><strong><%= itinerary.destination.city %></strong></h2>
             <%=  %>
-            <% description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tincidunt dolor eget iaculis convallis. 
-            Nulla luctus risus sit amet felis commodo, id cursus dolor interdum. Phasellus non dolor id justo efficitur vehicula. 
+            <% description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tincidunt dolor eget iaculis convallis.
+            Nulla luctus risus sit amet felis commodo, id cursus dolor interdum. Phasellus non dolor id justo efficitur vehicula.
             Etiam rhoncus mi non pharetra mattis. Suspendisse dapibus non dui vel ultricies. Fusce ac leo ut risus gravida pellentesque." %>
             <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
-            <div class="button pt-3"><%= submit_tag "£ XXX.XX", class: "btn btn-success text-white fixed-right", id: "submit"%></div>
+            <div class="button pt-3"><%= link_to "€ #{itinerary.total_cost.round(2)}", itinerary_path(itinerary), class: "btn btn-success text-white fixed-right"%></div>
           </div>
         </div>
       </div>
