@@ -1,13 +1,9 @@
-<%= params %>
-<br>
-<% @starting_airports.each_with_index do |airport, i| %>
-<div><%= "#{i+1}. #{airport.name} .. #{airport.location.city}" %></div>
-<% end %>
-
-
 <div class="row">
   <div class="sticky-column col-12 col-sm-4 col-md-4">
     <div class="mt-5 pt-5 ps-5 pe-2">
+      <%= link_to session[:previous_request_url], class: "text-decoration-none" do %>
+        <i class="fas fa-angle-left"></i> back
+      <% end %>
       <%= render 'itineraries/side_form' %>
     </div>
   </div>
@@ -28,8 +24,8 @@
             <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
             <div class="button pt-3"><%= submit_tag "£ XXX.XX", class: "btn btn-success text-white fixed-right", id: "submit"%></div>
           </div>
+        </div>
       </div>
-    </div>
     <% end %>
   </div>
 </div>
