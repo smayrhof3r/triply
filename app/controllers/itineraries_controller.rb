@@ -43,6 +43,7 @@ class ItinerariesController < ApplicationController
 
         @itineraries << create_itinerary_and_bookings_for(groups, Location.find_by_city_code(destination)) if valid_destination
       end
+      
       @itineraries.sort! {|a,b| a.total_cost <=> b.total_cost}
       @loc =  @itineraries.map do |itinerary|
         Location.find(itinerary.destination_id)

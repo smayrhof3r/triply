@@ -1,20 +1,31 @@
-<%= link_to "back", session[:previous_request_url] %>
-<div class="container container-fixed h-100"><h1> What do you fancy? </h1>
-<h2>Re-used data: <%= @re_used %></h2>
-  <div class="container-scroll border">
-    <% @itineraries.each_with_index do |itinerary, i| %>
-      <% destination = Location.find(itinerary.destination_id) %>
-      <%= link_to itinerary_path(itinerary), class: "text-decoration-none" do %>
-        <div class="d-flex mb-3 border-bottom">
-          <% destination.images.each do |image| %>
-            <div style = "height: 100px; width: 100px; object-fit: cover; background-size: 100px 100px; background-image: url('<%=image.url%>')"></div>
-          <% end %>
-          <div class = "p-3">
-            <h3><%= "#{i+1}. #{destination.city}" %></h3>
-            <p>total: €<%= itinerary.total_cost.round(2) %> <em>(€ <%= itinerary.avg_cost.round(2) %>pp)</em></p>
+<div class="row">
+  <div class="sticky-column col-12 col-sm-4 col-md-4">
+    <div class="mt-5 pt-5 ps-5 pe-2">
+      <%= link_to session[:previous_request_url], class: "text-decoration-none" do %>
+        <i class="fas fa-angle-left"></i> back
+      <% end %>
+      <%= render 'itineraries/side_form' %>
+    </div>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 border-start border-sucess">
+    <div class="ps-2 pe-5">
+        <h1 class="text-center pb-5">Top Recommendations</h1>
+    
+    <% @loc.each do |location| %>
+      <div class="pb-3">
+        <div class="card-itinerary-recommendation">
+          <%= image_tag(location.images.first.url) %>
+          <div class="card-itinerary-recommendation-infos">
+            <h2 class="city-name"><strong><%= location.city %></strong></h2>     
+            <%=  %>
+            <% description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tincidunt dolor eget iaculis convallis. 
+            Nulla luctus risus sit amet felis commodo, id cursus dolor interdum. Phasellus non dolor id justo efficitur vehicula. 
+            Etiam rhoncus mi non pharetra mattis. Suspendisse dapibus non dui vel ultricies. Fusce ac leo ut risus gravida pellentesque." %>
+            <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
+            <div class="button pt-3"><%= submit_tag "£ XXX.XX", class: "btn btn-success text-white fixed-right", id: "submit"%></div>
           </div>
         </div>
-      <% end %>
+      </div>
     <% end %>
   </div>
 </div>
