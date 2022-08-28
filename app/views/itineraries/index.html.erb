@@ -1,5 +1,10 @@
-<%= params %>
-<br>
-<% @city_codes.each_with_index do |code, i| %>
-<div><%= "#{i+1}. #{code}" %></div>
+<h1> What do you fancy? </h1>
+<% @itineraries.each_with_index do |itinerary, i| %>
+<% destination = Location.find(itinerary.destination_id) %>
+<div style = "padding: 20px; background-image: url('<%= destination.images.sample.url%>')">
+<h3><%= "#{i+1}. #{destination.city}" %></h3>
+<p>total cost: <%= itinerary.total_cost %></p>
+</div>
+
+
 <% end %>

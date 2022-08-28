@@ -12,57 +12,64 @@ class ItinerariesController < ApplicationController
   end
 
   def index
-
+    @itineraries = []
     count = params["passenger_group_count"].to_i
 
     # try each destination
     possible_destinations.each do |destination|
+
       valid_destination = true
       groups = (1..count).to_a.map { |i| passenger_group_params(i) }
 
+      next if groups.map { |g| g[:location].city_code }.include?(destination)
+
       # find valid destinations and create itineraries
       groups.each do |group|
-
         # retrieve or find & save top flights
-        group[:top_flights] = top_flights(group, destination)
+        group[:search] = top_search_results(group, destination)
 
         # skip to next destination if not all groups can fly there
-        if group[:top_flights].empty?
+        if group[:search].search_results.empty?
           valid_destination = false
           break
         end
       end
 
-      @itineraries << create_itinerary_and_bookings_for(groups) if valid_destination
+      @itineraries << create_itinerary_and_bookings_for(groups, Location.find_by_city_code(destination)) if valid_destination
     end
+    @itineraries.sort! {|a,b| a.total_cost <=> b.total_cost}
   end
 
   private
 
-  def create_itinerary_and_bookings_for(groups)
-    itinerary = Itinerary.new
+  def create_itinerary_and_bookings_for(groups, destination)
+    # for each destination we only create ONE itinerary and set of passenger groups but MANY bookings
+    itinerary = Itinerary.create(destination_id: destination.id, start_date: params["start_date"], end_date: params["end_date"])
     groups.each do |group|
-      group[:top_flights].each_with_index do |flight, index|
-        Booking.create(
-          passenger_group: new_passenger_group(group, itinerary),
-          flight: flight,
-          status: index.zero? ? "suggested" : "alternative"
-        )
+      passenger_group = new_passenger_group(group, itinerary)
+      group[:search].search_results.each do |search_result, index|
+          Booking.create(
+            passenger_group: passenger_group,
+            search_result_id: search_result.id,
+            status: search_result[:offer_index].zero? ? "suggested" : "alternative"
+          )
       end
     end
+
     itinerary
   end
 
   def new_passenger_group(group, itinerary)
-    p = PassengerGroup.new(group.transform_keys(location: :origin_city))
+
+    p = PassengerGroup.new(group.except(:location, :search))
     p.itinerary = itinerary
     p.save
     p
   end
 
-  def top_flights(group, destination)
+  def top_search_results(group, destination)
     # collect top flights
-    search_criteria = {
+    @search_criteria = {
       originLocationCode: group[:location].city_code,
       destinationLocationCode: destination,
       departureDate: params["start_date"],
@@ -71,19 +78,9 @@ class ItinerariesController < ApplicationController
       children: group[:children]
     }
 
-    search = Search.find_by(search_criteria) || new_search(
-      flights(amadeus_search_result(search_criteria), group, destination),
-      search_criteria
-    )
-    search.flights
-  end
 
-  def new_search(flights, search_criteria)
-    # adjust to handle a hash where flights are groups by itineraries and arriving/departing
-    search = Search.create(search_criteria)
-    flights.each do |flight|
-      SearchResult.create(search: search, flight: flight)
-    end
+    search = Search.find_by(@search_criteria) || new_search(
+      amadeus_search_result, group, destination)
 
     search
   end
@@ -102,43 +99,59 @@ class ItinerariesController < ApplicationController
     {
       adults: adults,
       children: children,
-      location: location
+      location: location,
+      origin_city_id: location.id
     }
   end
 
-  def amadeus_search_result(search_criteria)
-    result = AMADEUS.shopping.flight_offers_search.get(search_criteria.merge({max: 10}))
-    raise
-    result.data
+  def amadeus_search_result
+
+    # result = AMADEUS.shopping.flight_offers_search.get(@search_criteria.merge({max: 10}))
+    # result.data
+    SearchHelper::AMADEUS_SAMPLE[@search_criteria["originLocationCode"]] || AMADEUS.shopping.flight_offers_search.get(@search_criteria.merge({max: 10})).data[0..10]
   end
 
-  def flights(search_result, group, destination)
-    # make the flights an array of hashes, where each hash is {
-      # :going_there
-      # :coming_back
-      #}
-    }
-    flight_for_search = {}
-    search_result.each do |result|
-      result["itineraries"].each do |itinerary|
-        result["segments"].each do |segment|
-          flights_for_search << new_or_found_flight(segment, group, destination)
+  def new_search(amadeus_result, group, destination)
+
+    @search = Search.create(@search_criteria)
+
+    amadeus_result[..10].each_with_index do |result, offer_index|
+
+      next if result["itineraries"].map{|i| i["segments"].count}.max > 2
+
+      result["itineraries"].each_with_index do |itinerary, leg_index|
+        itinerary["segments"].each do |segment|
+          @flight = new_or_found_flight(segment, group, destination)
+
+          search_result = SearchResult.create(
+            search: @search,
+            flight: @flight,
+            offer_index: offer_index,
+            return_flight: leg_index == 1,
+            cost_per_head: result["price"]["total"].to_f/result["travelerPricings"].count
+          )
+
         end
       end
     end
+    @search
   end
 
-  def new_or_found_flight(segment, origin_location)
+  def new_or_found_flight(segment, group, destination)
       Flight.find_by(
-        flight_code: segment.map { |s| "#{s['carrierCode']} #{s['number']}" },
+        flight_code: "#{segment['carrierCode']} #{segment['number']}",
         departure_time: segment["departure"]["at"]
       ) || Flight.create(
         departure_time: segment["departure"]["at"],
         arrival_time: segment["arrival"]["at"],
-        departure_airport: Airport.find_by_code(segment["departure"]["iataCode"]) || Airport.create(code: segment["departure"]["iataCode"], city: group["location"]),
-        arrival_airport: Airport.find_by_code(segement["arrival"]["iataCode"]) || Airport.create(code: segment["arrival"]["iataCode"], city: Location.find_by_city_code(destination)),
-        cost_per_head: flight["price"]["total"].to_f/flight["travelerPricings"].count,
-        flight_code: segment.map { |s| "#{s['carrierCode']} #{s['number']}" }
+        departure_airport_id: airport_id(segment["departure"], group["location"]),
+        arrival_airport_id: airport_id(segment["arrival"], Location.find_by_city_code(destination)),
+        flight_code: "#{segment['carrierCode']} #{segment['number']}"
       )
+  end
+
+  def airport_id(flight, location)
+    a = Airport.find_by_code(flight["iataCode"]) || Airport.create(code: flight["iataCode"], location: location)
+    a.id
   end
 end
