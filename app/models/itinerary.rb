@@ -1,8 +1,8 @@
 class Itinerary < ApplicationRecord
-  belongs_to :location, foreign_key: :destination_id, primary_key: :id
-  has_many :passenger_groups, dependent: :destroy
-  has_many :permissions, dependent: :destroy
-  has_many :users, through: :permissions
+  belongs_to :location # foreign_key: :destination_id
+  has_many :passenger_groups #, dependent: :destroy
+  has_many :permissions #, dependent: :destroy
+  has_many :users #, through: :permissions
 
   def total_cost
     total = 0
