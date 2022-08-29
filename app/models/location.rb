@@ -3,5 +3,5 @@ class Location < ApplicationRecord
   has_many :images
   has_many :airports
 
-  has_many :itineraries #, foreign_key: :destination_id, primary_key: :id
+  # has_many :itineraries, foreign_key: :destination_id, primary_key: :id
 end
