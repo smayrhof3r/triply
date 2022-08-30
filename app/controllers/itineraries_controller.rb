@@ -43,7 +43,7 @@ class ItinerariesController < ApplicationController
 
         @itineraries << create_itinerary_and_bookings_for(groups, Location.find_by_city_code(destination)) if valid_destination
       end
-      
+
       @itineraries.sort! {|a,b| a.total_cost <=> b.total_cost}
       @loc =  @itineraries.map do |itinerary|
         Location.find(itinerary.destination_id)
@@ -68,17 +68,18 @@ class ItinerariesController < ApplicationController
   end
 
   def delete_itineraries
-    session[:itineraries].each do |i|
-      itinerary = Itinerary.find_by(id: i)
-      if itinerary
-        itinerary.passenger_groups.each do |p|
-          p.bookings.each do |b|
-            b.delete
-          end
-          p.delete
-        end
-        itinerary.delete
+    # retrieve all relevant passenger group ids and booking ids based on itinerary_id in (..)
+    unless session[:itineraries].nil? || session[:itineraries].empty?
+      ids = retrieve_bookings_passengergrps_from_itinerary_ids_sql(session[:itineraries])
+      unless ids.ntuples == 0
+        b_ids = ids.map{|i| i["b_id"]}
+        p_ids = ids.map{|i| i["p_id"]}.uniq
+
+        delete_sql('bookings', b_ids) unless b_ids.empty?
+        delete_sql('passenger_groups', p_ids) unless p_ids.empty?
       end
+
+      delete_sql('itineraries', session[:itineraries])
     end
   end
 
@@ -87,14 +88,13 @@ class ItinerariesController < ApplicationController
     itinerary = Itinerary.create(destination_id: destination.id, start_date: params["start_date"], end_date: params["end_date"])
     groups.each do |group|
       passenger_group = new_passenger_group(group, itinerary)
-      min_offer_index = group[:search].search_results.map(&:offer_index).min
-      group[:search].search_results.each do |search_result, index|
-        Booking.create(
-          passenger_group: passenger_group,
-          search_result_id: search_result.id,
-          status: search_result[:offer_index] == min_offer_index ? "suggested" : "alternative"
-        )
-      end
+      cheapest_offer = group[:search].search_results.first
+
+      Booking.create(
+        passenger_group: passenger_group,
+        search_result_id: cheapest_offer.id,
+        status: "suggested"
+      )
     end
 
     itinerary
@@ -194,5 +194,21 @@ class ItinerariesController < ApplicationController
   def airport_id(flight, location)
     a = Airport.find_by_code(flight["iataCode"]) || Airport.create(code: flight["iataCode"], location: location)
     a.id
+  end
+
+
+  def delete_sql(table, ids)
+    sql = "DELETE FROM #{table} WHERE id in (#{ids.join(',')})"
+    ActiveRecord::Base.connection.execute(sql)
+  end
+
+  def retrieve_bookings_passengergrps_from_itinerary_ids_sql(ids)
+    sql = "
+    SELECT passenger_groups.id as p_id, bookings.id as b_id
+    FROM bookings
+    INNER JOIN passenger_groups ON bookings.passenger_group_id = passenger_groups.id
+    INNER JOIN itineraries ON passenger_groups.itinerary_id = itineraries.id
+    WHERE itineraries.id in (#{ids.join(',')})"
+    ActiveRecord::Base.connection.execute(sql)
   end
 end
