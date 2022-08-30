@@ -1,1 +1,17 @@
-<h1>Show page</h1>
+<div class = "container text-center">
+<h1>Discover <%=@location%> </h1>
+<%# <i need ti create a variable for the flight to be booked > %>
+<% if flight_booked? %>
+   <li class="btn btn-link"Go to itinerary>
+   <%= link_to "Itinerary",itineraries_path , class: "nav-link" %>
+   </li>
+      <% else %>
+    <% end %>
+</div>
+<div class ="banner pt-3 text-center" style= "background-image: url('<%= image_path 'destination.png' %>'); background-size: cover;">
+       <%= link_to "Select the destination", itineraries_path, class: "btn btn-success text-white" %>
+</div>
+
+<div class="container">
+<h2>Flights overview</h2>
+</div>
