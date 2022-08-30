@@ -40,7 +40,6 @@ class ItinerariesController < ApplicationController
             break
           end
         end
-
         @itineraries << create_itinerary_and_bookings_for(groups, Location.find_by_city_code(destination)) if valid_destination
       end
     end
@@ -51,6 +50,7 @@ class ItinerariesController < ApplicationController
 
     update_session_variables
     @images_by_itinerary_id = bulk_retrieve_location_images(session[:itineraries])
+
   end
 
   def seed(params)
@@ -176,9 +176,10 @@ class ItinerariesController < ApplicationController
 
   def passenger_group_params(i)
     # NOTE: requires form city to be a valid city from our database!
-    adults = params["adults#{i}"] || 1
-    children = params["children#{i}"] || 0
+    adults = params["adults#{i}"]
+    children = params["children#{i}"]
     location = Location.find_by_city(params["origin_city#{i}"])
+
     {
       adults: adults,
       children: children,
