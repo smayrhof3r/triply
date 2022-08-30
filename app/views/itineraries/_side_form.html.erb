@@ -1,3 +1,4 @@
+
 <div class="accordion" data-controller="search-form" data-action="click->search-form#updateButton input->search-form#updateButton">
     <div class="card h-100 shadow" id = "searchFormSection2Parent">
     <div class="card-header bg-success">
@@ -5,14 +6,15 @@
         <button class="btn btn-link text-white text-decoration-none w-100" type="button" data-action = "click->search-form#toggleCollapse" id = "searchFormSection2">
         <div class="d-flex justify-content-between">
 
-        <div>Travel Dates</div> 
+        <div>Travel Dates</div>
         <div><i class="fas fa-minus"></i></div>
         </div>
         </button>
         </h2>
     </div>
     <div class="collapse show">
-    <div class="card-body"><%= render 'shared/fixed_date_form' %></div>
+    <% if params[:start_date] %>
+      <div class="card-body"><%= render 'shared/fixed_date_form' %></div>
     </div>
     </div>
     <div class="card h-100 shadow" id = "searchFormSection1Parent">
