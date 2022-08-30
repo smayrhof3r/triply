@@ -52,6 +52,47 @@ class ItinerariesController < ApplicationController
     end
   end
 
+  def seed(params)
+      count = 1
+
+      # try each destination
+      possible_destinations.each do |destination|
+        puts destination
+
+        groups = (1..count).to_a.map { |i|
+          adults = params["adults#{i}"]
+          children = params["children#{i}"]
+          location = Location.find_by_city(params["origin_city#{i}"])
+          {
+            adults: adults,
+            children: children,
+            location: location,
+            origin_city_id: location.id
+          }
+        }
+
+        next if groups.map { |g| g[:location].city_code }.include?(destination)
+
+        # find valid destinations and create itineraries
+        groups.each do |group|
+          # retrieve or find & save top flights
+          @search_criteria = {
+            originLocationCode: group[:location].city_code,
+            destinationLocationCode: destination,
+            departureDate: params["start_date"],
+            returnDate: params["end_date"],
+            adults: group[:adults],
+            children: group[:children]
+          }
+
+          group[:search] = Search.find_by(@search_criteria) || new_search(
+            amadeus_search_result, group, destination)
+
+          puts "#{@search_criteria} : #{group[:search]}"
+        end
+      end
+  end
+
   private
 
   def update_session_url
@@ -149,7 +190,7 @@ class ItinerariesController < ApplicationController
 
     # result = AMADEUS.shopping.flight_offers_search.get(@search_criteria.merge({max: 10}))
     # result.data
-    SearchHelper::AMADEUS_SAMPLE[@search_criteria["originLocationCode"]] || AMADEUS.shopping.flight_offers_search.get(@search_criteria.merge({max: 10})).data[0..10]
+    AMADEUS.shopping.flight_offers_search.get(@search_criteria.merge({max: 10})).data[0..10]
   end
 
   def new_search(amadeus_result, group, destination)
