@@ -1,3 +1,4 @@
+<%= @groups%>
 <div class="row">
   <div class="sticky-column col-12 col-sm-4 col-md-4">
     <div class="mt-5 pt-5 ps-5 pe-2">
@@ -14,7 +15,7 @@
     <% @itineraries.each do |itinerary| %>
       <div class="pb-3">
         <div class="card-itinerary-recommendation">
-          <%= image_tag(itinerary.destination.images.first.url) %>
+          <%= image_tag(@images_by_itinerary_id[itinerary.id]) %>
           <div class="card-itinerary-recommendation-infos">
             <h2 class="city-name"><strong><%= itinerary.destination.city %></strong></h2>
             <%=  %>
