@@ -1,2 +1,32 @@
-<%= params %>
-<%= @p %>
+<%= @groups%>
+<div class="row">
+  <div class="sticky-column col-12 col-sm-4 col-md-4">
+    <div class="mt-5 pt-5 ps-5 pe-2">
+      <%= link_to session[:previous_request_url], class: "text-decoration-none" do %>
+        <i class="fas fa-angle-left"></i> back
+      <% end %>
+      <%= render 'itineraries/side_form' %>
+    </div>
+  </div>
+  <div class="col-12 col-sm-8 col-md-8 border-start border-sucess">
+    <div class="ps-2 pe-5">
+        <h1 class="text-center pb-5">Top Recommendations</h1>
+
+    <% @itineraries.each do |itinerary| %>
+      <div class="pb-3">
+        <div class="card-itinerary-recommendation">
+          <%= image_tag(@images_by_itinerary_id[itinerary.id]) %>
+          <div class="card-itinerary-recommendation-infos">
+            <h2 class="city-name"><strong><%= itinerary.destination.city %></strong></h2>
+            <%=  %>
+            <% description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tincidunt dolor eget iaculis convallis.
+            Nulla luctus risus sit amet felis commodo, id cursus dolor interdum. Phasellus non dolor id justo efficitur vehicula.
+            Etiam rhoncus mi non pharetra mattis. Suspendisse dapibus non dui vel ultricies. Fusce ac leo ut risus gravida pellentesque." %>
+            <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
+            <div class="button pt-3"><%= link_to "€ #{itinerary.total_cost.round(2)}", itinerary_path(itinerary), class: "btn btn-success text-white fixed-right"%></div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

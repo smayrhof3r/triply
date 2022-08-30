@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_25_182348) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_27_131251) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -53,12 +53,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_25_182348) do
 
   create_table "bookings", force: :cascade do |t|
     t.bigint "passenger_group_id", null: false
-    t.bigint "flight_id", null: false
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["flight_id"], name: "index_bookings_on_flight_id"
+    t.bigint "search_result_id"
     t.index ["passenger_group_id"], name: "index_bookings_on_passenger_group_id"
+    t.index ["search_result_id"], name: "index_bookings_on_search_result_id"
   end
 
   create_table "flights", force: :cascade do |t|
@@ -102,6 +102,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_25_182348) do
     t.datetime "updated_at", null: false
     t.string "city_code"
     t.string "country_code"
+    t.text "description"
   end
 
   create_table "passenger_groups", force: :cascade do |t|
@@ -125,6 +126,29 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_25_182348) do
     t.index ["user_id"], name: "index_permissions_on_user_id"
   end
 
+  create_table "search_results", force: :cascade do |t|
+    t.bigint "search_id", null: false
+    t.bigint "flight_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "return_flight"
+    t.float "cost_per_head"
+    t.integer "offer_index"
+    t.index ["flight_id"], name: "index_search_results_on_flight_id"
+    t.index ["search_id"], name: "index_search_results_on_search_id"
+  end
+
+  create_table "searches", force: :cascade do |t|
+    t.string "originLocationCode"
+    t.string "destinationLocationCode"
+    t.string "departureDate"
+    t.string "adults"
+    t.string "children"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "returnDate"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -144,7 +168,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_25_182348) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "airports", "locations"
-  add_foreign_key "bookings", "flights"
   add_foreign_key "bookings", "passenger_groups"
   add_foreign_key "flights", "airports", column: "arrival_airport_id"
   add_foreign_key "flights", "airports", column: "departure_airport_id"
@@ -154,5 +177,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_25_182348) do
   add_foreign_key "passenger_groups", "locations", column: "origin_city_id"
   add_foreign_key "permissions", "itineraries"
   add_foreign_key "permissions", "users"
+  add_foreign_key "search_results", "flights"
+  add_foreign_key "search_results", "searches"
   add_foreign_key "users", "locations", column: "home_city_id"
 end
