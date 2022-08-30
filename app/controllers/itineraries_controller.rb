@@ -43,13 +43,14 @@ class ItinerariesController < ApplicationController
 
         @itineraries << create_itinerary_and_bookings_for(groups, Location.find_by_city_code(destination)) if valid_destination
       end
-
-      @itineraries.sort! {|a,b| a.total_cost <=> b.total_cost}
-      @loc =  @itineraries.map do |itinerary|
-        Location.find(itinerary.destination_id)
-      end
-      update_session_variables
     end
+
+    @loc =  @itineraries.map do |itinerary|
+      Location.find(itinerary.destination_id)
+    end
+
+    update_session_variables
+    @images_by_itinerary_id = bulk_retrieve_location_images(session[:itineraries])
   end
 
   def seed(params)
@@ -251,5 +252,19 @@ class ItinerariesController < ApplicationController
     INNER JOIN itineraries ON passenger_groups.itinerary_id = itineraries.id
     WHERE itineraries.id in (#{ids.join(',')})"
     ActiveRecord::Base.connection.execute(sql)
+  end
+
+  def bulk_retrieve_location_images(ids)
+    sql = "
+    SELECT itineraries.id as id, images.url as url
+    FROM images
+    INNER JOIN locations ON images.location_id = locations.id
+    INNER JOIN itineraries ON itineraries.destination_id = locations.id
+    WHERE itineraries.id in (#{ids.join(',')})"
+    @result = ActiveRecord::Base.connection.execute(sql)
+    @result_mapped=@result.map do |r|
+      [r["id"], r["url"]]
+    end.to_h
+    @result_mapped
   end
 end

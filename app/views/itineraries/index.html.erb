@@ -14,7 +14,7 @@
     <% @itineraries.each do |itinerary| %>
       <div class="pb-3">
         <div class="card-itinerary-recommendation">
-          <%= image_tag(itinerary.destination.images.first.url) %>
+          <%= image_tag(@images_by_itinerary_id[itinerary.id]) %>
           <div class="card-itinerary-recommendation-infos">
             <h2 class="city-name"><strong><%= itinerary.destination.city %></strong></h2>
             <%=  %>
