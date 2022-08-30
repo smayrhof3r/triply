@@ -176,8 +176,8 @@ class ItinerariesController < ApplicationController
 
   def passenger_group_params(i)
     # NOTE: requires form city to be a valid city from our database!
-    adults = params["adults#{i}"]
-    children = params["children#{i}"]
+    adults = params["adults#{i}"] || 1
+    children = params["children#{i}"] || 0
     location = Location.find_by_city(params["origin_city#{i}"])
     {
       adults: adults,
