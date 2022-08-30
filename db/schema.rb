@@ -66,7 +66,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_27_131251) do
     t.datetime "arrival_time"
     t.bigint "departure_airport_id"
     t.bigint "arrival_airport_id"
-    t.float "cost_per_head"
     t.string "flight_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
