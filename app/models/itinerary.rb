@@ -16,4 +16,8 @@ class Itinerary < ApplicationRecord
   def avg_cost
     total_cost / passenger_groups.map { |p| p.adults + p.children }.sum
   end
+
+  def destination
+    Location.find(destination_id)
+  end
 end
