@@ -1,0 +1,56 @@
+.card-overview {
+    height:100%;
+    background: white;
+    box-shadow: $shadow;
+    border-radius: 8px;
+    
+    .card-overview-title{
+      display:flex;
+      justify-content: space-between;
+      background-color: $green;
+      border-radius: 8px;
+      color: white;   
+    }
+
+    h4 {
+      font-size: 20px;
+      margin: 0px;
+    }
+
+    .i-title{
+      color:white;
+    }
+    
+    .card-overview-info {
+      padding: 16px;
+      width: 100%;
+      text-align: left;
+      border-bottom: 1px solid $green;       
+    }
+
+      
+    .origin-city {
+      font-size: 20px; 
+    }
+
+    p {
+      font-size: 16px;
+      margin: 0px;
+    }
+    
+    .flight-time{
+      display: flex;
+      justify-content: space-between;
+      text-align: center;
+      align-items: center;
+    }
+
+    .flight-time-location {
+      align-items: center;
+    }
+
+    i {
+      color: $green;
+      font-size: 18px;
+    }
+  }

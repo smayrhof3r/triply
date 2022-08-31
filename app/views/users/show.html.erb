@@ -1,26 +1,67 @@
-<div class="text-center">
-  <h2>Hello <%= @user.first_name %>!</h2>
-<div>
-
 <div class="row">
   <div class="col-12 col-sm-4 col-md-4">
-    <div class="mt-5 pt-5 ps-5 pe-2">
-      <h2>Your upcoming trips</h2>
+    <div class="py-3 ps-5 pe-2">
+      <h3 class="text-center py-3">Your upcoming trips</h3>
+        <% upcoming_itineraries = @user_itineraries.map {|i| i.start_date >= Date.today ? i : nil}.reject(&:nil?) %>   
+        
+        <% if upcoming_itineraries.empty? %>
+          <p class="text-center">You have no past trips</p>
+        <% else %>
+          
+          <% upcoming_itineraries.each do |itinerary| %>
 
-        <% itineraries = @user.itineraries %>
-        <% itineraries.each do |itinerary| %>
-          <% if itinerary.start_date >= Date.today %>
-            <%= itinerary.destination.city %>    
-          <% end %>  
+            <div class="card-overview">
+              <div class="card-overview-title p-3">
+                <h4>Trip to <strong><%=itinerary.destination.city%></strong></h4>
+                <i class="fas fa-minus i-title"></i>
+              </div>
+              <% itinerary.passenger_groups.each do |group| %>
+                <div class="card-overview-info">
+                    <p class="origin-city"><strong><%=group.origin_city.city%></strong></p>
+                    <p>Passangers: <%="#{group.adults} #{"Adult".pluralize(group.adults)}, "%>
+                    <%="#{group.children} #{"Child".pluralize(group.children)}"%></p>
+                    
+                    <% info = group.flight_info %>
+
+                    <% if info[:flight_there].any? %>
+                      <% flight_id = info[:flight_there][0].id%>
+                      <% flight = Flight.find(flight_id) %>
+                      
+                      <p>Departure date: <%= flight.departure_time.strftime('%d %b, %Y')%></p>
+                      
+                      <div class="flight-time py-2 px-5">
+                        <div class="flight-time-location">
+                          <h3 class="m-0"><%= flight.departure_time.strftime('%H:%M')%>h</h3>
+                          <p><%=group.origin_city.city%></p>
+                        </div>
+                        <i class="fa-solid fa-plane"></i>
+                        <div class="flight-time-location">
+                          <h3 class="m-0"><%= flight.arrival_time.strftime('%H:%M') %>h</h3>
+                          <p><%=itinerary.destination.city%></p>
+                        </div>
+                      </div>                        
+                      
+                    <% elsif info[:flight_return].any? %>
+                        <%= info[:flight_return]%>
+                    <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
         <% end %>
-
-
- 
-      <h2>Your past trips</h2>
-        <% itineraries.each do |itinerary| %>
-          <% if itinerary.start_date < Date.today %>
-            <%= itinerary.destination.city %>    
-          <% end %>  
+   
+   
+        
+      <h3 class="pt-5 pb-3 text-center">Your past trips</h3>
+        <% past_itineraries = @user_itineraries.map {|i| i.start_date < Date.today ? i : nil}.reject(&:nil?) %>   
+        <% if past_itineraries.empty? %>
+          <p class="text-center">You have no past trips</p>
+          
+        <% else %>
+          <% past_itineraries.each do |itinerary| %>
+            <%= itinerary.passenger_groups.first.origin_city.city %>
+            <%= itinerary.passenger_groups.first.flight_info %>
+          <% end %> 
         <% end %>
     </div>
   </div>
