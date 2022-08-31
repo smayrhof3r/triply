@@ -4,6 +4,31 @@ class Itinerary < ApplicationRecord
   has_many :permissions #, dependent: :destroy
   has_many :users, through: :permissions
 
+  def self.delete_unclaimed(ids = [])
+
+    sql = "
+    SELECT itineraries.id as i, passenger_groups.id as p, bookings.id as b
+    FROM itineraries
+    INNER JOIN passenger_groups ON passenger_groups.itinerary_id = itineraries.id
+    INNER JOIN bookings ON bookings.passenger_group_id = passenger_groups.id
+    LEFT JOIN permissions ON permissions.itinerary_id = itineraries.id
+    WHERE permissions.id IS NULL"
+
+    sql += " and itineraries.id in (#{ids.join(',')})" unless ids.empty?
+
+    result = ActiveRecord::Base.connection.execute(sql)
+
+    unless result.ntuples == 0
+      self.delete_sql('bookings', result.map{|r| r["b"]}.uniq)
+      self.delete_sql('passenger_groups', result.map{|r| r["p"]}.uniq)
+      self.delete_sql('itineraries', result.map{|r| r["i"]}.uniq)
+    end
+  end
+
+  def destination
+    Location.find(destination_id)
+  end
+
   def total_cost
     total = 0
     passenger_groups.each do |p|
@@ -17,7 +42,10 @@ class Itinerary < ApplicationRecord
     total_cost / passenger_groups.map { |p| p.adults + p.children }.sum
   end
 
-  def destination
-    Location.find(destination_id)
+  private
+  def self.delete_sql(table, ids)
+    sql = "DELETE FROM #{table} WHERE id in (#{ids.join(',')})"
+    ActiveRecord::Base.connection.execute(sql)
   end
+
 end
