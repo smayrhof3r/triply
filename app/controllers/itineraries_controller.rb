@@ -10,6 +10,9 @@ class ItinerariesController < ApplicationController
   end
 
   def show
+   @itinerary = Itinerary.find(params["id"])
+   @location = @itinerary.destination
+  #  @status = Booking.confirmed?
   end
 
   def index

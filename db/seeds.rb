@@ -1,13 +1,14 @@
 Booking.delete_all
 PassengerGroup.delete_all
 Itinerary.delete_all
+
 Image.delete_all
 Airport.delete_all
 Location.delete_all
 
 f = File.open('airports.json')
-
 locations = JSON.parse(f.read)
+
 # "ORBAirportList": [
 #   {
 #     "airportCode": "YUL",
@@ -21,9 +22,11 @@ locations = JSON.parse(f.read)
 #     "excludedCountries": ""
 #   },
 
+
 locations["ORBAirportList"].each do |location|
   # create location
   l = Location.find_by_city(location["cityName"])
+
   unless l
     l = Location.create(
       city: location["cityName"],
@@ -31,6 +34,7 @@ locations["ORBAirportList"].each do |location|
       country: location["countryName"],
       country_code: location["countryCode"]
     )
+
     # get coordinates
     res = Faraday.get("https://api.mapbox.com/geocoding/v5/mapbox.places/#{l.city.gsub(' ', '%20')}.json?country=#{l.country_code}&limit=1&types=place&access_token=#{ENV['MAPBOX_KEY']}")
     json = JSON.parse(res.body)
@@ -41,6 +45,7 @@ locations["ORBAirportList"].each do |location|
       l.save
     end
   end
+
   # create the Airport
   a = Airport.create(
     name: location["airportName"],
@@ -48,9 +53,11 @@ locations["ORBAirportList"].each do |location|
     location: l
   )
 end
+
 # get some images if its a destination we need
 Search::DESTINATIONS.each do |location|
   l = Location.find_by_city_code(location)
+
   photos = Unsplash::Photo.search(l.city)
                           .first(5)
                           .map { |result| result.urls["raw"] }
@@ -58,7 +65,9 @@ Search::DESTINATIONS.each do |location|
     Image.create(url: photo, location: l)
   end
 end
+
 # seed the searches for demo
+
 searches = [{"origin_city1"=>"London",
   "adults1"=>"2",
   "children1"=>"2",
@@ -70,6 +79,7 @@ searches = [{"origin_city1"=>"London",
   "start_date"=>"2022-10-16",
   "end_date"=>"2022-10-22"}
 ]
+
   i = ItinerariesController.new
   searches.each do |params|
     i.seed(params)

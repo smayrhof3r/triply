@@ -7,5 +7,8 @@ Rails.application.routes.draw do
   get "/search", to: "itineraries#search"
   # Defines the root path route ("/")
   # root "articles#index"
-  resources :itineraries, only: [:index, :show]
+
+  resources :itineraries, only: [:index, :show] do
+    resources :permissions, only: [:create]
+  end
 end

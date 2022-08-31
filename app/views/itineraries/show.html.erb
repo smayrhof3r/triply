@@ -1,1 +1,56 @@
-<h1>Show page</h1>
+<%=params%>
+<div class = "container">
+  <div class ="row">
+      <div class ="col-md-12 bg-light text-left"><h1>Discover <%=@location.city%>, <%=@location.country%></h1>
+      </div>
+ <%# <i have to create a variable when the flight is booked> %>
+    <%# <% if @status? %>
+     <%# <li class="btn btn-link"Go to itinerary>  %>
+     <%# <%= link_to "Itinerary", itineraries_path , class: "nav-link" %>
+     <%# </li>
+     <% else %>
+     <%# <h3>Not now</h3> %>
+    <%# <% end %>
+   </div>
+</div>
+
+<div class ="banner pt-3 text-center box" style= "background-image: url('<%=@location.images.first.url%>'); background-size: cover;">
+       <%= link_to "Select this destination", itinerary_permissions_path(@itinerary), class: "btn btn-success text-white" %>
+</div>
+
+  <h3>Flights overview</h3>
+    <div class="row text-center">
+      <div class="col-6 border-end">
+      <%@itinerary.passenger_groups.each do |group|%>
+       <div>
+        <%=group.origin_city.city%> to <%=@location.city%>
+       </div>
+       <div>
+       <%="#{group.adults} #{"Adult".pluralize(group.adults)}, "%>
+       <%="#{group.children} #{"Child".pluralize(group.children)}"%>
+       </div>
+     <div>
+      <% flight_info= group.flight_info%>
+     </div>
+    <%# need to take flight info , get a grafic %>
+
+     <li class="btn-group col-xs-3 bg-light text-right">
+      <button type = "button" class = "btn btn-success text-white">Add to Itinerary
+      <%= link_to "Itinerary",itineraries_path , class: "nav-link" %></button>
+      <button type = "button" class = "btn btn-success text-white">More flights options
+      <%= link_to "Itinerary",itineraries_path , class: "nav-link" %></button>
+     </li>
+     <% end %>
+  </div>
+    <div class="col-6 border-end">
+     <ul flights>
+     <li>
+     <h4>Departure flight </h4>
+     </li>
+     <li>
+     <h4>Returning flight</h4>
+     </li>
+     </ul>
+     </div>
+  </div>
+</div>
