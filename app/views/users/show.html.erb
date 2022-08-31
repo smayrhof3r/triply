@@ -1,5 +1,5 @@
-<div class="row">
-  <div class="col-12 col-sm-4 col-md-4">
+<div class="row user-page">
+  <div class="col-12 col-sm-4 col-md-4 upcoming-trips">
     <div class="py-3 ps-5 pe-2">
       <h3 class="text-center py-3">Your upcoming trips</h3>
         <% upcoming_itineraries = @user_itineraries.map {|i| i.start_date >= Date.today ? i : nil}.reject(&:nil?) %>   
@@ -49,8 +49,9 @@
             </div>
           <% end %>
         <% end %>
-   
-   
+
+      <h3 class="pt-5 pb-5 text-center">text text</h3>
+      <h3 class="pt-5 pb-5 text-center">text text</h3>
         
       <h3 class="pt-5 pb-3 text-center">Your past trips</h3>
         <% past_itineraries = @user_itineraries.map {|i| i.start_date < Date.today ? i : nil}.reject(&:nil?) %>   
@@ -65,6 +66,8 @@
         <% end %>
     </div>
   </div>
+
+  
 
   <div class="col-12 col-sm-8 col-md-8 border-start border-sucess">
     <div class="ps-2 pe-5">
