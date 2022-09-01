@@ -7,12 +7,14 @@ class Itinerary < ApplicationRecord
   def self.delete_unclaimed(ids = [])
 
     sql = "
-    SELECT itineraries.id as i, passenger_groups.id as p, bookings.id as b
-    FROM itineraries
-    INNER JOIN passenger_groups ON passenger_groups.itinerary_id = itineraries.id
-    INNER JOIN bookings ON bookings.passenger_group_id = passenger_groups.id
+    SELECT itineraries.id as i, permissions.id as pe_id, passenger_groups.id as p, bookings.id as b
+    FROM
+    itineraries
     LEFT JOIN permissions ON permissions.itinerary_id = itineraries.id
+    LEFT JOIN passenger_groups ON passenger_groups.itinerary_id = itineraries.id
+    LEFT JOIN bookings ON bookings.passenger_group_id = passenger_groups.id
     WHERE permissions.id IS NULL"
+    # ,
 
     sql += " and itineraries.id in (#{ids.join(',')})" unless ids.empty?
 
@@ -23,6 +25,8 @@ class Itinerary < ApplicationRecord
       self.delete_sql('passenger_groups', result.map{|r| r["p"]}.uniq)
       self.delete_sql('itineraries', result.map{|r| r["i"]}.uniq)
     end
+
+    result
   end
 
   def destination
@@ -45,7 +49,7 @@ class Itinerary < ApplicationRecord
   private
   def self.delete_sql(table, ids)
     sql = "DELETE FROM #{table} WHERE id in (#{ids.join(',')})"
-    ActiveRecord::Base.connection.execute(sql)
+    ActiveRecord::Base.connection.execute(sql) unless ids.join(',').empty?
   end
 
 end
