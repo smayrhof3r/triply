@@ -6,28 +6,43 @@
     <%= link_to "#", class: "navbar-brand" do %>
       <%= image_tag "triply-horizontal.png" %>
     <% end %>
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto">
-        <% if user_signed_in? %>
-          <li class="nav-item dropdown">
-            <%= image_tag "traveller.jpg", class: "avatar dropdown-toggle", id: "navbarDropdown", data: { bs_toggle: "dropdown" }, 'aria-haspopup': true, 'aria-expanded': false %>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%= link_to "Current Itinerary", "#", class: "dropdown-item" %>
-              <%= link_to "History", "#", class: "dropdown-item" %>
-              <%= link_to "Log out", destroy_user_session_path, class: "dropdown-item", data: {turbo_method: :delete} %>
-            </div>
-          </li>
-        <% else %>
-          <li class="nav-item">
-            <%= link_to "Login", new_user_session_path, class: "nav-link" %>
-          </li>
+    <div class = "d-flex align-items-center">
+      <% unless request.original_url.match?(/search/) %>
+        <%= link_to '/search', class: "me-3 btn btn-sm btn-success text-white" do %>
+            <i class="fas fa-search-location"></i> New Search
         <% end %>
-      </ul>
+      <% end %>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto">
+          <% if user_signed_in? %>
+            <li class="nav-item dropdown">
+              <div class="clickable position-relative" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%= image_tag "traveller.jpg", class: "avatar dropdown-toggle" %>
+                <i class="fas fa-caret-down image-footer"></i>
+              </div>
+              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <%= link_to '#', class: "dropdown-item" do %>
+                  <i class="fas fa-plane-departure"></i> My Itineraries
+                <% end %>
+                <%= link_to '/search', class: "dropdown-item" do %>
+                  <i class="fas fa-search-location"></i> New Search
+                <% end %>
+                <%= link_to destroy_user_session_path, class: "dropdown-item", data: {turbo_method: :delete} do %>
+                  <i class="fas fa-sign-out-alt"></i> Log out
+                <% end %>
+              </div>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "Login", new_user_session_path, class: "btn btn-sm btn-outline-success" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

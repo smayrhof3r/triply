@@ -1,5 +1,6 @@
 class ItinerariesController < ApplicationController
-  before_action :update_session_url, only: [:search, :index]
+  before_action :update_session_url, only: [:search, :index, :show]
+  skip_before_action :authenticate_user!
 
   AMADEUS = Amadeus::Client.new({
     client_id: ENV['AMADEUS_TEST_KEY'],
@@ -12,6 +13,9 @@ class ItinerariesController < ApplicationController
   def show
    @itinerary = Itinerary.find(params["id"])
    @location = @itinerary.destination
+   @permission = Permission.new
+   session["user_return_to"] = request.original_url
+
   #  @status = Booking.confirmed?
   end
 
@@ -101,31 +105,15 @@ class ItinerariesController < ApplicationController
 
   def update_session_url
     session[:previous_request_url] = session[:current_request_url]
-    session[:current_request_url] = request.url
+    session[:current_request_url] = request.original_url
   end
 
   def update_session_variables
     # should be able to destroy underlying models by destroying itineraries, but not working so we nest in
-    delete_itineraries if session[:itineraries]
+    Itinerary.delete_unclaimed(session[:itineraries]) if session[:itineraries]
 
     session[:itineraries] = @itineraries.map(&:id)
     session[:params] = params
-  end
-
-  def delete_itineraries
-    # retrieve all relevant passenger group ids and booking ids based on itinerary_id in (..)
-    unless session[:itineraries].nil? || session[:itineraries].empty?
-      ids = retrieve_bookings_passengergrps_from_itinerary_ids_sql(session[:itineraries])
-      unless ids.ntuples == 0
-        b_ids = ids.map{|i| i["b_id"]}
-        p_ids = ids.map{|i| i["p_id"]}.uniq
-
-        delete_sql('bookings', b_ids) unless b_ids.empty?
-        delete_sql('passenger_groups', p_ids) unless p_ids.empty?
-      end
-
-      delete_sql('itineraries', session[:itineraries])
-    end
   end
 
   def create_itinerary_and_bookings_for(groups, destination)
@@ -242,33 +230,20 @@ class ItinerariesController < ApplicationController
     a.id
   end
 
-
-  def delete_sql(table, ids)
-    sql = "DELETE FROM #{table} WHERE id in (#{ids.join(',')})"
-    ActiveRecord::Base.connection.execute(sql)
-  end
-
-  def retrieve_bookings_passengergrps_from_itinerary_ids_sql(ids)
-    sql = "
-    SELECT passenger_groups.id as p_id, bookings.id as b_id
-    FROM bookings
-    INNER JOIN passenger_groups ON bookings.passenger_group_id = passenger_groups.id
-    INNER JOIN itineraries ON passenger_groups.itinerary_id = itineraries.id
-    WHERE itineraries.id in (#{ids.join(',')})"
-    ActiveRecord::Base.connection.execute(sql)
-  end
-
-  def bulk_retrieve_location_images(ids)
-    sql = "
-    SELECT itineraries.id as id, images.url as url
-    FROM images
-    INNER JOIN locations ON images.location_id = locations.id
-    INNER JOIN itineraries ON itineraries.destination_id = locations.id
-    WHERE itineraries.id in (#{ids.join(',')})"
-    @result = ActiveRecord::Base.connection.execute(sql)
-    @result_mapped=@result.map do |r|
-      [r["id"], r["url"]]
-    end.to_h
-    @result_mapped
+  def bulk_retrieve_location_images(ids=[])
+    unless ids.empty?
+      sql = "
+      SELECT itineraries.id as id, images.url as url
+      FROM images
+      INNER JOIN locations ON images.location_id = locations.id
+      INNER JOIN itineraries ON itineraries.destination_id = locations.id
+      WHERE itineraries.id in (#{ids.join(',')})"
+      @result = ActiveRecord::Base.connection.execute(sql)
+      @result_mapped=@result.map do |r|
+        [r["id"], r["url"]]
+      end.to_h
+      return @result_mapped
+    end
+    {}
   end
 end
