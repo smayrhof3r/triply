@@ -1,5 +1,6 @@
 class ItinerariesController < ApplicationController
-  before_action :update_session_url, only: [:search, :index]
+  before_action :update_session_url, only: [:search, :index, :show]
+  skip_before_action :authenticate_user!
 
   AMADEUS = Amadeus::Client.new({
     client_id: ENV['AMADEUS_TEST_KEY'],
@@ -12,6 +13,9 @@ class ItinerariesController < ApplicationController
   def show
    @itinerary = Itinerary.find(params["id"])
    @location = @itinerary.destination
+   @permission = Permission.new
+   session["user_return_to"] = request.original_url
+
   #  @status = Booking.confirmed?
   end
 
@@ -101,7 +105,7 @@ class ItinerariesController < ApplicationController
 
   def update_session_url
     session[:previous_request_url] = session[:current_request_url]
-    session[:current_request_url] = request.url
+    session[:current_request_url] = request.original_url
   end
 
   def update_session_variables
