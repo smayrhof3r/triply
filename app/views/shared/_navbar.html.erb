@@ -3,8 +3,8 @@
     <%# data-action="scroll@window->navbar#updateNavbar"> %>
 
   <div class="container-fluid">
-    <%= link_to "#", class: "navbar-brand" do %>
-      <%= image_tag "triply-horizontal.png" %>
+    <%= link_to root_path, class: "navbar-brand" do %>
+      <%= image_tag "triply-horizontal.png"%>
     <% end %>
     <div class = "d-flex align-items-center">
       <% unless request.original_url.match?(/search/) %>
