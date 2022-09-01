@@ -1,4 +1,4 @@
-<div class="row user-page">
+<div class="row user-page pt-5">
   <div class="col-12 col-sm-4 col-md-4 upcoming-trips">
     <div class="py-3 ps-5 pe-2">
                    
@@ -13,17 +13,19 @@
         <% if @past_itineraries.empty? %>
           <p class="text-center">You have no past trips</p>          
         <% else %>
-
           <%= render 'users/past_flight_info_card' %>         
         <% end %>
     </div>
+
+    <%# PLACEHOLDER TO TEST SCROLL  %>
+    <h4 class="my-5 py-5">TEXT</h4>
   </div>
 
   
 
   <div class="col-12 col-sm-8 col-md-8 border-start border-sucess">
-    <div class="py-3 ps-5 pe-2">
-      <h2 class="text-center py-3">Itinerary overview</h2>
+    <div class="pt-3 ps-5 pe-2">
+      <%= render 'users/small_flight_info_card' %>
     </div>
   </div>
 </div>
