@@ -1,6 +1,9 @@
 .alert {
   position: fixed;
-  bottom: 16px;
-  right: 16px;
-  z-index: 1000;
+  top: 55px;
+  left: 30vw;
+  width: 40vw;
+  text-align: center;
+  z-index: 3000;
+  box-shadow: 0 0 10px $primary
 }
