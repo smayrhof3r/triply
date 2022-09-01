@@ -22,9 +22,8 @@ class ItinerariesController < ApplicationController
   def index
     if session[:params] == params
       @itineraries = session[:itineraries].map { |i| Itinerary.find(i) }
-      @re_used = true
+
     else
-      @re_used = false
       @itineraries = []
       count = params["passenger_group_count"].to_i
 
@@ -51,13 +50,18 @@ class ItinerariesController < ApplicationController
       end
     end
 
-    @loc =  @itineraries.map do |itinerary|
-      Location.find(itinerary.destination_id)
+    if @itineraries.count(&:nil?) > 0
+      update_session_variables
+      session[:itineraries] = []
+      redirect_to itineraries_path, alert: "reloaded due to missing itineraries"
+    else
+      @loc =  @itineraries.map do |itinerary|
+        Location.find(itinerary.destination_id)
+      end
+
+      update_session_variables
+      @images_by_itinerary_id = bulk_retrieve_location_images(session[:itineraries])
     end
-
-    update_session_variables
-    @images_by_itinerary_id = bulk_retrieve_location_images(session[:itineraries])
-
   end
 
   def seed(params)

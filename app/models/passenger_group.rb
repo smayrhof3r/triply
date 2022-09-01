@@ -18,7 +18,7 @@ class PassengerGroup < ApplicationRecord
         info[:flight_return] << f
       else
         info[:flight_there] << f
-       end
+      end
     end
     info[:flight_return].sort! {|f| f.departure_time}
     info[:flight_there].sort! {|f| f.departure_time}
