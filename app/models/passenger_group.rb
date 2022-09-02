@@ -25,4 +25,12 @@ class PassengerGroup < ApplicationRecord
     info
   end
 
+  def to_param_hash
+    {
+      origin: Location.find(origin_city_id).city,
+      adults: adults,
+      children: children,
+    }
+  end
+
 end

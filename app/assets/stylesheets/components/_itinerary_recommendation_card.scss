@@ -1,4 +1,5 @@
 .card-itinerary-recommendation {
+    position: relative;
     overflow: hidden;
     height: 240px;
     background: white;
@@ -6,12 +7,20 @@
     display: flex;
     align-items: center;
     border-radius: 16px;
-    
-    
+
+    .owned-tag {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      box-shadow: 0 0 3px rgba(0,0,0,0.7);
+    }
     .card-itinerary-recommendation-infos {
+
       padding: 16px;
       width: 100%;
       text-align: right;
+
+
     }
 
     img {
@@ -30,5 +39,5 @@
       margin-bottom: 0;
       padding-top: 8px;
     }
-    
+
   }

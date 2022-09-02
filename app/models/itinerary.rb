@@ -47,7 +47,9 @@ class Itinerary < ApplicationRecord
   end
 
   private
+
   def self.delete_sql(table, ids)
+    ids.filter! { |i| !i.nil? }
     sql = "DELETE FROM #{table} WHERE id in (#{ids.join(',')})"
     ActiveRecord::Base.connection.execute(sql) unless ids.join(',').empty?
   end
