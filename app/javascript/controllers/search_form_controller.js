@@ -45,6 +45,8 @@ export default class extends Controller {
     this.fixedDateFormTarget.classList.remove("v-none")
     document.querySelector(".slider-right").classList.add("slider-left")
     document.querySelector(".slider-right").classList.remove("slider-right")
+    document.querySelector(".slider-down").classList.add("slider-up")
+    document.querySelector(".slider-down").classList.remove("slider-down")
     this.flexibleDateFormTarget.classList.add("v-none")
   }
 
@@ -52,6 +54,8 @@ export default class extends Controller {
     this.flexibleDateFormTarget.classList.remove("v-none")
     document.querySelector(".slider-left").classList.add("slider-right")
     document.querySelector(".slider-left").classList.remove("slider-left")
+    document.querySelector(".slider-up").classList.add("slider-down")
+    document.querySelector(".slider-up").classList.remove("slider-up")
     this.fixedDateFormTarget.classList.add("v-none")
   }
 

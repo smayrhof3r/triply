@@ -14,7 +14,7 @@
               </h2>
             </div>
             <div class="collapse show h-100">
-              <div class="overflow-hidden card-body h-100 <%= request.url.match?(/itineraries/) ? "p-2" : ""%>">
+              <div class="overflow-x-hidden card-body <%= ((!params[:start_date_range]) || params[:start_date_range].empty?) ? "slider-up" : "slider-down"%> <%= request.url.match?(/itineraries/) ? "p-2" : ""%>">
                 <%= render 'itineraries/dates_form' %>
               </div>
             </div>

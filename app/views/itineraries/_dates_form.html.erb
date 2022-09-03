@@ -1,5 +1,5 @@
-<div class="<%= (!params[:start_date_range] || params[:start_date_range].empty?) ? "slider-left" : "slider-right"%> w-200 d-flex">
-  <div data-search-form-target="fixedDateForm" class = "d-flex w-50">
+<div class="<%= ((!params[:start_date_range]) || params[:start_date_range].empty?) ? "slider-left" : "slider-right"%> w-200 d-flex">
+  <div data-search-form-target="fixedDateForm" class = "d-flex w-50 <%= ((!params[:start_date_range]) || params[:start_date_range].empty?) ? "" : "v-none"%>">
     <div class="px-3 w-80 border-end">
       <%= render 'shared/fixed_date_form' %>
     </div>
@@ -10,7 +10,8 @@
       </div>
     </div>
   </div>
-  <div data-search-form-target="flexibleDateForm" class = "d-flex w-50 v-none">
+  <div data-search-form-target="flexibleDateForm" class = "d-flex w-50 <%= ((!params[:start_date_range]) || params[:start_date_range].empty?) ? "v-none" : ""%>">
+
     <div class="px-3 w-20">
       <div class="d-flex justify-content-between">
         <div><em style = "font-size: 0.9vw;">Fixed Dates</em></div>
