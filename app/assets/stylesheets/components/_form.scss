@@ -51,14 +51,22 @@
   transition: 2s left ease;
 }
 
-.w-40 {
-  width: 40%;
+.w-50 {
+  width: 50%;
 }
 
-.w-10 {
-  width: 10%;
+.w-20 {
+  width: 20%;
 }
 
+.w-80 {
+  width: 80%;
+}
 .w-200 {
   width: 200%
+}
+
+.v-none {
+  visibility: hidden;
+  transition: 2s visibility ease;
 }

@@ -10,7 +10,7 @@ export default class extends Controller {
     section: Number
   }
 
-  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "flexibleDatePrompt", "fixedDateForm", "fixedDatePrompt"]
+  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "fixedDateForm"]
 
   toggleCollapse (event) {
     this.section = document.getElementById(`${event.currentTarget.id}Parent`)
@@ -42,13 +42,17 @@ export default class extends Controller {
   }
 
   revealFixedDateForm() {
+    this.fixedDateFormTarget.classList.remove("v-none")
     document.querySelector(".slider-right").classList.add("slider-left")
     document.querySelector(".slider-right").classList.remove("slider-right")
+    this.flexibleDateFormTarget.classList.add("v-none")
   }
 
   revealDateRangeForm() {
+    this.flexibleDateFormTarget.classList.remove("v-none")
     document.querySelector(".slider-left").classList.add("slider-right")
     document.querySelector(".slider-left").classList.remove("slider-left")
+    this.fixedDateFormTarget.classList.add("v-none")
   }
 
   #hasPassengerGroup() {
@@ -94,7 +98,7 @@ export default class extends Controller {
   }
 
   #insertPassengerGroupHTML(event) {
-    let newPassengerGroupHTML = this.passengerGroupPartialTarget.outerHTML.replaceAll("for-removal d-none", "")
+    let newPassengerGroupHTML = this.passengerGroupPartialTarget.outerHTML.replaceAll("for-removal v-none", "")
     event.currentTarget.insertAdjacentHTML("beforebegin", newPassengerGroupHTML)
   }
 
