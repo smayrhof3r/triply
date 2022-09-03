@@ -1,19 +1,19 @@
 <div class="row user-page pt-5">
-  <div class="col-12 col-sm-4 col-md-4 upcoming-trips">
+  <div class="col-12 col-sm-4 col-md-4 scroll-bar">
     <div class="py-3 ps-5 pe-2">
-                   
-      <h3 class="text-center py-3">Your upcoming trips</h3>  
+
+      <h3 class="text-center py-3">Your upcoming trips</h3>
       <% if @upcoming_itineraries.empty? %>
         <p class="text-center">You have no past trips</p>
-      <% else %>       
+      <% else %>
         <%= render 'users/upcoming_flight_info_card' %>
       <% end %>
-       
-      <h3 class="pt-5 pb-3 text-center">Your past trips</h3> 
+
+      <h3 class="pt-5 pb-3 text-center">Your past trips</h3>
         <% if @past_itineraries.empty? %>
-          <p class="text-center">You have no past trips</p>          
+          <p class="text-center">You have no past trips</p>
         <% else %>
-          <%= render 'users/past_flight_info_card' %>         
+          <%= render 'users/past_flight_info_card' %>
         <% end %>
     </div>
 
@@ -21,7 +21,7 @@
     <h4 class="my-5 py-5">TEXT</h4>
   </div>
 
-  
+
 
   <div class="col-12 col-sm-8 col-md-8 border-start border-sucess">
     <div class="pt-3 ps-5 pe-2">
@@ -29,7 +29,3 @@
     </div>
   </div>
 </div>
-
-  
-
-
