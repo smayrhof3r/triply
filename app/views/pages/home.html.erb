@@ -31,27 +31,12 @@
   </div>
 </div>
 
-
-<div class="container pt-5 text-center">
-  <h1>Popular destinations</h1>
-    <div class="recommendation-destination">
-       <%# <% @location.each do |location| %>
-        <%# <%= image_tag(location.images.first.url)%> %>
-          <%# <h2 class="city-name"><strong><%= location.city %></strong></h2> %>
-       <%# <% end %> %>
-       <%# <%=@location.first.images%> %>
-    </div>
-</div>
-
-
 <%# <div class="container pt-5 text-center">
   <h1>Popular destinations</h1>
     <div class="recommendation-destination">
-       <%# <% @location.each do |loc| %>
-        <%# <%=loc.image%> %> %>
-          <%# <h2 class="city-name"><strong><%= location.city %></strong></h2> %>
+       <% @location.each do |location|%>
+        <%# <%= image_tag(location.images.first.url)%>
+          <%# <h2 class="city-name"><strong><%= location.city %></strong></h2>
        <%# <% end %>
-    <%# </div> %>
-<%# </div> %> %> %>
-
-       <%=@loc1%>
+    <%# </div>
+</div> %>
