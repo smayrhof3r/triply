@@ -10,7 +10,7 @@ export default class extends Controller {
     section: Number
   }
 
-  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults"]
+  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "flexibleDatePrompt", "fixedDateForm", "fixedDatePrompt"]
 
   toggleCollapse (event) {
     this.section = document.getElementById(`${event.currentTarget.id}Parent`)
@@ -39,6 +39,16 @@ export default class extends Controller {
     } else {
       document.getElementById('submit').disabled = true
     }
+  }
+
+  revealFixedDateForm() {
+    document.querySelector(".slider-right").classList.add("slider-left")
+    document.querySelector(".slider-right").classList.remove("slider-right")
+  }
+
+  revealDateRangeForm() {
+    document.querySelector(".slider-left").classList.add("slider-right")
+    document.querySelector(".slider-left").classList.remove("slider-left")
   }
 
   #hasPassengerGroup() {
