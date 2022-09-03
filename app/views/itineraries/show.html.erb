@@ -22,49 +22,17 @@
   <% end %>
 </div>
 <div class="container col-12">
-  <h3 class="pt-5">Flights overview</h3>
-  <hr class="pb-2">
-
+  <h3 class="py-3 border-bottom border-primary">Flights overview</h3>
   <div class="row">
-    
+    <div class="row">
+      <div class="offset-4 col-4 bg-primary text-white rounded-top shadow-x border border-primary"><h4 class="text-center">Flights to <%= @location.city %></h4></div>
+      <div class="col-4 bg-success text-white rounded-top border shadow-x border-success"><h4 class="text-center">Flights home</h4></div>
+    </div>
     <%@itinerary.passenger_groups.each do |group|%>
-      <% flight_info= group.flight_info%>
-      <div></div>
-      <div class="col-6 border-end">
-        <div class="">
-          <%=group.origin_city.city%> to <%=@location.city%>
-        </div>
-        <div>
-          <%="#{group.adults} #{"Adult".pluralize(group.adults)}, "%>
-          <%="#{group.children} #{"Child".pluralize(group.children)}"%>
-        </div>
-        <div>
-          <button type = "button" class = "btn btn-success text-white">Add to Itinerary
-            <%= link_to "Itinerary",itineraries_path , class: "nav-link" %></button>
-          <button type = "button" class = "btn btn-success text-white">More flights options
-            <%= link_to "Itinerary",itineraries_path , class: "nav-link" %></button>
-        </div>
-      </div> 
-
-      <div class="flight-overview-time col-6">
-        <% flight_info[:flight_there].each do |f| %>
-        <div class="card-overview card-overview-info">                        
-          <p>Departure date: <%= f.departure_time.strftime('%d %b, %Y')%></p>
-          
-          <div class="flight-time py-2 px-5">
-            <div class="flight-time-location">
-              <h3 class="m-0"><%= f.departure_time.strftime('%H:%M')%>h</h3>
-              <p><%=group.origin_city.city%></p>
-            </div>
-              <i class="fa-solid fa-plane"></i>
-              <div class="flight-time-location">
-              <h3 class="m-0"><%= f.arrival_time.strftime('%H:%M') %>h</h3>
-              <p><%= @location.city%></p>
-            </div>
-          </div>
-        </div>
-      <% end %>
+      <div class="row">
+        <%= render 'group_booking', group: group %>
       </div>
+      <div class="row border border-top-only"></div>
     <% end %>
   </div>
 </div>

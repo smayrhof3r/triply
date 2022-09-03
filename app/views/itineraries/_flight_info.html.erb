@@ -1,0 +1,14 @@
+<div class="card-overview card-overview-info">
+  <p>Departure date: <%= flight.departure_time.strftime('%d %b, %Y')%></p>
+  <div class="flight-time py-1 px-5">
+    <div class="flight-time-location">
+      <h3 class="m-0"><%= flight.departure_time.strftime('%H:%M')%>h</h3>
+      <p><%= flight.city("departure") %></p>
+    </div>
+      <i class="fa-solid fa-plane"></i>
+      <div class="flight-time-location">
+      <h3 class="m-0"><%= flight.arrival_time.strftime('%H:%M') %>h</h3>
+      <p><%= flight.city("arrival") %></p>
+    </div>
+  </div>
+</div>

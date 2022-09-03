@@ -141,15 +141,16 @@ class ItinerariesController < ApplicationController
     itinerary = Itinerary.create(destination_id: destination.id, start_date: params["start_date"], end_date: params["end_date"])
     groups.each do |group|
       passenger_group = new_passenger_group(group, itinerary)
-      cheapest_offer = group[:search].search_results.first
-
-      Booking.create(
-        passenger_group: passenger_group,
-        search_result_id: cheapest_offer.id,
-        status: "suggested"
-      )
+      search_results = group[:search].search_results
+      cheapest_offer = search_results.first.offer_index
+      search_results.filter { |s| s.offer_index == cheapest_offer }.each do |s|
+        Booking.create(
+          passenger_group: passenger_group,
+          search_result_id: s.id,
+          status: "suggested"
+        )
+      end
     end
-
     itinerary
   end
 

@@ -2,10 +2,10 @@
     <div class="accordion" data-controller="search-form" data-action="click->search-form#updateButton input->search-form#updateButton">
       <div class="row">
         <div class="col-<%= request.url.match?(/itineraries/) ? 12 : 6%> mb-3">
-          <div class="card h-100 shadow" id = "searchFormSection2Parent">
+          <div class="card h-100 shadow" id = "searchFormSection2Parent" data-controller="collapsible-sections" data-collapsible-sections-target="section">
             <div class="card-header bg-success">
               <h2 class="mb-0">
-                <button class="btn btn-link text-white text-decoration-none w-100" type="button" data-action = "click->search-form#toggleCollapse" id = "searchFormSection2">
+                <button class="btn btn-link text-white text-decoration-none w-100" type="button" data-action = "click->collapsible-sections#toggleCollapse" id = "searchFormSection2">
                   <div class="d-flex justify-content-between">
                     <div>Travel Dates</div>
                     <div><i class="fas fa-minus"></i></div>
@@ -21,10 +21,10 @@
           </div>
         </div>
         <div class="col-<%= request.url.match?(/itineraries/) ? 12 : 6 %> mb-3">
-          <div class="card h-100 shadow" id = "searchFormSection1Parent">
+          <div class="card h-100 shadow" id = "searchFormSection1Parent" data-controller="collapsible-sections" data-collapsible-sections-target="section">
             <div class="card-header bg-success">
               <h2 class="mb-0">
-                <button class="section-header btn btn-link text-white text-decoration-none w-100" type="button" data-action = "click->search-form#toggleCollapse" id = "searchFormSection1">
+                <button class="section-header btn btn-link text-white text-decoration-none w-100" type="button" data-action = "click->collapsible-sections#toggleCollapse" id = "searchFormSection1">
                   <div class="d-flex justify-content-between">
                     <div>Passenger groups</div>
                     <div><i class="fas fa-minus"></i></div>
@@ -58,10 +58,10 @@
         </div>
 
       </div>
-      <div class="card mb-3 shadow" id = "searchFormSection3Parent">
+      <div class="card mb-3 shadow" data-controller="collapsible-sections" data-collapsible-sections-target="section" id = "searchFormSection3Parent">
         <div class="card-header rounded bg-secondary">
           <h2 class="mb-0">
-            <button class="btn btn-link collapsed text-white text-decoration-none w-100" type="button" data-action = "click->search-form#toggleCollapse" id = "searchFormSection3">
+            <button class="btn btn-link collapsed text-white text-decoration-none w-100" type="button" data-action = "click->collapsible-sections#toggleCollapse" id = "searchFormSection3">
               <div class="d-flex justify-content-between">
                 <div>Destinations</div>
                 <div><i class="fas fa-plus"></i></div>
@@ -74,10 +74,10 @@
             <%= render 'itineraries/destination_form' %></div>
         </div>
       </div>
-      <div class="card mb-3 shadow" id = "searchFormSection4Parent">
+      <div class="card mb-3 shadow" data-controller="collapsible-sections" data-collapsible-sections-target="section" id = "searchFormSection4Parent">
         <div class="card-header rounded bg-secondary">
           <h2 class="mb-0">
-            <button class="btn btn-link collapsed text-white text-decoration-none w-100" type="button" data-action = "click->search-form#toggleCollapse" id = "searchFormSection4">
+            <button class="btn btn-link collapsed text-white text-decoration-none w-100" type="button" data-action = "click->collapsible-sections#toggleCollapse" id = "searchFormSection4">
               <div class="d-flex justify-content-between">
                 <div>Budget</div>
                 <div><i class="fas fa-plus"></i></div>
