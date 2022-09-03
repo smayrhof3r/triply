@@ -1,7 +1,8 @@
 <div class="row">
     <% if count == 1 %>
       <div class="col-12">
-        <div class="d-flex align-items-center"><%= text_field_tag "origin_city#{count}", params["origin_city#{count}".to_sym], placeholder: 'Departure City', class: 'w-100 origin-city form-control' %></div>
+        <div class="d-flex align-items-center"><%= select_tag "origin_city#{count}", options_from_collection_for_select(Location.all.order(:city), "city", "city"), prompt: params["origin_city#{count}".to_sym]||"Departure City*", value: params["origin_city#{count}".to_sym], class: 'w-100 origin-city form-control'%></div>
+        <%# <%= text_field_tag "origin_city#{count}", params["origin_city#{count}".to_sym], placeholder: 'Departure City', class: 'w-100 origin-city form-control'</div> %>
       </div>
       <div class="col-6 mt-3">
         <div class="d-flex align-items-center"><%= render 'shared/integer', label: 'Adults', field_name: "adults#{count}", form_field_class: 'adults', val: params["adults#{count}".to_sym]||0 %></div>
