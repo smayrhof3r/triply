@@ -20,8 +20,8 @@ class PassengerGroup < ApplicationRecord
         info[:flight_there] << f
       end
     end
-    info[:flight_return].sort! {|a, b| DateTime.parse(a.departure_time) <=> DateTime.parse(b.departure_time) } if info[:flight_return].count > 1
-    info[:flight_there].sort! {|a, b| DateTime.parse(a.departure_time) <=> DateTime.parse(b.departure_time)} if info[:flight_there].count > 1
+    info[:flight_return].sort! {|f| f.departure_time }
+    info[:flight_there].sort! {|f| f.departure_time }
     info
   end
 
