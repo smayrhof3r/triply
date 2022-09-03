@@ -43,10 +43,6 @@
       margin: 0px;
     }
 
-    .i-title{
-      color:white;
-    }
-
     .card-overview-info {
       padding: 16px;
       width: 100%;
@@ -134,8 +130,18 @@
     border-radius: 50px;
     border: 1px solid $green;
     background-color: $green;
+    position:relative;
   }
 
+  .circle-booking:before{
+    position: absolute;
+    font-family: "FontAwesome";
+    content: "\f072";
+    top: 0;
+    left: 10px;
+    color:white;
+  }
+  
   .circle-booking:after {
     content:"";
     position: absolute;

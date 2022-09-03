@@ -1,12 +1,12 @@
 <% @upcoming_itineraries.each do |itinerary| %>
-  <div class="itinerary-overview">
+  <div class="itinerary-overview pb-5">
     <div class="destination-title ps-5 py-3">
       <%= image_tag(itinerary.destination.images.first.url) %>
       <h3 class="ps-2">Your trip to <strong><%=itinerary.destination.city%></strong></h3>
     </div>
 
     <div class="small-card-overview">
-      <% itinerary.passenger_groups.each do |group| %>
+      <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
         <div class="small-card-booking py-3">
           <button class="circle-booking me-3"></button>
           <div class="small-card-overview-info p-3">

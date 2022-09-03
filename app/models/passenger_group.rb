@@ -20,8 +20,8 @@ class PassengerGroup < ApplicationRecord
         info[:flight_there] << f
       end
     end
-    info[:flight_return].sort! {|f| f.departure_time}
-    info[:flight_there].sort! {|f| f.departure_time}
+    info[:flight_return].sort! {|a, b| DateTime.parse(a.departure_time) <=> DateTime.parse(b.departure_time) } if info[:flight_return].count > 1
+    info[:flight_there].sort! {|a, b| DateTime.parse(a.departure_time) <=> DateTime.parse(b.departure_time)} if info[:flight_there].count > 1
     info
   end
 
@@ -31,6 +31,11 @@ class PassengerGroup < ApplicationRecord
       adults: adults,
       children: children,
     }
+  end
+
+  def self.order_by_flight_info(groups)
+    return groups if groups.map(&:flight_info).count < 2
+    return groups.to_a.sort! {|a,b| a.flight_info[:flight_there].first.departure_time <=> b.flight_info[:flight_there].first.departure_time }
   end
 
 end
