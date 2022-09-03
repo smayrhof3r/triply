@@ -139,20 +139,16 @@
     position:relative;
   }
 
-  .circle-booking:before{
-    position: absolute;
-    font-family: "FontAwesome";
-    content: "\f072";
-    top: 0;
-    left: 10px;
-    color:white;
-  }
+  
 
   .circle-booking:after {
     content:"";
     position: absolute;
+    left: 50%;
+    top: 200%;
+    transform: translate(0, -50%);
     z-index: -1;
-    height: 100px;
+    height: 90px;
     border-left: 2px dotted $green;
   }
 
@@ -183,18 +179,13 @@
     position:relative;
   }
 
-  .circle-booking-up:before{
-    position: absolute;
-    font-family: "FontAwesome";
-    content: "\f072";
-    top: 0;
-    left: 10px;
-    color:white;
-  }
   
   .circle-booking-up:after {
     content:"";
     position: absolute;
+    left: 50%;
+    top: -40px;
+    transform: translate(0, -50%);
     z-index: 1;
     bottom:35px;
     height: 82px;
