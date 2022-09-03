@@ -2,15 +2,17 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="search-form"
 export default class extends Controller {
-  connect() {
-    console.log('search form controller active');
-
-  }
+  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults"]
   static values = {
     section: Number
   }
+  connect() {
+    console.log('search form controller active');
+    console.log(this.passengerGroupPartialTargets);
 
-  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults"]
+  }
+
+
 
   toggleCollapse (event) {
     this.section = document.getElementById(`${event.currentTarget.id}Parent`)
@@ -42,27 +44,32 @@ export default class extends Controller {
   }
 
   #hasPassengerGroup() {
-    console.log('there')
+    console.log('group check')
+
     let check = false
     this.passengerGroupPartialTargets.forEach((group) => {
+      console.log(group)
+      console.log(group.querySelector('.origin-city'))
       if (group.querySelector('.origin-city').value.length >= 3 && group.querySelector('.adults').value > 0) {
         check = true
       }
     })
+    console.log('passenger groups ok')
     return check
   }
 
   #hasDates() {
+    console.log('date check')
     console.log(document.querySelector('.start-date').value)
-    if (document.querySelector('.start-date').value) { return true }
+
+    if (document.querySelector('.start-date').value && document.querySelector('.end-date').value) { return true }
 
     let hasStart = document.querySelector('.date-range-start').value
     let hasEnd = document.querySelector('.date-range-end').value
     let tripDays = document.querySelector('.trip-days').value
     console.log(`${hasStart} ${hasEnd} ${tripDays}`)
+    console.log("date check ok")
     if (hasStart && hasEnd && tripDays > 0) { return true }
-
-
     return false
   }
 

@@ -1,4 +1,4 @@
-<%= form_tag itineraries_path, :method => :get do %>
+<%= form_tag itineraries_path, :method => :get, data: {controller: "search-form", action: "click->search-form#updateButton input->search-form#updateButton"} do %>
   <div class="card h-100 shadow">
     <div class="collapse show">
       <div class="card-body">
@@ -8,18 +8,22 @@
           </div>
           <div class="col-6">
             <div class = "text-center mb-3"><strong>Starting Cities</strong></div>
-            <div class="d-flex align-items-center mb-3"><%= text_field_tag "origin_city1", '', placeholder: 'First Departure City', class: 'w-100 origin-city form-control' %></div>
-            <%= number_field_tag "adults1", 1, class: "d-none"%>
-            <%= number_field_tag "children1", 0, class: "d-none"%>
-            <div class="d-flex align-items-center mb-3"><%= text_field_tag "origin_city2", '', placeholder: 'Second Departure City', class: 'w-100 origin-city form-control' %></div>
-            <%= number_field_tag "adults2", 1, class: "d-none"%>
-            <%= number_field_tag "children2", 0, class: "d-none"%>
+            <div data-search-form-target="passengerGroupPartial">
+              <div class="d-flex align-items-center mb-3"><%= select_tag "origin_city1", options_from_collection_for_select(Location.all.order(:city), "city", "city"), prompt: "I am departing from...*", class: 'w-100 origin-city form-control'%></div>
+              <%= number_field_tag "adults1", 1, class: "d-none adults"%>
+              <%= number_field_tag "children1", 0, class: "d-none"%>
+            </div>
+            <div data-search-form-target="passengerGroupPartial">
+              <div class="d-flex align-items-center mb-3"><%= select_tag "origin_city2", options_from_collection_for_select(Location.all.order(:city), "city", "city"), prompt: "My friends are coming from...", class: 'w-100 origin-city form-control'%></div>
+              <%= number_field_tag "adults2", 1, class: "d-none adults"%>
+              <%= number_field_tag "children2", 0, class: "d-none"%>
+            </div>
             <%= number_field_tag "passenger_group_count", 2, class: "d-none"%>
           </div>
         </div>
         <div class="text-end">
           <a href='/search' class="btn btn-link">Advanced Search</a>
-          <button class="btn btn-success text-white">Lets fly! <i class="fas fa-plane-departure"></i></button>
+          <button class="btn btn-success text-white" id = "submit" disabled>Lets fly! <i class="fas fa-plane-departure"></i></button>
         </div>
           </div>
         </div>
