@@ -22,7 +22,7 @@
 
 .sticky-column {
   position: fixed;
-  height: 100vh;
+  height: 85vh !important;
   overflow-y: scroll;
 }
 
@@ -31,4 +31,34 @@
     position: relative;
   }
 
+}
+
+.overflow-hidden {
+
+  overflow: hidden;
+  position: relative;
+}
+
+.slider-left {
+  position: absolute;
+  left: 0;
+  transition: 2s left ease;
+}
+
+.slider-right {
+  position: absolute;
+  left: -100%;
+  transition: 2s left ease;
+}
+
+.w-40 {
+  width: 40%;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+.w-200 {
+  width: 200%
 }

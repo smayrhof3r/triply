@@ -25,7 +25,7 @@
                 <i class="fas fa-caret-down image-footer"></i>
               </div>
               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <%= link_to '#', class: "dropdown-item" do %>
+                <%= link_to user_path(current_user), class: "dropdown-item" do %>
                   <i class="fas fa-plane-departure"></i> My Itineraries
                 <% end %>
                 <%= link_to '/search', class: "dropdown-item" do %>
