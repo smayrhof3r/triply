@@ -29,22 +29,21 @@
       
       <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
           <% info = group.flight_info %>
-          <div class="small-cards-return">
-            <div class="small-card-booking py-3">
-              <button class="circle-booking-up me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
-              <div class="small-card-overview-info-return p-3">
-                <p>Flight to <strong><%=group.origin_city.city%></strong></p>
-                
-                <div class="card-departure-info">
-                  <% if info[:flight_there].count >= 1 %>
-                    <% info[:flight_there].each do |f| %>                              
-                      <p>Departure: <%= f.departure_time.strftime('%d/%b')%></p>
-                      <p class="m-0">, <%= f.departure_time.strftime('%H:%M')%>h<p> 
-                    <% end %>                        
-                  <% end %> 
-                </div>   
+          <% if info[:flight_return].count >= 1 %>
+            <div class="small-cards-return">
+              <div class="small-card-booking py-3">
+                <button class="circle-booking-up me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
+                <div class="small-card-overview-info-return p-3">
+                  <p>Flight to <strong><%=group.origin_city.city%></strong></p>
+                  <div class="card-departure-info">
+                      <% info[:flight_return].each do |f| %>                              
+                        <p>Departure: <%= f.departure_time.strftime('%d/%b')%></p>
+                        <p class="m-0">, <%= f.departure_time.strftime('%H:%M')%>h<p> 
+                      <% end %>                       
+                  </div>   
+                </div>
               </div>
-            </div>
+             <% end %>   
           </div>
         <% end %>     
     </div>
