@@ -3,7 +3,7 @@
   <div class="sticky-column col-12 col-md-4">
       <%= form_tag itineraries_path, :method => :get do %>
         <div class="w-100 d-flex align-items-center justify-content-end">
-          <i class="fas fa-sync-alt"></i> <%= submit_tag "Update results", class:"text-end", id: "refresh-search"  %>
+          <i class="fas fa-sync-alt"></i> <%= submit_tag "Update results", class:"text-end no-button", id:  "submit"  %>
         </div>
         <%= render 'itineraries/search_form_body' %>
       <% end %>

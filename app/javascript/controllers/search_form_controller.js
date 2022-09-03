@@ -90,6 +90,7 @@ export default class extends Controller {
   }
 
   #updateNewSectionNames() {
+    console.log('updating names')
     let newSection = this.passengerGroupPartialTargets[this.passengerGroupPartialTargets.length - 1]
 
     newSection.querySelector('.origin-city').name = `origin_city${this.groupCount}`
@@ -102,7 +103,9 @@ export default class extends Controller {
   }
 
   #insertPassengerGroupHTML(event) {
-    let newPassengerGroupHTML = this.passengerGroupPartialTarget.outerHTML.replaceAll("for-removal v-none", "")
+    console.log("adding group")
+    let newPassengerGroupHTML = this.passengerGroupPartialTarget.outerHTML.replaceAll("for-removal d-none", "")
+    console.log(newPassengerGroupHTML)
     event.currentTarget.insertAdjacentHTML("beforebegin", newPassengerGroupHTML)
   }
 
