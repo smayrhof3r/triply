@@ -1,11 +1,9 @@
 Booking.delete_all
+SearchResult.delete_all
+Search.delete_all
+Flight.delete_all
 PassengerGroup.delete_all
 Itinerary.delete_all
-
-
-
-
-
 Image.delete_all
 Airport.delete_all
 Location.delete_all
