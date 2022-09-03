@@ -9,12 +9,12 @@
           <div class="col-6">
             <div class = "text-center mb-3"><strong>Starting Cities</strong></div>
             <div data-search-form-target="passengerGroupPartial">
-              <div class="d-flex align-items-center mb-3"><%= select_tag "origin_city1", options_from_collection_for_select(Location.all.order(:city), "city", "city"), prompt: "I am departing from...*", class: 'w-100 origin-city form-control'%></div>
+              <div class="d-flex align-items-center mb-3"><%= select_tag "origin_city1", options_for_select(Location.all.order(:city).map{|l| l.city}, params["origin_city1".to_sym]), value: params["origin_city1".to_sym], prompt: "I am departing from...*", class: 'w-100 origin-city form-control'%></div>
               <%= number_field_tag "adults1", 1, class: "d-none adults"%>
               <%= number_field_tag "children1", 0, class: "d-none"%>
             </div>
             <div data-search-form-target="passengerGroupPartial">
-              <div class="d-flex align-items-center mb-3"><%= select_tag "origin_city2", options_from_collection_for_select(Location.all.order(:city), "city", "city"), prompt: "My friends are coming from...", class: 'w-100 origin-city form-control'%></div>
+              <div class="d-flex align-items-center mb-3"><%= select_tag "origin_city2", options_for_select(Location.all.order(:city).map{|l| l.city}, params["origin_city2".to_sym]), value: params["origin_city2".to_sym], prompt: "My friends are coming from...", class: 'w-100 origin-city form-control'%></div>
               <%= number_field_tag "adults2", 1, class: "d-none adults"%>
               <%= number_field_tag "children2", 0, class: "d-none"%>
             </div>

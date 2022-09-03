@@ -1,7 +1,7 @@
 <div class="row">
     <% if count == 1 %>
       <div class="col-12">
-        <div class="d-flex align-items-center"><%= select_tag "origin_city#{count}", options_from_collection_for_select(Location.all.order(:city), "city", "city"), prompt: params["origin_city#{count}".to_sym]||"Departure City*", value: params["origin_city#{count}".to_sym], class: 'w-100 origin-city form-control'%></div>
+        <div class="d-flex align-items-center"><%= select_tag "origin_city#{count}", options_for_select(Location.all.order(:city).map{|l| l.city}, params["origin_city#{count}".to_sym]), prompt:"Departure City*", value: params["origin_city#{count}".to_sym], class: 'w-100 origin-city form-control'%></div>
         <%# <%= text_field_tag "origin_city#{count}", params["origin_city#{count}".to_sym], placeholder: 'Departure City', class: 'w-100 origin-city form-control'</div> %>
       </div>
       <div class="col-6 mt-3">
@@ -12,7 +12,7 @@
       </div>
     <% else %>
       <div class="col-11">
-        <div class="d-flex align-items-center"><%= text_field_tag "origin_city#{count}", params["origin_city#{count}".to_s], placeholder: 'Departure City', class: 'w-100 origin-city form-control' %></div>
+        <div class="d-flex align-items-center"><%= select_tag "origin_city#{count}", options_for_select(Location.all.order(:city).map{|l| l.city}, params["origin_city#{count}".to_sym]), prompt:"Departure City*", value: params["origin_city#{count}".to_sym], class: 'w-100 origin-city form-control'%></div>
       </div>
       <div class="col-1 mt-2" data-action="click->remove-section#remove">
         <div class="text-secondary clickable d-flex flex-column justify-content-center align-items-center">
