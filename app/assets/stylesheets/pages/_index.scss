@@ -2,3 +2,8 @@
 @import "home";
 @import "user_show";
 @import "itinerary_show";
+
+body {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
