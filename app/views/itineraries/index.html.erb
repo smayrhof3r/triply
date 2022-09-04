@@ -1,6 +1,6 @@
 <%= @groups%>
 <div class="row">
-  <div class="sticky-column col-12 col-md-4">
+  <div class="col-12 col-md-4 scroll-bar sticky-column">
       <%= form_tag itineraries_path, :method => :get do %>
         <div class="w-100 d-flex align-items-center justify-content-end">
           <i class="fas fa-sync-alt"></i> <%= submit_tag "Update results", class:"text-end", id: "refresh-search"  %>
@@ -8,7 +8,7 @@
         <%= render 'itineraries/search_form_body' %>
       <% end %>
   </div>
-  <div class="col-12 offset-md-4 col-md-8 border-start border-success">
+  <div class="col-12 offset-md-4 col-md-8">
     <div class="ps-3 pe-3">
         <h1 class="text-center pb-5">Top Recommendations</h1>
 
