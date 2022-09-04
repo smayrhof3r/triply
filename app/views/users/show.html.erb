@@ -1,5 +1,5 @@
 <div class="row user-page pt-5">
-  <div class="col-12 col-sm-4 col-md-4 scroll-bar">
+  <div class="col-12 col-sm-4 col-md-4 upcoming-trips scroll-bar">
     <div class="py-3 ps-5 pe-2">
 
       <h3 class="text-center py-3">Your upcoming trips</h3>
@@ -16,16 +16,15 @@
           <%= render 'users/past_flight_info_card' %>
         <% end %>
     </div>
-
-    <%# PLACEHOLDER TO TEST SCROLL  %>
-    <h4 class="my-5 py-5">TEXT</h4>
   </div>
 
 
 
-  <div class="col-12 col-sm-8 col-md-8 border-start border-sucess">
-    <div class="pt-3 ps-5 pe-2">
-      <%= render 'users/small_flight_info_card' %>
+  <div class="col-12 col-sm-8 col-md-8">
+    <div class="pt-3 px-3 itinerary-overview">
+      <div class="scroll-bar">
+        <%= render 'users/small_flight_info_card' %>
+      </div>  
     </div>
   </div>
 </div>

@@ -24,6 +24,11 @@
   }
 }
 
+.upcoming-trips {
+  height: 85vh !important;
+
+}
+
 .card-overview {
     height:100%;
     background: white;
@@ -41,10 +46,6 @@
     h4 {
       font-size: 20px;
       margin: 0px;
-    }
-
-    .i-title{
-      color:white;
     }
 
     .card-overview-info {
@@ -81,6 +82,7 @@
   }
 
 .itinerary-overview {
+  height: 85vh !important;
 
   .destination-title {
     display: flex;
@@ -134,13 +136,19 @@
     border-radius: 50px;
     border: 1px solid $green;
     background-color: $green;
+    position:relative;
   }
+
+  
 
   .circle-booking:after {
     content:"";
     position: absolute;
+    left: 50%;
+    top: 200%;
+    transform: translate(0, -50%);
     z-index: -1;
-    height: 100px;
+    height: 90px;
     border-left: 2px dotted $green;
   }
 
@@ -148,4 +156,41 @@
     display: flex;
     align-items: center;
   }
+
+  .small-cards-return {
+   position:relative;
+   top: 82px;
+  }
+
+
+  .small-card-overview-info-return {
+    width: 250px;
+    border: 1px solid $blue;
+    border-radius: 8px;
+    position:relative;
+  }
+
+  .circle-booking-up {
+    width: 35px;
+    height: 35px;
+    border-radius: 50px;
+    border: 1px solid $blue;
+    background-color: $blue;
+    position:relative;
+  }
+
+  
+  .circle-booking-up:after {
+    content:"";
+    position: absolute;
+    left: 50%;
+    top: -40px;
+    transform: translate(0, -50%);
+    z-index: 1;
+    bottom:35px;
+    height: 82px;
+    border-left: 2px dotted $blue;
+  }
 }
+
+
