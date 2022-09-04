@@ -38,11 +38,10 @@ class ItinerariesController < ApplicationController
     end
 
     if @itineraries.count(&:nil?) > 0
-      p
       Itinerary.delete_unclaimed(session[:itineraries]) if session[:itineraries]
       session[:itineraries] = []
       session[:params] = {}
-      redirect_to itineraries_path, alert: "reloaded due to missing itineraries"
+      redirect_to '/search', alert: "restart search or view your itineraries from the menu provided"
     else
       @itineraries.filter! { |i| i != "" }
       @loc =  @itineraries.map { |itinerary| Location.find(itinerary.destination_id) }

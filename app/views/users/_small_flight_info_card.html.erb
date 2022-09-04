@@ -6,9 +6,9 @@
     </div>
 
     <div class="small-card-overview">
-      <% itinerary.passenger_groups.each do |group| %>
+      <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
         <div class="small-card-booking py-3">
-          <button class="circle-booking me-3"></button>
+          <button class="circle-booking me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
           <div class="small-card-overview-info p-3">
             <p>Flight from <strong><%=group.origin_city.city%></strong></p>
             <% info = group.flight_info %>
@@ -18,12 +18,34 @@
                   <p>Departure: <%= f.departure_time.strftime('%d/%b')%></p>
                   <p class="m-0">, <%= f.departure_time.strftime('%H:%M')%>h<p> 
                 <% end %>                        
-              <% end %>   
+              <% end %> 
             </div>   
           </div>
         </div>
       <% end %>
       <div class="small-card-destination"><h4><strong><%=itinerary.destination.city%></strong></h4></div>
+
+      <%# REFACTOR RETURN FLIGHTS %>
+      
+      <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
+          <% info = group.flight_info %>
+          <% if info[:flight_return].count >= 1 %>
+            <div class="small-cards-return">
+              <div class="small-card-booking py-3">
+                <button class="circle-booking-up me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
+                <div class="small-card-overview-info-return p-3">
+                  <p>Flight to <strong><%=group.origin_city.city%></strong></p>
+                  <div class="card-departure-info">
+                      <% info[:flight_return].each do |f| %>                              
+                        <p>Departure: <%= f.departure_time.strftime('%d/%b')%></p>
+                        <p class="m-0">, <%= f.departure_time.strftime('%H:%M')%>h<p> 
+                      <% end %>                       
+                  </div>   
+                </div>
+              </div>
+             <% end %>   
+          </div>
+        <% end %>     
     </div>
   </div>
 <% end %>
