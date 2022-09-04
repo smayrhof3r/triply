@@ -7,7 +7,7 @@ export default class extends Controller {
 
   }
 
-  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "flexibleDatePrompt", "fixedDateForm", "fixedDatePrompt"]
+  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "fixedDateForm"]
 
   addPassengerGroup (event) {
     console.log(5)
@@ -29,13 +29,21 @@ export default class extends Controller {
   }
 
   revealFixedDateForm() {
+    this.fixedDateFormTarget.classList.remove("v-none")
     document.querySelector(".slider-right").classList.add("slider-left")
     document.querySelector(".slider-right").classList.remove("slider-right")
+    document.querySelector(".slider-down").classList.add("slider-up")
+    document.querySelector(".slider-down").classList.remove("slider-down")
+    this.flexibleDateFormTarget.classList.add("v-none")
   }
 
   revealDateRangeForm() {
+    this.flexibleDateFormTarget.classList.remove("v-none")
     document.querySelector(".slider-left").classList.add("slider-right")
     document.querySelector(".slider-left").classList.remove("slider-left")
+    document.querySelector(".slider-up").classList.add("slider-down")
+    document.querySelector(".slider-up").classList.remove("slider-up")
+    this.fixedDateFormTarget.classList.add("v-none")
   }
 
   #hasPassengerGroup() {
@@ -69,6 +77,7 @@ export default class extends Controller {
   }
 
   #updateNewSectionNames() {
+    console.log('updating names')
     let newSection = this.passengerGroupPartialTargets[this.passengerGroupPartialTargets.length - 1]
 
     newSection.querySelector('.origin-city').name = `origin_city${this.groupCount}`
@@ -81,7 +90,9 @@ export default class extends Controller {
   }
 
   #insertPassengerGroupHTML(event) {
+    console.log("adding group")
     let newPassengerGroupHTML = this.passengerGroupPartialTarget.outerHTML.replaceAll("for-removal d-none", "")
+    console.log(newPassengerGroupHTML)
     event.currentTarget.insertAdjacentHTML("beforebegin", newPassengerGroupHTML)
   }
 }
