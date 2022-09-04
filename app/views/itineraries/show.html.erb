@@ -1,16 +1,7 @@
-<%params%>
 <div class = "container">
     <div class ="pt-5">
       <h1>Discover <strong class="title-colour"><%= @location.city%></strong></h1>
     </div>
-    <%# <i have to create a variable when the flight is booked> %>
-      <%# <% if @status? %>
-      <%# <li class="btn btn-link"Go to itinerary>  %>
-      <%# <%= link_to "Itinerary", itineraries_path , class: "nav-link" %>
-      <%# </li>
-      <% else %>
-      <%# <h3>Not now</h3> %>
-    <%# <% end %>
 </div>
 
 <div class ="container main-image pt-3 text-center box" style= "background-image: url('<%=@location.images.first.url%>'); background-size: cover; background-position: 0px -130px;">
@@ -21,50 +12,12 @@
     <% end %>
   <% end %>
 </div>
-<div class="container col-12">
-  <h3 class="pt-5">Flights overview</h3>
-  <hr class="pb-2">
 
-  <div class="row">
-    
-    <%@itinerary.passenger_groups.each do |group|%>
-      <% flight_info= group.flight_info%>
-      <div></div>
-      <div class="col-6 border-end">
-        <div class="">
-          <%=group.origin_city.city%> to <%=@location.city%>
-        </div>
-        <div>
-          <%="#{group.adults} #{"Adult".pluralize(group.adults)}, "%>
-          <%="#{group.children} #{"Child".pluralize(group.children)}"%>
-        </div>
-        <div>
-          <button type = "button" class = "btn btn-success text-white">Add to Itinerary
-            <%= link_to "Itinerary",itineraries_path , class: "nav-link" %></button>
-          <button type = "button" class = "btn btn-success text-white">More flights options
-            <%= link_to "Itinerary",itineraries_path , class: "nav-link" %></button>
-        </div>
-      </div> 
-
-      <div class="flight-overview-time col-6">
-        <% flight_info[:flight_there].each do |f| %>
-        <div class="card-overview card-overview-info">                        
-          <p>Departure date: <%= f.departure_time.strftime('%d %b, %Y')%></p>
-          
-          <div class="flight-time py-2 px-5">
-            <div class="flight-time-location">
-              <h3 class="m-0"><%= f.departure_time.strftime('%H:%M')%>h</h3>
-              <p><%=group.origin_city.city%></p>
-            </div>
-              <i class="fa-solid fa-plane"></i>
-              <div class="flight-time-location">
-              <h3 class="m-0"><%= f.arrival_time.strftime('%H:%M') %>h</h3>
-              <p><%= @location.city%></p>
-            </div>
-          </div>
-        </div>
-      <% end %>
-      </div>
-    <% end %>
-  </div>
+<div class="container mt-3">
+    <div class="mb-3">
+      <%= render 'shared/collapsible_section', section_title: "Learn more about #{@location.city}", section_partial: 'locations/description', section_partial_params: {}, open: false %>
+    </div>
+    <div class="mb-3">
+      <%= render 'shared/collapsible_section', section_title: 'Flights Overview', section_partial: 'itineraries/group_flights_overview', section_partial_params: { itinerary: @itinerary }, open: true %>
+    </div>
 </div>
