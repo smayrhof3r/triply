@@ -29,3 +29,44 @@
     background-color:$gray1 ;
   }
 }
+
+.rounded-top {
+  border-radius: 16px 16px 0 0;
+}
+
+.rounded-start {
+  border-radius: 16px 0 0 16px;
+}
+
+.shadow-x {
+  box-shadow: 3px 0 5px rgba(0,0,0,0.1)
+}
+
+.no-radius {
+  border-radius: 0 !important;
+}
+
+.border-bottom-info {
+  border-bottom: 0.5px solid $gray4 ;
+}
+
+.border-top-left-bottom {
+  border-top:  0.5px solid $gray4;
+  border-left:  0.5px solid $gray4;
+  border-bottom:  0.5px solid $gray4;
+}
+
+.border-top-left {
+  border-top:  0.5px solid $gray4;
+  border-left:  0.5px solid $gray4;
+}
+
+.border-top-only {
+  border-top:  0.5px solid $gray4;
+}
+
+.card-tag {
+  font-size: 10px;
+  border-radius: 10px;
+  padding: 2px;
+}
