@@ -1,21 +1,20 @@
-<div class="row">
-
-  <div class="col-9 border-end <%= (!params[:start_date_range] || params[:start_date_range].empty?) ? "" : "d-none" %>">
+<div class="<%= (!params[:start_date_range] || params[:start_date_range].empty?) ? "slider-left" : "slider-right"%> w-200 d-flex">
+  <div class="px-3 w-40 border-end" data-search-form-target="fixedDateForm">
     <%= render 'shared/fixed_date_form' %>
   </div>
-  <div class="col-3 <%= (!params[:start_date_range] || params[:start_date_range].empty?) ? "" : "d-none" %>">
+  <div class="px-3 w-10" data-search-form-target="flexibleDatePrompt">
     <div class="d-flex justify-content-between h-100">
-      <i class="fas fa-angle-double-left"></i>
+      <i class="fas fa-angle-double-left clickable" data-action="click->search-form#revealDateRangeForm"></i>
       <div class = "d-flex flex-column align-items-center justify-content-center"><em style = "font-size: 0.9vw;">I'm flexible!</em></div>
     </div>
   </div>
-  <div class="col-3 <%= (!params[:start_date_range] || params[:start_date_range].empty?) ? "d-none" : "" %>">
+  <div class="px-3 w-10" data-search-form-target="flexibleDateForm">
     <div class="d-flex justify-content-between">
       <div><em style = "font-size: 0.9vw;">Fixed Dates</em></div>
-      <i class="fas fa-angle-double-right"></i>
+      <i class="fas fa-angle-double-right clickable" data-action="click->search-form#revealFixedDateForm"></i>
     </div>
   </div>
-  <div class="col-9 <%= (!params[:start_date_range] || params[:start_date_range].empty?) ? "d-none" : "" %>" >
+  <div class="px-3 w-40" data-search-form-target="flexibleDatePrompt" >
     <%= render 'shared/date_range_form' %>
  </div>
 </div>

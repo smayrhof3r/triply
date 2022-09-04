@@ -22,13 +22,51 @@
 
 .sticky-column {
   position: fixed;
-  height: 100vh;
+  height: 85vh !important;
   overflow-y: scroll;
 }
 
+.floating-button {
+  position: fixed;
+  font-weight: bolder;
+  bottom: 60px;
+  right: 60px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .90);
+  font-size: x-large;
+}
 @media only screen and (max-width: 768px) {
   .sticky-column {
     position: relative;
   }
 
+}
+
+.overflow-hidden {
+
+  overflow: hidden;
+  position: relative;
+}
+
+.slider-left {
+  position: absolute;
+  left: 0;
+  transition: 2s left ease;
+}
+
+.slider-right {
+  position: absolute;
+  left: -100%;
+  transition: 2s left ease;
+}
+
+.w-40 {
+  width: 40%;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+.w-200 {
+  width: 200%
 }

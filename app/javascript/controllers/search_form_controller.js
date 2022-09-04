@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="search-form"
 export default class extends Controller {
-  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults"]
+  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "flexibleDatePrompt", "fixedDateForm", "fixedDatePrompt"]
   static values = {
     section: Number
   }
@@ -11,8 +11,6 @@ export default class extends Controller {
     console.log(this.passengerGroupPartialTargets);
 
   }
-
-
 
   toggleCollapse (event) {
     this.section = document.getElementById(`${event.currentTarget.id}Parent`)
@@ -41,6 +39,16 @@ export default class extends Controller {
     } else {
       document.getElementById('submit').disabled = true
     }
+  }
+
+  revealFixedDateForm() {
+    document.querySelector(".slider-right").classList.add("slider-left")
+    document.querySelector(".slider-right").classList.remove("slider-right")
+  }
+
+  revealDateRangeForm() {
+    document.querySelector(".slider-left").classList.add("slider-right")
+    document.querySelector(".slider-left").classList.remove("slider-left")
   }
 
   #hasPassengerGroup() {
