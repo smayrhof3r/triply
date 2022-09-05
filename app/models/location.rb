@@ -23,17 +23,18 @@ class Location < ApplicationRecord
     html_content = Faraday.get("https://www.lonelyplanet.com#{page_link}").body
     doc = Nokogiri::HTML(html_content)
 
-    doc.search(".content p, h2")
+    { link: page_link, doc: doc.search(".content p, h2") }
   end
 
   def update_lonely_planet_data
     data = {}
     result = scrape_lonely_planet
-    unless result.empty?
-      data[:intro] = result.first.text || ""
+    unless result[:doc].empty?
+      data[:link] = result[:link]
+      data[:intro] = result[:doc].first.text || ""
       data[:sections] = []
       new_section = {title: "", body: ""}
-      result[1..].each do |element|
+      result[:doc][1..].each do |element|
         if element.name == "h2"
           data[:sections] << new_section unless new_section[:title].empty? || new_section[:body].empty?
           new_section = { title: element.text, body: ""}

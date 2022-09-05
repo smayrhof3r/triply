@@ -15,7 +15,7 @@
 
 <div class="container mt-3">
     <div class="mb-3">
-      <%= render 'shared/collapsible_section', section_title: "Learn more about #{@location.city}", section_partial: 'locations/lonely_planet_description', section_partial_params: { lonely_planet: @itinerary.destination.lonely_planet_data }, open: false %>
+      <%= render 'shared/collapsible_section', section_title: "Learn more about #{@location.city}", section_partial: 'locations/lonely_planet_description', section_partial_params: { lonely_planet: @itinerary.destination.lonely_planet_data }, open: false, bg_collapsed: 'bg-primary' %>
     </div>
     <div class="mb-3">
       <%= render 'shared/collapsible_section', section_title: 'Flights Overview', section_partial: 'itineraries/group_flights_overview', section_partial_params: { itinerary: @itinerary }, open: true %>
