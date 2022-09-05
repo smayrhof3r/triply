@@ -12,27 +12,27 @@ class Location < ApplicationRecord
     lonely_planet
   end
 
+  private
+
   def scrape_lonely_planet
-    html_content = URI.open("https://www.lonelyplanet.com/places?q=#{city}").read
+    html_content = Faraday.get("https://www.lonelyplanet.com/places?q=#{city}").body
     doc = Nokogiri::HTML(html_content)
 
     page_link = doc.search(".card-link").first.attributes["href"].value
 
-    html_content = URI.open("https://www.lonelyplanet.com#{page_link}").read
+    html_content = Faraday.get("https://www.lonelyplanet.com#{page_link}").body
     doc = Nokogiri::HTML(html_content)
 
     doc.search(".content p, h2")
   end
 
-  private
-
   def update_lonely_planet_data
     data = {}
     result = scrape_lonely_planet
     unless result.empty?
-      data[:intro] = result.first.text
+      data[:intro] = result.first.text || ""
       data[:sections] = []
-      new_section = {}
+      new_section = {title: "", body: ""}
       result[1..].each do |element|
         if element.name == "h2"
           data[:sections] << new_section unless new_section[:title].empty? || new_section[:body].empty?
