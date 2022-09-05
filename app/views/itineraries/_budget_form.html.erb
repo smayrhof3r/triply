@@ -4,13 +4,11 @@
       <%= range_field_tag :range, params[:range], step: 5, min: 10, max:100000, onchange: "rangePrimary.value=value",  class: "slider"%>
       </div>
       <div class="range-label d-flex justify-content-between">
-        <div>€0</div>
+        <div>€10</div>
         <div>€100k</div>
       </div>
     </div>
-    <div class="col-12 col-md-3 d-flex justify-content-center align-items-center text-primary budget-value">
-
-      € <%= number_field_tag :range_primary, params[:range]||0, id: "rangePrimary", class: "border-none w-100 budget-value" %>
-
-    </div>
+      <div class="col-12 col-md-3 d-flex justify-content-center align-items-center text-primary budget-value">
+       €<%= number_field_tag :range_primary, params[:range]||0, id: "rangePrimary", class: "border-none w-100 budget-value" %>
+      </div>
   </div>
