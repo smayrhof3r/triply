@@ -22,9 +22,7 @@
             <% if owned %>
               <span class="owned-tag px-2 py-1 rounded bg-primary text-white">booked</span>
             <% end %>
-            <% description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tincidunt dolor eget iaculis convallis.
-            Nulla luctus risus sit amet felis commodo, id cursus dolor interdum. Phasellus non dolor id justo efficitur vehicula.
-            Etiam rhoncus mi non pharetra mattis. Suspendisse dapibus non dui vel ultricies. Fusce ac leo ut risus gravida pellentesque." %>
+            <% description = itinerary.destination.lonely_planet_data["intro"] %>
             <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
             <% button_text = owned ? "View my itinerary" : "€ #{number_with_precision(itinerary.total_cost, precision: 2)}" %>
             <div class="button pt-3"><%= link_to button_text, itinerary_path(itinerary), class: "btn btn-success text-white fixed-right"%></div>
