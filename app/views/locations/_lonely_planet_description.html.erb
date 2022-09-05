@@ -3,9 +3,9 @@
     <i class="fas fa-street-view"></i> "<%= lonely_planet["intro"] %>"
   </div>
   <div class="text-end mt-0 mb-5">
-    <%= link_to lonely_planet[:link], class: "text-decoration-none" do %>
+    <a href= <%= lonely_planet["link"]%> target="_blank" class="text-decoration-none">
       <i class="fas fa-globe-americas"></i> <span class="text-secondary">Read more on<span class="text-primary"><strong> Lonely Planet</strong></span>!</span>
-    <% end %>
+    </a>
   </div>
 
   <% lonely_planet["sections"].each do |section| %>

@@ -23,7 +23,10 @@ class Location < ApplicationRecord
     html_content = Faraday.get("https://www.lonelyplanet.com#{page_link}").body
     doc = Nokogiri::HTML(html_content)
 
-    { link: page_link, doc: doc.search(".content p, h2") }
+    {
+      link: "https://www.lonelyplanet.com#{page_link}",
+      doc: doc.search(".content p, h2")
+    }
   end
 
   def update_lonely_planet_data
