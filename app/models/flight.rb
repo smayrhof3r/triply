@@ -11,5 +11,4 @@ class Flight < ApplicationRecord
       Airport.find(arrival_airport_id).location.city
     end
   end
-
 end
