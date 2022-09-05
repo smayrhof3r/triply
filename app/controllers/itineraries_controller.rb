@@ -29,11 +29,7 @@ class ItinerariesController < ApplicationController
 
       # try each destination
       possible_destinations.each do |destination|
-
         @itineraries << (@user_itineraries[destination] || new_itinerary(destination))
-        if destination == "NYK"
-          raise
-        end
       end
     end
 
@@ -43,12 +39,9 @@ class ItinerariesController < ApplicationController
       session[:params] = {}
       redirect_to '/search', alert: "restart search or view your itineraries from the menu provided"
     else
-      @itineraries.filter! { |i| i != "" }
-      @loc =  @itineraries.map { |itinerary| Location.find(itinerary.destination_id) }
+      @itineraries = @itineraries.filter { |i| i != "" }.sort_by(&:total_cost).reverse
       update_session_variables
-
-      @images_by_itinerary_id = Image.retrieve_all_by_itinerary(session[:itineraries].map{|i| Itinerary.find(i)})
-
+      @images_by_itinerary_id = Image.retrieve_all_by_itinerary(@itineraries)
     end
   end
 
