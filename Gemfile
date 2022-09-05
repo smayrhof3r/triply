@@ -88,6 +88,8 @@ gem "unsplash"
 # Gem for flight API
 gem 'amadeus'
 
+gem 'nokogiri'
+gem 'open-uri'
 # for http request
 # gem 'faraday'
 # gem 'faraday-http'
