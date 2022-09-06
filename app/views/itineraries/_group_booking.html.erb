@@ -6,7 +6,7 @@
         <h3 class = "m-0 p-0">
           <%=group.origin_city.city%>
         </h3>
-        <div class="text-primary text-lg">€ <%=flight_info[:booking].search_result.cost_per_head*(group.adults+group.children)%></div>
+        <div class="text-primary text-lg">€ <%=number_with_precision(flight_info[:booking].search_result.cost_per_head*(group.adults+group.children), precision: 2, delimiter: ',')%></div>
       </div>
       <div class = "text-primary text-sm">
         <% group.adults.times do %>

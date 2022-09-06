@@ -1,4 +1,4 @@
 <div class = "text-center mb-3"><strong>Flexible Dates</strong></div>
-    <div class="d-flex align-items-center mb-3"><div class = "me-1">Earliest Departing*:</div><%= date_field_tag :start_date_range, params[:start_date_range], class: "date-range-start form-control mb-3", min: Date.today + 1 %></div>
-    <div class="d-flex align-items-center mb-3"><div class = "me-1">Latest Returning*:</div><%= date_field_tag :end_date_range, params[:end_date_range], class: "date-range-end form-control mb-3", min: Date.today + 1 %></div>
+    <div class="d-flex align-items-center mb-3"><div class = "me-1">Earliest Departing*:</div><%= date_field_tag :start_date_range, params[:start_date_range], class: "date-range-start form-control mb-3", min: Date.today + 1, data: { search_form_target: 'startDateRange', action: "input->search-form#setMinReturnDate"  } %></div>
+    <div class="d-flex align-items-center mb-3"><div class = "me-1">Latest Returning*:</div><%= date_field_tag :end_date_range, params[:end_date_range], class: "date-range-end form-control mb-3", min: Date.today + 1, data: { search_form_target: 'endDateRange' } %></div>
     <div data-search_form_target="dayCount"><%= render 'shared/integer', label: "Trip length (days)", field_name: "trip_length_days", form_field_class: "trip-days"%></div>

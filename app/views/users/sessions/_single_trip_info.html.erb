@@ -1,0 +1,20 @@
+<% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
+
+  <div class="card-overview-info">
+    <div class="origin-city d-flex justify-content-between align-items-bottom">
+      <div>Travellers from <span class="text-primary"><strong><%=group.origin_city.city%></strong></span></div>
+      <div>
+        <% group.adults.times do %>
+          <i class="fas fa-user mt-2"></i>
+        <% end %>
+        <% group.children.times do  %>
+          <i class="fas fa-user text-sm"></i>
+        <% end %>
+      </div>
+    </div>
+
+    <% info = group.flight_info %>
+    <%= render 'shared/collapsible_section', section_title: 'Getting there', section_partial: 'users/sessions/flight_leg', section_partial_params: { flights: info[:flight_there] }, collapsed: true, bg_collapsed: 'bg-primary', bg_open: 'bg-secondary', p_x: 'p-0' %>
+    <%= render 'shared/collapsible_section', section_title: 'Coming home', section_partial: 'users/sessions/flight_leg', section_partial_params: { flights: info[:flight_return] }, collapsed: true, text_collapsed: 'text-primary', bg_collapsed: 'border border-primary', text_open: 'text-white', bg_open: 'bg-secondary', p_x: 'p-0' %>
+  </div>
+<% end %>

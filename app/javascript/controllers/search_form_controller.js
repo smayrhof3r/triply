@@ -1,29 +1,27 @@
 import { Controller } from "@hotwired/stimulus"
+import { end } from "@popperjs/core";
 
 // Connects to data-controller="search-form"
 export default class extends Controller {
 
-  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "flexibleDatePrompt", "fixedDateForm", "fixedDatePrompt"]
+  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "flexibleDatePrompt", "fixedDateForm", "fixedDatePrompt", 'startDate', 'endDate', 'startDateRange', 'endDateRange']
+
   static values = {
     section: Number
   }
+
   connect() {
     console.log('search form controller active');
-    console.log(this.passengerGroupPartialTargets);
 
   }
 
-
-
   addPassengerGroup (event) {
-    console.log(5)
     this.#insertPassengerGroupHTML(event)
     this.#updateGroupCount()
     this.#updateNewSectionNames()
   }
 
   updateButton() {
-    console.log('button check..')
     let check1 = this.#hasPassengerGroup()
     let check2 = this.#hasDates()
 
@@ -52,32 +50,27 @@ export default class extends Controller {
     this.fixedDateFormTarget.classList.add("v-none")
   }
 
-  #hasPassengerGroup() {
-    console.log('group check')
+  setMinReturnDate() {
+    if (this.startDateTarget.value) { this.endDateTarget.min = this.startDateTarget.value }
+    if (this.startDateRangeTarget.value) { this.endDateRangeTarget.min = this.startDateRangeTarget.value }
+  }
 
+  #hasPassengerGroup() {
     let check = false
     this.passengerGroupPartialTargets.forEach((group) => {
-      console.log(group)
-      console.log(group.querySelector('.origin-city'))
       if (group.querySelector('.origin-city').value.length >= 3 && group.querySelector('.adults').value > 0) {
         check = true
       }
     })
-    console.log('passenger groups ok')
     return check
   }
 
   #hasDates() {
-    console.log('date check')
-    console.log(document.querySelector('.start-date').value)
-
     if (document.querySelector('.start-date').value && document.querySelector('.end-date').value) { return true }
 
     let hasStart = document.querySelector('.date-range-start').value
     let hasEnd = document.querySelector('.date-range-end').value
     let tripDays = document.querySelector('.trip-days').value
-    console.log(`${hasStart} ${hasEnd} ${tripDays}`)
-    console.log("date check ok")
     if (hasStart && hasEnd && tripDays > 0) { return true }
     return false
   }
@@ -88,7 +81,6 @@ export default class extends Controller {
   }
 
   #updateNewSectionNames() {
-    console.log('updating names')
     let newSection = this.passengerGroupPartialTargets[this.passengerGroupPartialTargets.length - 1]
 
     newSection.querySelector('.origin-city').name = `origin_city${this.groupCount}`
@@ -101,9 +93,7 @@ export default class extends Controller {
   }
 
   #insertPassengerGroupHTML(event) {
-    console.log("adding group")
     let newPassengerGroupHTML = this.passengerGroupPartialTarget.outerHTML.replaceAll("for-removal d-none", "")
-    console.log(newPassengerGroupHTML)
     event.currentTarget.insertAdjacentHTML("beforebegin", newPassengerGroupHTML)
   }
 }

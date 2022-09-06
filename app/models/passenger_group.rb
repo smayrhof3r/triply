@@ -22,8 +22,8 @@ class PassengerGroup < ApplicationRecord
       info[:booking] = booking
     end
 
-    info[:flight_return].sort! {|f| f.departure_time }
-    info[:flight_there].sort! {|f| f.departure_time }
+    info[:flight_return] = info[:flight_return].sort { |f| f.departure_time }.reverse
+    info[:flight_there] = info[:flight_there].sort { |f| f.departure_time }.reverse
 
     info
   end

@@ -1,25 +1,27 @@
-<div class="<%= ((!params[:start_date_range]) || params[:start_date_range].empty?) ? "slider-left" : "slider-right"%> w-200 d-flex">
-  <div data-search-form-target="fixedDateForm" class = "d-flex w-50 <%= ((!params[:start_date_range]) || params[:start_date_range].empty?) ? "" : "v-none"%>">
-    <div class="px-3 w-80 border-end">
-      <%= render 'shared/fixed_date_form' %>
-    </div>
-    <div class="px-3 w-20">
-      <div class="d-flex justify-content-between h-100">
-        <i class="fas fa-angle-double-left clickable" data-action="click->search-form#revealDateRangeForm"></i>
-        <div class = "d-flex flex-column align-items-center justify-content-center"><em style = "font-size: 0.9vw;">I'm flexible!</em></div>
+<div class="overflow-x-hidden card-body <%= ((!params[:start_date_range]) || params[:start_date_range].empty?) ? "slider-up" : "slider-down"%> <%= request.url.match?(/itineraries/) ? "p-2" : ""%>">
+  <div class="<%= ((!params[:start_date_range]) || params[:start_date_range].empty?) ? "slider-left" : "slider-right"%> w-200 d-flex">
+    <div data-search-form-target="fixedDateForm" class = "d-flex w-50 <%= ((!params[:start_date_range]) || params[:start_date_range].empty?) ? "" : "v-none"%>">
+      <div class="px-3 w-80 border-end">
+        <%= render 'shared/fixed_date_form' %>
+      </div>
+      <div class="px-3 w-20">
+        <div class="d-flex justify-content-between h-100">
+          <i class="fas fa-angle-double-left clickable" data-action="click->search-form#revealDateRangeForm"></i>
+          <div class = "d-flex flex-column align-items-center justify-content-center"><em style = "font-size: 0.9vw;">I'm flexible!</em></div>
+        </div>
       </div>
     </div>
-  </div>
-  <div data-search-form-target="flexibleDateForm" class = "d-flex w-50 <%= ((!params[:start_date_range]) || params[:start_date_range].empty?) ? "v-none" : ""%>">
+    <div data-search-form-target="flexibleDateForm" class = "d-flex w-50 <%= ((!params[:start_date_range]) || params[:start_date_range].empty?) ? "v-none" : ""%>">
 
-    <div class="px-3 w-20">
-      <div class="d-flex justify-content-between">
-        <div><em style = "font-size: 0.9vw;">Fixed Dates</em></div>
-        <i class="fas fa-angle-double-right clickable" data-action="click->search-form#revealFixedDateForm"></i>
+      <div class="px-3 w-20">
+        <div class="d-flex justify-content-between">
+          <div><em style = "font-size: 0.9vw;">Fixed Dates</em></div>
+          <i class="fas fa-angle-double-right clickable" data-action="click->search-form#revealFixedDateForm"></i>
+        </div>
       </div>
-    </div>
-    <div class="px-3 w-80" >
-      <%= render 'shared/date_range_form' %>
+      <div class="px-3 w-80" >
+        <%= render 'shared/date_range_form' %>
+      </div>
     </div>
   </div>
 </div>

@@ -9,8 +9,17 @@ $headers-font: "Nunito", "Helvetica", "sans-serif";
   font-size: large;
 }
 
+.text-xl {
+  font-size: 24px;
+  font-style: italic;
+}
+
 .text-bold {
   font-weight: bold;
+}
+
+.text-sm {
+  font-size: 12px;
 }
 // To use a font file (.woff) uncomment following lines
 // @font-face {

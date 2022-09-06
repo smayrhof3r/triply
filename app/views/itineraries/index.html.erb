@@ -5,14 +5,14 @@
         <div class="w-100 d-flex align-items-center justify-content-end">
           <i class="fas fa-sync-alt"></i> <%= submit_tag "Update results", class:"text-end no-button", id:  "submit"  %>
         </div>
-        <%= render 'itineraries/search_form_body' %>
+        <%= render 'itineraries/search_form_body', col_x: 'col-12' %>
       <% end %>
   </div>
   <div class="col-12 offset-md-4 col-md-8">
     <div class="ps-3 pe-3">
         <h1 class="text-center pb-5">Top Recommendations</h1>
 
-    <% @itineraries.each do |itinerary| %>
+    <% @itineraries.sort {|i| i.total_cost}.each do |itinerary| %>
       <div class="pb-3">
         <div class="card-itinerary-recommendation">
           <%= image_tag(@images_by_itinerary_id[itinerary.id]) %>
@@ -22,11 +22,9 @@
             <% if owned %>
               <span class="owned-tag px-2 py-1 rounded bg-primary text-white">booked</span>
             <% end %>
-            <% description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tincidunt dolor eget iaculis convallis.
-            Nulla luctus risus sit amet felis commodo, id cursus dolor interdum. Phasellus non dolor id justo efficitur vehicula.
-            Etiam rhoncus mi non pharetra mattis. Suspendisse dapibus non dui vel ultricies. Fusce ac leo ut risus gravida pellentesque." %>
+            <% description = itinerary.destination.lonely_planet_data["intro"] %>
             <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
-            <% button_text = owned ? "View my itinerary" : "€ #{number_with_precision(itinerary.total_cost, precision: 2)}" %>
+            <% button_text = owned ? "View my itinerary" : "€ #{number_with_precision(itinerary.total_cost, precision: 2, :delimiter => ',')}" %>
             <div class="button pt-3"><%= link_to button_text, itinerary_path(itinerary), class: "btn btn-success text-white fixed-right"%></div>
           </div>
         </div>
