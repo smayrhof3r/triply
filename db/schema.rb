@@ -44,10 +44,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_05_204945) do
 
   create_table "airports", force: :cascade do |t|
     t.bigint "location_id", null: false
-    t.string "code"
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "code"
     t.index ["location_id"], name: "index_airports_on_location_id"
   end
 
