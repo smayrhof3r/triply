@@ -20,44 +20,36 @@ class ItinerariesController < ApplicationController
   end
 
   def index
-    if session[:params] == params
-      @itineraries = session[:itineraries].map { |i| Itinerary.find(i) }
-      @re_used = true
+    if session[:params] == params && !session[:itineraries].empty?
+      @itineraries = session[:itineraries].map { |i| Itinerary.find_by(id: i) }
     else
-      @re_used = false
+
       @itineraries = []
-      count = params["passenger_group_count"].to_i
+      @user_itineraries = user_signed_in? ? current_user.relevant_itineraries(params) : {}
 
       # try each destination
       possible_destinations.each do |destination|
 
-        valid_destination = true
-        groups = (1..count).to_a.map { |i| passenger_group_params(i) }
-
-        next if groups.map { |g| g[:location].city_code }.include?(destination)
-
-        # find valid destinations and create itineraries
-        groups.each do |group|
-          # retrieve or find & save top flights
-          group[:search] = top_search_results(group, destination)
-
-          # skip to next destination if not all groups can fly there
-          if group[:search].search_results.empty?
-            valid_destination = false
-            break
-          end
+        @itineraries << (@user_itineraries[destination] || new_itinerary(destination))
+        if destination == "NYK"
+          raise
         end
-        @itineraries << create_itinerary_and_bookings_for(groups, Location.find_by_city_code(destination)) if valid_destination
       end
     end
 
-    @loc =  @itineraries.map do |itinerary|
-      Location.find(itinerary.destination_id)
+    if @itineraries.count(&:nil?) > 0
+      Itinerary.delete_unclaimed(session[:itineraries]) if session[:itineraries]
+      session[:itineraries] = []
+      session[:params] = {}
+      redirect_to '/search', alert: "restart search or view your itineraries from the menu provided"
+    else
+      @itineraries.filter! { |i| i != "" }
+      @loc =  @itineraries.map { |itinerary| Location.find(itinerary.destination_id) }
+      update_session_variables
+
+      @images_by_itinerary_id = Image.retrieve_all_by_itinerary(session[:itineraries].map{|i| Itinerary.find(i)})
+
     end
-
-    update_session_variables
-    @images_by_itinerary_id = bulk_retrieve_location_images(session[:itineraries])
-
   end
 
   def seed(params)
@@ -103,6 +95,32 @@ class ItinerariesController < ApplicationController
 
   private
 
+  def new_itinerary(destination)
+    valid_destination = true
+    count = params["passenger_group_count"].to_i
+    groups = (1..count).to_a.map { |i| passenger_group_params(i) }
+
+    return "" if groups.map { |g| g[:location].city_code }.include?(destination)
+
+    # find valid destinations and create itineraries
+    groups.each do |group|
+      # retrieve or find & save top flights
+      group[:search] = top_search_results(group, destination)
+
+      # skip to next destination if not all groups can fly there
+      if group[:search].search_results.empty?
+        valid_destination = false
+        break
+      end
+    end
+
+    if valid_destination
+      create_itinerary_and_bookings_for(groups, Location.find_by_city_code(destination))
+    else
+      return ""
+    end
+  end
+
   def update_session_url
     session[:previous_request_url] = session[:current_request_url]
     session[:current_request_url] = request.original_url
@@ -110,9 +128,10 @@ class ItinerariesController < ApplicationController
 
   def update_session_variables
     # should be able to destroy underlying models by destroying itineraries, but not working so we nest in
-    Itinerary.delete_unclaimed(session[:itineraries]) if session[:itineraries]
-
-    session[:itineraries] = @itineraries.map(&:id)
+    if session[:itineraries] && (session[:itineraries] != @itineraries.map{|i| i.id})
+      Itinerary.delete_unclaimed(session[:itineraries]) unless session[:itineraries].empty?
+    end
+    session[:itineraries] = @itineraries.filter{|i| !i.nil?}.map(&:id)
     session[:params] = params
   end
 
@@ -121,15 +140,16 @@ class ItinerariesController < ApplicationController
     itinerary = Itinerary.create(destination_id: destination.id, start_date: params["start_date"], end_date: params["end_date"])
     groups.each do |group|
       passenger_group = new_passenger_group(group, itinerary)
-      cheapest_offer = group[:search].search_results.first
-
-      Booking.create(
-        passenger_group: passenger_group,
-        search_result_id: cheapest_offer.id,
-        status: "suggested"
-      )
+      search_results = group[:search].search_results
+      cheapest_offer = search_results.first.offer_index
+      search_results.filter { |s| s.offer_index == cheapest_offer }.each do |s|
+        Booking.create(
+          passenger_group: passenger_group,
+          search_result_id: s.id,
+          status: "suggested"
+        )
+      end
     end
-
     itinerary
   end
 
@@ -228,22 +248,5 @@ class ItinerariesController < ApplicationController
   def airport_id(flight, location)
     a = Airport.find_by_code(flight["iataCode"]) || Airport.create(code: flight["iataCode"], location: location)
     a.id
-  end
-
-  def bulk_retrieve_location_images(ids=[])
-    unless ids.empty?
-      sql = "
-      SELECT itineraries.id as id, images.url as url
-      FROM images
-      INNER JOIN locations ON images.location_id = locations.id
-      INNER JOIN itineraries ON itineraries.destination_id = locations.id
-      WHERE itineraries.id in (#{ids.join(',')})"
-      @result = ActiveRecord::Base.connection.execute(sql)
-      @result_mapped=@result.map do |r|
-        [r["id"], r["url"]]
-      end.to_h
-      return @result_mapped
-    end
-    {}
   end
 end

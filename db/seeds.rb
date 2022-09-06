@@ -79,8 +79,28 @@ searches = [{"origin_city1"=>"London",
   "adults1"=>"4",
   "children1"=>"2",
   "start_date"=>"2022-10-16",
-  "end_date"=>"2022-10-22"}
-]
+  "end_date"=>"2022-10-22"},
+  {"origin_city1"=>"Zurich",
+    "adults1"=>"2",
+    "children1"=>"0",
+    "start_date"=>"2022-10-16",
+    "end_date"=>"2022-10-22"},
+    {"origin_city1"=>"London",
+      "adults1"=>"1",
+      "children1"=>"0",
+      "start_date"=>"2022-10-16",
+      "end_date"=>"2022-10-22"},
+     {"origin_city1"=>"Paris",
+      "adults1"=>"1",
+      "children1"=>"0",
+      "start_date"=>"2022-10-16",
+      "end_date"=>"2022-10-22"},
+      {"origin_city1"=>"Zurich",
+        "adults1"=>"1",
+        "children1"=>"0",
+        "start_date"=>"2022-10-16",
+        "end_date"=>"2022-10-22"}]
+
 
   i = ItinerariesController.new
   searches.each do |params|

@@ -1,61 +1,23 @@
-<%=params%>
 <div class = "container">
-  <div class ="row">
-      <div class ="col-md-12 bg-light text-left"><h1>Discover <%=@location.city%>, <%=@location.country%></h1>
-      </div>
- <%# <i have to create a variable when the flight is booked> %>
-    <%# <% if @status? %>
-     <%# <li class="btn btn-link"Go to itinerary>  %>
-     <%# <%= link_to "Itinerary", itineraries_path , class: "nav-link" %>
-     <%# </li>
-     <% else %>
-     <%# <h3>Not now</h3> %>
-    <%# <% end %>
-   </div>
+    <div class ="pt-5">
+      <h1>Discover <strong class="title-colour"><%= @location.city%></strong></h1>
+    </div>
 </div>
 
-<div class ="banner pt-3 text-center box" style= "background-image: url('<%=@location.images.first.url%>'); background-size: cover;">
+<div class ="container main-image pt-3 text-center box" style= "background-image: url('<%=@location.images.first.url%>'); background-size: cover; background-position: 0px -130px;">
   <% if !@itinerary.users.include?(current_user) %>
     <%= simple_form_for([@itinerary, @permission], url: itinerary_permissions_path(@itinerary), method: :post ) do |f| %>
       <%= f.input :itinerary_id, input_html: { class: 'd-none' }, label: false %>
-      <%= f.button :submit, "Select this destination", data: {turbo_method: :post}, class: "btn btn-success text-white" %>
+      <%= f.button :submit, "Select this destination", data: {turbo_method: :post}, class: "button-destination" %>
     <% end %>
   <% end %>
 </div>
 
-  <h3>Flights overview</h3>
-    <div class="row text-center">
-      <div class="col-6 border-end">
-      <%@itinerary.passenger_groups.each do |group|%>
-       <div>
-        <%=group.origin_city.city%> to <%=@location.city%>
-       </div>
-       <div>
-       <%="#{group.adults} #{"Adult".pluralize(group.adults)}, "%>
-       <%="#{group.children} #{"Child".pluralize(group.children)}"%>
-       </div>
-     <div>
-      <% flight_info= group.flight_info%>
-     </div>
-    <%# need to take flight info , get a grafic %>
-
-     <li class="btn-group col-xs-3 bg-light text-right">
-      <button type = "button" class = "btn btn-success text-white">Add to Itinerary
-      <%= link_to "Itinerary",itineraries_path , class: "nav-link" %></button>
-      <button type = "button" class = "btn btn-success text-white">More flights options
-      <%= link_to "Itinerary",itineraries_path , class: "nav-link" %></button>
-     </li>
-     <% end %>
-  </div>
-    <div class="col-6 border-end">
-     <ul flights>
-     <li>
-     <h4>Departure flight </h4>
-     </li>
-     <li>
-     <h4>Returning flight</h4>
-     </li>
-     </ul>
-     </div>
-  </div>
+<div class="container mt-3">
+    <div class="mb-3">
+      <%= render 'shared/collapsible_section', section_title: "Learn more about #{@location.city}", section_partial: 'locations/description', section_partial_params: {}, open: false %>
+    </div>
+    <div class="mb-3">
+      <%= render 'shared/collapsible_section', section_title: 'Flights Overview', section_partial: 'itineraries/group_flights_overview', section_partial_params: { itinerary: @itinerary }, open: true %>
+    </div>
 </div>
