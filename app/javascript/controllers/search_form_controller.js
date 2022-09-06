@@ -4,7 +4,7 @@ import { end } from "@popperjs/core";
 // Connects to data-controller="search-form"
 export default class extends Controller {
 
-  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "flexibleDatePrompt", "fixedDateForm", "fixedDatePrompt", 'startDate', 'endDate', 'startDateRange', 'endDateRange']
+  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "flexibleDatePrompt", "fixedDateForm", "fixedDatePrompt", 'startDate', 'endDate', 'startDateRange', 'endDateRange', 'oneWay']
 
   static values = {
     section: Number
@@ -53,6 +53,14 @@ export default class extends Controller {
   setMinReturnDate() {
     if (this.startDateTarget.value) { this.endDateTarget.min = this.startDateTarget.value }
     if (this.startDateRangeTarget.value) { this.endDateRangeTarget.min = this.startDateRangeTarget.value }
+  }
+
+  hideReturnDate() {
+    this.oneWayTarget.classList.add("d-none")
+  }
+
+  showReturnDate() {
+    this.oneWayTarget.classList.remove("d-none")
   }
 
   #hasPassengerGroup() {
