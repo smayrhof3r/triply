@@ -1,0 +1,18 @@
+<% unless flights.empty? %>
+  <div class="">
+    <% flights.each do |f| %>
+      <div>Departure date: <%= f.departure_time.strftime('%d %b, %Y')%></div>
+      <div class="flight-time d-flex align-items-center py-2 px-5 mb-3">
+          <div class="flight-time-location me-3">
+            <h3 class="m-0"><%= f.departure_time.strftime('%H:%M')%>h</h3>
+            <div><%=f.city("departure")%></div>
+          </div>
+          <i class="fa-solid fa-plane"></i>
+          <div class="flight-time-location ms-3">
+            <h3 class="m-0"><%= f.arrival_time.strftime('%H:%M') %>h</h3>
+            <div><%= f.city("arrival") %></div>
+          </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
