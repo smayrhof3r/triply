@@ -1,0 +1,19 @@
+<div class="container m-3">
+  <div class="text-xl border-bottom border-success">
+    <i class="fas fa-street-view"></i> "<%= lonely_planet["intro"] %>"
+  </div>
+  <div class="text-end mt-0 mb-5">
+    <a href= <%= lonely_planet["link"]%> target="_blank" class="text-decoration-none">
+      <i class="fas fa-globe-americas"></i> <span class="text-secondary">Read more on<span class="text-primary"><strong> Lonely Planet</strong></span>!</span>
+    </a>
+  </div>
+
+  <% lonely_planet["sections"].each do |section| %>
+  <h4>
+    <span class = "text-success">
+      <strong><%= section["title"] %></strong>
+    </span>
+  </h4>
+  <p><%= section["body"] %></p>
+  <% end %>
+</div>

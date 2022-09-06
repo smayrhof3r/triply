@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_27_131251) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_05_204945) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -102,6 +102,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_27_131251) do
     t.string "city_code"
     t.string "country_code"
     t.text "description"
+    t.json "lonely_planet", default: {}
   end
 
   create_table "passenger_groups", force: :cascade do |t|
