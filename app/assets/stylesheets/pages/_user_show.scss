@@ -128,18 +128,12 @@
 
   .card-departure-info {
     display: flex;
+
   }
 
-  .circle-booking {
-    width: 35px;
-    height: 35px;
-    border-radius: 50px;
-    border: 1px solid $green;
-    background-color: $green;
-    position:relative;
-  }
 
-  
+
+
 
   .circle-booking:after {
     content:"";
@@ -170,6 +164,15 @@
     position:relative;
   }
 
+  .circle-booking {
+    width: 35px;
+    height: 35px;
+    border-radius: 50px;
+    border: 1px solid $green;
+    background-color: $green;
+    position:relative;
+  }
+
   .circle-booking-up {
     width: 35px;
     height: 35px;
@@ -179,7 +182,7 @@
     position:relative;
   }
 
-  
+
   .circle-booking-up:after {
     content:"";
     position: absolute;
@@ -192,5 +195,3 @@
     border-left: 2px dotted $blue;
   }
 }
-
-

@@ -1,8 +1,7 @@
 <div class="small-card-booking py-3">
-  <button class="circle-booking me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
-  <div class="small-card-overview-info p-3">
+  <button class=<%=button_class%>><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
+  <div class="<%=small_card_class%>">
     <p>Flight from <strong><%=group.origin_city.city%></strong></p>
-    <div class="">
       <% if flights.count >= 1 %>
         <% f = flights.first %>
         <div class="d-flex justify-content-between">
@@ -15,6 +14,5 @@
           <div><%= f.departure_time.strftime('%d/%b')%>, <%= f.departure_time.strftime('%H:%M') %>h</div>
         </div>
       <% end %>
-    </div>
   </div>
 </div>
