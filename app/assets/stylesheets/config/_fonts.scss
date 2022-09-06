@@ -5,6 +5,13 @@
 $body-font: "Work Sans", "Helvetica", "sans-serif";
 $headers-font: "Nunito", "Helvetica", "sans-serif";
 
+.text-lg {
+  font-size: large;
+}
+
+.text-bold {
+  font-weight: bold;
+}
 // To use a font file (.woff) uncomment following lines
 // @font-face {
 //   font-family: "Font Name";

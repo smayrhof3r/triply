@@ -1,0 +1,67 @@
+
+<% @upcoming_itineraries.each do |itinerary| %>
+
+  <div class="card-overview mt-3" data-controller="search-form" data-action="click->search-form#updateButton input->search-form#updateButton">
+    <div class="card-overview-title p-1" id = "searchFormSection1Parent">
+      <button class="btn btn-link text-white text-decoration-none w-100" type="button" data-action = "click->search-form#toggleCollapse" id = "searchFormSection2">
+        <div class="d-flex justify-content-between">
+          <div><h4>Trip to <strong><%=itinerary.destination.city%></strong></h4></div>
+          <div><i class="fas fa-minus text-white"></i></div>
+        </div>
+      </button>
+    </div>
+   
+    <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
+      
+      <div class="card-overview-info collapse show" data-search-form-target="passengerGroups">
+        <p class="origin-city"><strong><%=group.origin_city.city%></strong></p>
+        <p>Passangers: <%="#{group.adults} #{"Adult".pluralize(group.adults)}, "%>
+        <%="#{group.children} #{"Child".pluralize(group.children)}"%></p>
+        
+        <% info = group.flight_info %>
+        
+        <% if info[:flight_there].count >= 1 %>
+          
+          <% info[:flight_there].each do |f| %>    
+               
+            <p>Departure date: <%= f.departure_time.strftime('%d %b, %Y')%></p>
+            
+            <div class="flight-time py-2 px-5">
+                <div class="flight-time-location">
+                <h3 class="m-0"><%= f.departure_time.strftime('%H:%M')%>h</h3>
+                <p><%=group.origin_city.city%></p>
+                </div>
+                <i class="fa-solid fa-plane"></i>
+                <div class="flight-time-location">
+                <h3 class="m-0"><%= f.arrival_time.strftime('%H:%M') %>h</h3>
+                <p><%=itinerary.destination.city%></p>
+                </div>
+            </div>
+            <% end %>                        
+        <% end %>
+
+        <%# REFACTOR FLIGHT RETURN  %>
+
+        <% if info[:flight_return].count >= 1 %>
+            <% info[:flight_return].each do |f| %>
+                                    
+            <p>Departure date: <%= f.departure_time.strftime('%d %b, %Y')%></p>
+            
+            <div class="flight-time py-2 px-5">
+                <div class="flight-time-location">
+                <h3 class="m-0"><%= f.departure_time.strftime('%H:%M')%>h</h3>
+                <p><%=group.origin_city.city%></p>
+                </div>
+                <i class="fa-solid fa-plane"></i>
+                <div class="flight-time-location">
+                <h3 class="m-0"><%= f.arrival_time.strftime('%H:%M') %>h</h3>
+                <p><%=itinerary.destination.city%></p>
+                </div>
+            </div>
+            <% end %>                        
+        <% end %>
+        </div>
+    <% end %>
+    </div>
+
+<% end %>

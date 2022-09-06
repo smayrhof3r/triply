@@ -33,11 +33,11 @@
 
 <div class="container pt-5 text-center">
   <h1>Popular destinations</h1>
-      <div class="container mt-3 text-center">
-        <div class="row">
-            <% @locations.each do |location| %>
-            <h3 class="city-name center"><strong><%=location%></strong></h3>
-            <%# <%=@image_popular%> %>
+      <div class="container mt-3 text-center ">
+        <div class="destination-card">
+            <%@locations.each do |location|%>
+            <h3 class="city-name center"><strong><%=location.city%></strong></h3>
+            <%=location.image.link%>
             <% end %>
         </div>
       </div>

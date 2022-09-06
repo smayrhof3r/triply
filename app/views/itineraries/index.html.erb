@@ -1,15 +1,15 @@
 <%= @groups%>
 <div class="row">
-  <div class="sticky-column col-12 col-md-3">
+  <div class="col-12 col-md-4 scroll-bar sticky-column">
       <%= form_tag itineraries_path, :method => :get do %>
         <div class="w-100 d-flex align-items-center justify-content-end">
-          <i class="fas fa-sync-alt"></i> <%= submit_tag "Update results", class:"text-end", id: "refresh-search"  %>
+          <i class="fas fa-sync-alt"></i> <%= submit_tag "Update results", class:"text-end no-button", id:  "submit"  %>
         </div>
         <%= render 'itineraries/search_form_body' %>
       <% end %>
   </div>
-  <div class="col-12 offset-md-3 col-md-9 border-start border-success">
-    <div class="ps-2 pe-5">
+  <div class="col-12 offset-md-4 col-md-8">
+    <div class="ps-3 pe-3">
         <h1 class="text-center pb-5">Top Recommendations</h1>
 
     <% @itineraries.each do |itinerary| %>
@@ -17,13 +17,17 @@
         <div class="card-itinerary-recommendation">
           <%= image_tag(@images_by_itinerary_id[itinerary.id]) %>
           <div class="card-itinerary-recommendation-infos">
+            <% owned = itinerary.users.include?(current_user) %>
             <h2 class="city-name"><strong><%= itinerary.destination.city %></strong></h2>
-            <%=  %>
+            <% if owned %>
+              <span class="owned-tag px-2 py-1 rounded bg-primary text-white">booked</span>
+            <% end %>
             <% description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tincidunt dolor eget iaculis convallis.
             Nulla luctus risus sit amet felis commodo, id cursus dolor interdum. Phasellus non dolor id justo efficitur vehicula.
             Etiam rhoncus mi non pharetra mattis. Suspendisse dapibus non dui vel ultricies. Fusce ac leo ut risus gravida pellentesque." %>
             <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
-            <div class="button pt-3"><%= link_to "€ #{number_with_precision(itinerary.total_cost, precision: 2)}", itinerary_path(itinerary), class: "btn btn-success text-white fixed-right"%></div>
+            <% button_text = owned ? "View my itinerary" : "€ #{number_with_precision(itinerary.total_cost, precision: 2)}" %>
+            <div class="button pt-3"><%= link_to button_text, itinerary_path(itinerary), class: "btn btn-success text-white fixed-right"%></div>
           </div>
         </div>
       </div>
