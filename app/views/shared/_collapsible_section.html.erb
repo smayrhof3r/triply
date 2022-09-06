@@ -1,15 +1,27 @@
-<div class="card h-100 shadow" data-controller="collapsible-sections" data-collapsible-sections-target="section">
-  <div class="card-header <%= open ? 'bg-success' : 'bg-secondary' %>">
+<% bg_collapsed ||= 'bg-secondary' %>
+<% bg_open ||= 'bg-success' %>
+<% p_x ||= '' %>
+<% text_collapsed ||= 'text-white' %>
+<% text_open ||= 'text-white' %>
+<div class="card h-100 shadow"
+  data-controller="collapsible-sections"
+  data-collapsible-sections-target="section"
+  data-collapsible-sections-open-value=<%=bg_open%>
+  data-collapsible-sections-closed-value=<%=bg_collapsed%>
+  data-collapsible-sections-text-open-value=<%=text_open%>
+  data-collapsible-sections-text-closed-value=<%=text_collapsed%>
+  >
+  <div class="card-header <%= collapsed ? "#{bg_collapsed} rounded" : bg_open %> <%= p_x %>">
     <h2 class="mb-0">
-      <button class="btn btn-link text-white text-decoration-none w-100" type="button" data-action = "click->collapsible-sections#toggleCollapse" id = "searchFormSection2">
+      <button class="btn btn-link <%=collapsed ? text_collapsed : text_open %> text-decoration-none w-100" type="button" data-action = "click->collapsible-sections#toggleCollapse" data-collapsible-sections-target="button" >
         <div class="d-flex justify-content-between">
           <div><%= section_title %></div>
-          <div><i class="fas fa-<%= open ? 'minus' : 'plus'%>"></i></div>
+          <div><i class="fas fa-<%= collapsed ? 'plus' : 'minus'%>"></i></div>
         </div>
       </button>
     </h2>
   </div>
-  <div class="collapse <%= open ? 'show' : '' %>">
+  <div class="collapse <%= collapsed ? '' : 'show' %>">
     <div class="card-body">
       <%= render section_partial, section_partial_params %>
     </div>
