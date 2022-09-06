@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import CollapsibleSectionsController from "./collapsible_sections_controller"
+application.register("collapsible-sections", CollapsibleSectionsController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
@@ -16,8 +19,8 @@ application.register("navbar", NavbarController)
 import RemoveSectionController from "./remove_section_controller"
 application.register("remove-section", RemoveSectionController)
 
+import RenderItineraryInUserShowPageController from "./render_itinerary_in_user_show_page_controller"
+application.register("render-itinerary-in-user-show-page", RenderItineraryInUserShowPageController)
+
 import SearchFormController from "./search_form_controller"
 application.register("search-form", SearchFormController)
-
-import CollapsibleSectionsController from "./collapsible_sections_controller"
-application.register("collapsible-sections", CollapsibleSectionsController)

@@ -3,14 +3,13 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="collapsible-sections"
 export default class extends Controller {
   connect() {
-    console.log("collapsible controller");
+
   }
 
   static targets = ['section', 'button']
   static values = { open: String, closed: String, textOpen: String, textClosed: String }
 
   toggleCollapse (event) {
-
     this.icon = this.sectionTarget.querySelector("i")
     this.header = this.sectionTarget.querySelector(".card-header")
     this.body = this.sectionTarget.querySelector(".collapse")
@@ -33,14 +32,12 @@ export default class extends Controller {
   }
 
   #closeSection () {
-    console.log(this.values)
     this.sectionTarget.classList.remove("h-100")
     this.icon.classList.remove("fa-minus")
     this.icon.classList.add("fa-plus")
 
     this.header.classList.remove(this.openValue||'bg-success')
     this.header.classList.add("rounded",this.closedValue||'bg-secondary')
-
 
     this.buttonTarget.classList.remove(this.textOpenValue||'text-white')
     this.buttonTarget.classList.add(this.textClosedValue||'text-white')
