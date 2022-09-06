@@ -12,7 +12,7 @@
     <div class="ps-3 pe-3">
         <h1 class="text-center pb-5">Top Recommendations</h1>
 
-    <% @itineraries.each do |itinerary| %>
+    <% @itineraries.sort {|i| i.total_cost}.each do |itinerary| %>
       <div class="pb-3">
         <div class="card-itinerary-recommendation">
           <%= image_tag(@images_by_itinerary_id[itinerary.id]) %>
