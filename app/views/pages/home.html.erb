@@ -32,13 +32,14 @@
 </div>
 
 <div class="container pt-5 text-center">
-  <h1>Popular destinations</h1>
-      <div class="container mt-3 text-center ">
-        <div class="destination-card">
-            <%@locations.each do |location|%>
-            <h3 class="city-name center"><strong><%=location.city%></strong></h3>
-            <%=location.image.link%>
+   <h1>Popular destinations</h1>
+       <div class="panel border-radius-lg">
+         <div class=" popular justify-content-between">
+           <%@popular_images.each do |image|%>
+             <div style="background-image: url('<%=image.url%>'); background-size: cover; width:250px; height:300px;  padding:10px 20px;">
+              <h2><strong class="title-colour-white"><%=image.location.city%></strong></h2>
+            </div>
             <% end %>
-        </div>
-      </div>
+         </div>
+    </div>
 </div>

@@ -3,3 +3,13 @@
   text-align: center;
   text-decoration-color: rgb(91, 159, 219);
 }
+
+.popular{
+  display:flex;
+  justify-content: space-between;
+  border-radius: 8px;
+  color: white;
+  font-size: 10px;
+  padding: 10px;
+  text-shadow: -1px 0 $gray3, 0 1px $gray3, 1px 0 $gray3, 0 -1px $gray3;
+}
