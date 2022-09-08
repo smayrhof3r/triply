@@ -29,6 +29,15 @@ height: 85vh !important;
 
 }
 
+.modal-body {
+  max-height: 600px;
+  .modal-image img {
+    width:100%;
+    height: 200px;
+    object-fit: cover;
+  }
+}
+
 .card-overview {
  height:100%;
  background: white;
@@ -82,19 +91,23 @@ height: 85vh !important;
 }
 
 .itinerary-overview {
-height: 85vh !important;
+  height: 85vh !important;
+
+  .round-image img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+   }   
+}
 
 .destination-title {
  display: flex;
  align-items: center;
-}
 
-img {
- width: 60px;
- height: 60px;
- object-fit: cover;
- border-radius: 50%;
-}
+ h3:hover {
+  cursor:pointer;
+ }
 }
 
 .small-card-overview {
@@ -114,6 +127,12 @@ flex-direction: column;
  top: 40px;
  border: 2px solid $green;
  background-color: white;
+}
+
+.small-card-destination:hover{
+  cursor: pointer;
+  color: $blue;
+  border: 2px solid $blue;
 }
 
 .small-card-overview-info {
