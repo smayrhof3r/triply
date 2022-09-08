@@ -105,18 +105,19 @@ flex-direction: column;
 
 .small-card-destination {
  text-align: center;
- padding: 20px 150px 20px 150px;
+ padding: 20px 250px 20px 250px;
  border-radius: 8px;
  color: $green;
  margin:0;
  box-shadow: $shadow;
  position: relative;
  top: 40px;
- border: 2px dotted $green;
+ border: 2px solid $green;
+ background-color: white;
 }
 
 .small-card-overview-info {
- width: 250px;
+ width: 350px;
  border: 1px solid $green;
  border-radius: 8px;
 }
@@ -127,7 +128,7 @@ p {
 }
 
 .card-departure-info {
- display: flex;
+ 
 }
 
 .circle-booking {
@@ -145,10 +146,10 @@ p {
  content:"";
  position: absolute;
  left: 50%;
- top: 200%;
+ top: 270%;
  transform: translate(0, -50%);
  z-index: -1;
- height: 90px;
+ height: 110px;
  border-left: 2px dotted $green;
 }
 
@@ -164,7 +165,7 @@ top: 82px;
 
 
 .small-card-overview-info-return {
- width: 250px;
+ width: 350px;
  border: 1px solid $blue;
  border-radius: 8px;
  position:relative;

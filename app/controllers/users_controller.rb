@@ -6,5 +6,6 @@ class UsersController < ApplicationController
     @upcoming_itineraries = @user_itineraries.map {|i| i.start_date >= Date.today ? i : nil}.reject(&:nil?) 
     @past_itineraries = @user_itineraries.map {|i| i.start_date < Date.today ? i : nil}.reject(&:nil?)
 
+    @airports = Airport.all
   end
 end
