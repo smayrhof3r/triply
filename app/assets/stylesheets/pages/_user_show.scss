@@ -31,10 +31,12 @@ height: 85vh !important;
 
 .modal-body {
   max-height: 600px;
+  overflow-x: hidden;
   .modal-image img {
     width:100%;
     height: 200px;
     object-fit: cover;
+    border-radius: 8px;
   }
 }
 
@@ -111,104 +113,101 @@ height: 85vh !important;
 }
 
 .small-card-overview {
-display: flex;
-align-items: center;
-justify-content: center;
-flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 
-.small-card-destination {
- text-align: center;
- padding: 20px 250px 20px 250px;
- border-radius: 8px;
- color: $green;
- margin:0;
- box-shadow: $shadow;
- position: relative;
- top: 40px;
- border: 2px solid $green;
- background-color: white;
-}
+  .small-card-destination {
+  text-align: center;
+  padding: 20px 250px 20px 250px;
+  border-radius: 8px;
+  color: $green;
+  margin:0;
+  box-shadow: $shadow;
+  position: relative;
+  top: 40px;
+  border: 2px solid $green;
+  background-color: white;
+  z-index:5;
+  }
 
-.small-card-destination:hover{
-  cursor: pointer;
-  color: $blue;
-  border: 2px solid $blue;
-}
+  .small-card-destination:hover{
+    cursor: pointer;
+    color: $blue;
+    border: 2px solid $blue;
+  }
 
-.small-card-overview-info {
- width: 350px;
- border: 1px solid $green;
- border-radius: 8px;
-}
+  .small-card-overview-info {
+  width: 350px;
+  border: 1px solid $green;
+  border-radius: 8px;
+  }
 
-p {
- line-height: 1.5rem;
- margin: 0;
-}
+  p {
+  line-height: 1.5rem;
+  margin: 0;
+  }
 
-.card-departure-info {
- 
-}
 
-.circle-booking {
- width: 35px;
- height: 35px;
- border-radius: 50px;
- border: 1px solid $green;
- background-color: $green;
- position:relative;
-}
+  .circle-booking {
+  width: 35px;
+  height: 35px;
+  border-radius: 50px;
+  border: 1px solid $green;
+  background-color: $green;
+  position:relative;
+  }
 
 
 
-.circle-booking:after {
- content:"";
- position: absolute;
- left: 50%;
- top: 270%;
- transform: translate(0, -50%);
- z-index: -1;
- height: 110px;
- border-left: 2px dotted $green;
-}
+  .circle-booking:after {
+  content:"";
+  position: absolute;
+  left: 50%;
+  top: 270%;
+  transform: translate(0, -50%);
+  z-index: -1;
+  height: 140px;
+  border-left: 2px dotted $green;
+  }
 
-.small-card-booking {
- display: flex;
- align-items: center;
-}
+  .small-card-booking {
+  display: flex;
+  align-items: center;
+  }
 
-.small-cards-return {
-position:relative;
-top: 82px;
-}
+  .small-cards-return {
+  position:relative;
+  top: 82px;
+  }
 
-
-.small-card-overview-info-return {
- width: 350px;
- border: 1px solid $blue;
- border-radius: 8px;
- position:relative;
-}
-
-.circle-booking-up {
- width: 35px;
- height: 35px;
- border-radius: 50px;
- border: 1px solid $blue;
- background-color: $blue;
- position:relative;
-}
+  .small-card-overview-info-return {
+  width: 350px;
+  border: 1px solid $blue;
+  border-radius: 8px;
+  position:relative;
+  }
 
 
-.circle-booking-up:after {
- content:"";
- position: absolute;
- left: 50%;
- top: -40px;
- transform: translate(0, -50%);
- z-index: 1;
- bottom:35px;
- height: 82px;
- border-left: 2px dotted $blue;
-}
+  .circle-booking-up {
+  width: 35px;
+  height: 35px;
+  border-radius: 50px;
+  border: 1px solid $blue;
+  background-color: $blue;
+  position:relative;  
+  }
+
+  .circle-booking-up:after {
+  content:"";
+  position: absolute;
+  left: 50%;
+  top: -50px;
+  transform: translate(0, -50%);
+  z-index: 1;
+  bottom:35px;
+  height: 110px;
+  border-left: 2px dotted $blue;
+  }
 }

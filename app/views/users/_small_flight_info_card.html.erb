@@ -14,6 +14,7 @@
         </div>
         <div class="modal-body">
           <div class="modal-image"><%= image_tag(itinerary.destination.images.first.url) %></div>
+          <%= render 'locations/lonely_planet_description', lonely_planet: itinerary.destination.lonely_planet_data %>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-success text-white" data-bs-dismiss="modal">Close</button>
@@ -32,15 +33,7 @@
           <div class="card-departure-info">
             <% if info[:flight_there].count >= 1 %>
               <% info[:flight_there].each do |f| %>
-                <% loc_dep_id = @airports.find(f.departure_airport_id).location_id %>
-                <% loc_dep = Location.find(loc_dep_id) %>
-                <% loc_arr_id = @airports.find(f.arrival_airport_id).location_id %>
-                <% loc_arr = Location.find(loc_arr_id) %>
-                <div>
-                  <p class="border-bottom text-success">Flight from <strong class="text-primary"><%=loc_dep.city%></strong> to <strong class="text-primary"><%=loc_arr.city%></strong></p>
-                  <p>Departure: <%= f.departure_time.strftime('%d/%b')%>, <%= f.departure_time.strftime('%H:%M')%>h</p>
-                  <p>Arrival: <%= f.arrival_time.strftime('%d/%b')%>, <%= f.arrival_time.strftime('%H:%M')%>h</p>
-                </div>
+                <%= render partial: 'users/flight_info', locals: {f: f }%>
               <% end %>
             <% end %>
           </div>
@@ -60,15 +53,7 @@
               <div class="small-card-overview-info-return p-3">
                 <div class="card-departure-info">
                   <% info[:flight_return].each do |f| %>
-                    <% loc_dep_id = @airports.find(f.departure_airport_id).location_id %>
-                    <% loc_dep = Location.find(loc_dep_id) %>
-                    <% loc_arr_id = @airports.find(f.arrival_airport_id).location_id %>
-                    <% loc_arr = Location.find(loc_arr_id) %>
-                    <div>
-                      <p class="border-bottom text-success">Flight from <strong class="text-primary"><%=loc_dep.city%></strong> to <strong class="text-primary"><%=loc_arr.city%></strong></p>
-                      <p>Departure: <%= f.departure_time.strftime('%d/%b')%>, <%= f.departure_time.strftime('%H:%M')%>h</p>
-                      <p>Arrival: <%= f.arrival_time.strftime('%d/%b')%>, <%= f.arrival_time.strftime('%H:%M')%>h</p>
-                    </div>
+                    <%= render partial: 'users/flight_info', locals: {f: f }%>
                   <% end %>
                 </div>
               </div>
