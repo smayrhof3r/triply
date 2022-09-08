@@ -1,49 +1,65 @@
-  <div class="itinerary-overview">
-    <div class="destination-title ps-5 py-3">
-      <%= image_tag(itinerary.destination.images.first.url) %>
-      <h3 class="ps-2">Your trip to <strong><%=itinerary.destination.city%></strong></h3>
-    </div>
+<div class="itinerary-overview">
+  <div class="destination-title ps-5 py-3">
+    <div class="round-image"><%= image_tag(itinerary.destination.images.first.url) %></div>
+    <h3 class="ps-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Your trip to <strong class="text-success" style="text-decoration: underline;"><%=itinerary.destination.city%></strong></h3>
+  </div>
 
-    <div class="small-card-overview">
-      <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
-        <div class="small-card-booking py-3">
-          <button class="circle-booking me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
-          <div class="small-card-overview-info p-3">
-            <p>Flight from <strong><%=group.origin_city.city%></strong></p>
-            <% info = group.flight_info %>
-            <div class="card-departure-info">
-              <% if info[:flight_there].count >= 1 %>
-                <% info[:flight_there].each do |f| %>
-                  <p>Departure: <%= f.departure_time.strftime('%d/%b')%></p>
-                  <p class="m-0">, <%= f.departure_time.strftime('%H:%M')%>h<p>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><strong> Discover <%=itinerary.destination.city%></strong></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-      <% end %>
-      <div class="small-card-destination"><h4><strong><%=itinerary.destination.city%></strong></h4></div>
-
-      <%# REFACTOR RETURN FLIGHTS %>
-
-      <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
-          <% info = group.flight_info %>
-          <% if info[:flight_return].count >= 1 %>
-            <div class="small-cards-return">
-              <div class="small-card-booking py-3">
-                <button class="circle-booking-up me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
-                <div class="small-card-overview-info-return p-3">
-                  <p>Flight to <strong><%=group.origin_city.city%></strong></p>
-                  <div class="card-departure-info">
-                      <% info[:flight_return].each do |f| %>
-                        <p>Departure: <%= f.departure_time.strftime('%d/%b')%></p>
-                        <p class="m-0">, <%= f.departure_time.strftime('%H:%M')%>h<p>
-                      <% end %>
-                  </div>
-                </div>
-              </div>
-             <% end %>
-          </div>
-        <% end %>
+        <div class="modal-body">
+          <div class="modal-image"><%= image_tag(itinerary.destination.images.first.url) %></div>
+          <%= render 'locations/lonely_planet_description', lonely_planet: itinerary.destination.lonely_planet_data %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success text-white" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Cards with flight info -->
+  <div class="small-card-overview">
+    <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
+      <div class="small-card-booking py-3">
+        <button class="circle-booking me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
+        <div class="small-card-overview-info p-3">
+          <% info = group.flight_info %>
+          <div class="card-departure-info">
+            <% if info[:flight_there].count >= 1 %>
+              <% info[:flight_there].each do |f| %>
+                <%= render partial: 'users/flight_info', locals: {f: f }%>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <div class="small-card-destination" data-bs-toggle="modal" data-bs-target="#exampleModal"><h4><strong><%=itinerary.destination.city%></strong></h4></div>
+
+    <%# REFACTOR RETURN FLIGHTS %>
+
+    <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
+        <% info = group.flight_info %>
+        <% if info[:flight_return].count >= 1 %>
+          <div class="small-cards-return">
+            <div class="small-card-booking py-3">
+              <button class="circle-booking-up me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
+              <div class="small-card-overview-info-return p-3">
+                <div class="card-departure-info">
+                  <% info[:flight_return].each do |f| %>
+                    <%= render partial: 'users/flight_info', locals: {f: f }%>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <% end %>
+        </div>
+      <% end %>
+  </div>
+</div>
