@@ -4,7 +4,9 @@
 # Flight.delete_all
 # PassengerGroup.delete_all
 # Itinerary.delete_all
+
 Image.delete_all
+
 # Airport.delete_all
 # Location.delete_all
 
@@ -68,7 +70,7 @@ Search::DESTINATIONS.each do |location|
   end
 end
 
-# seed the searches for demo
+# # seed the searches for demo
 
 # searches = [{"origin_city1"=>"London",
 #   "adults1"=>"2",
