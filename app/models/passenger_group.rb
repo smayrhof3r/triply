@@ -7,8 +7,8 @@ class PassengerGroup < ApplicationRecord
   end
 
   def flight_info
-    suggested_bookings = bookings.filter { |b| b.status = "confirmed" }
-    suggested_bookings ||= suggested_bookings.filter { |b| b.status = "suggested" }
+    suggested_bookings = bookings.filter { |b| b.status == "confirmed" }
+    suggested_bookings = bookings.filter { |b| b.status == "suggested" } if suggested_bookings.empty?
 
     info = {flight_there: [], flight_return: []}
     suggested_bookings.each do |booking|
