@@ -1,7 +1,7 @@
 <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
 
-  <div class="card-overview-info">
-    <div class="origin-city d-flex justify-content-between align-items-bottom">
+  <div class="card-overview-info mb-3">
+    <div class="border-bottom border-success origin-city d-flex justify-content-between align-items-bottom">
       <div>Travellers from <span class="text-primary"><strong><%=group.origin_city.city%></strong></span></div>
       <div>
         <% group.adults.times do %>
