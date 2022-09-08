@@ -8,7 +8,7 @@
         <% @upcoming_itineraries.each_with_index do |itinerary, i| %>
           <% collapsed = (i != 0 ? true : false) %>
 
-          <div data-action="click->render-itinerary-in-user-show-page#renderItineraryPartial">
+          <div class = "mb-3" data-action="click->render-itinerary-in-user-show-page#renderItineraryPartial">
             <%= form_tag(itinerary_path(itinerary), method: :get) do %>
               <div class="d-none itinerary">
                 <%=itinerary.id%>
