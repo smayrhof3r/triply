@@ -11,12 +11,15 @@ class ItinerariesController < ApplicationController
   end
 
   def show
-   @itinerary = Itinerary.find(params["id"])
-   @location = @itinerary.destination
-   @permission = Permission.new
-   session["user_return_to"] = request.original_url
+    @itinerary = Itinerary.find(params["id"])
+    @location = @itinerary.destination
+    @permission = Permission.new
+    session["user_return_to"] = request.original_url
 
-  #  @status = Booking.confirmed?
+    respond_to do |format|
+      format.html { render 'itineraries/show'}
+      format.text { render partial: "users/small_flight_info_card", locals: { itinerary: @itinerary }, formats: [:html] }
+    end
   end
 
   def index

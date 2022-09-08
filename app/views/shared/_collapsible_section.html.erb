@@ -3,6 +3,7 @@
 <% p_x ||= '' %>
 <% text_collapsed ||= 'text-white' %>
 <% text_open ||= 'text-white' %>
+<% clickable_header ||= false %>
 <div class="card h-100 shadow"
   data-controller="collapsible-sections"
   data-collapsible-sections-target="section"
@@ -11,14 +12,14 @@
   data-collapsible-sections-text-open-value=<%=text_open%>
   data-collapsible-sections-text-closed-value=<%=text_collapsed%>
   >
-  <div class="card-header <%= collapsed ? "#{bg_collapsed} rounded" : bg_open %> <%= p_x %>">
+  <div class="card-header <%=clickable_header ? 'clickable' : '' %> <%= collapsed ? "#{bg_collapsed} rounded" : bg_open %> <%= p_x %>">
     <h2 class="mb-0">
-      <button class="btn btn-link <%=collapsed ? text_collapsed : text_open %> text-decoration-none w-100" type="button" data-action = "click->collapsible-sections#toggleCollapse" data-collapsible-sections-target="button" >
+      <div class="text-lg p-2 <%=collapsed ? text_collapsed : text_open %> text-decoration-none w-100" data-collapsible-sections-target="button" >
         <div class="d-flex justify-content-between">
           <div><%= section_title %></div>
-          <div><i class="fas fa-<%= collapsed ? 'plus' : 'minus'%>"></i></div>
+          <div data-action = "click->collapsible-sections#toggleCollapse"><i class="clickable fas fa-<%= collapsed ? 'plus' : 'minus'%>"></i></div>
         </div>
-      </button>
+      </div>
     </h2>
   </div>
   <div class="collapse <%= collapsed ? '' : 'show' %>">

@@ -4,7 +4,9 @@
 # Flight.delete_all
 # PassengerGroup.delete_all
 # Itinerary.delete_all
-  Image.delete_all
+
+Image.delete_all
+
 # Airport.delete_all
 # Location.delete_all
 
@@ -62,7 +64,7 @@ Search::DESTINATIONS.each do |location|
 
   photos = Unsplash::Photo.search(l.city)
                           .first(5)
-                          .map { |result| result.urls["raw"] }
+                          .map { |result| result.urls["regular"] }
   photos.each do |photo|
     Image.create(url: photo, location: l)
   end

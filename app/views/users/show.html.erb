@@ -1,4 +1,4 @@
-<div class="row user-page pt-5">
+<div class="row user-page pt-5" data-controller="render-itinerary-in-user-show-page">
   <div class="col-12 col-sm-4 col-md-4 upcoming-trips scroll-bar">
     <div class="py-3 ps-5 pe-2">
       <h3 class="text-center py-3">Your upcoming trips</h3>
@@ -7,7 +7,15 @@
       <% else %>
         <% @upcoming_itineraries.each_with_index do |itinerary, i| %>
           <% collapsed = (i != 0 ? true : false) %>
-          <%= render 'shared/collapsible_section', section_title: "Trip to #{itinerary.destination.city}", section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: collapsed %>
+
+          <div data-action="click->render-itinerary-in-user-show-page#renderItineraryPartial">
+            <%= form_tag(itinerary_path(itinerary), method: :get) do %>
+              <div class="d-none itinerary">
+                <%=itinerary.id%>
+              </div>
+              <%= render 'shared/collapsible_section', section_title: "Trip to #{itinerary.destination.city}", section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: collapsed, clickable_header: true %>
+            <% end %>
+          </div>
         <% end %>
       <% end %>
 
@@ -16,7 +24,14 @@
           <p class="text-center">You have no past trips</p>
         <% else %>
           <% @past_itineraries.each do |itinerary| %>
-            <%= render 'shared/collapsible_section', section_title: "Trip to #{itinerary.destination.city}", section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: true %>
+            <div data-action="click->render-itinerary-in-user-show-page#renderItineraryPartial">
+              <%= form_tag(itinerary_path(itinerary), method: :get) do %>
+                <div class="d-none itinerary">
+                  <%=itinerary.id%>
+                </div>
+                <%= render 'shared/collapsible_section', section_title: "Trip to #{itinerary.destination.city}", section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: true %>
+              <% end %>
+            </div>
           <% end %>
         <% end %>
     </div>
@@ -26,8 +41,8 @@
 
   <div class="col-12 col-sm-8 col-md-8">
     <div class="pt-3 px-3 itinerary-overview">
-      <div class="scroll-bar">
-        <%= render 'users/small_flight_info_card' %>
+      <div class="scroll-bar" data-render-itinerary-in-user-show-page-target="itinerary">
+        <%= render 'users/small_flight_info_card', itinerary: @upcoming_itineraries.first %>
       </div>
     </div>
   </div>
