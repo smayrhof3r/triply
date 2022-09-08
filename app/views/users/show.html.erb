@@ -13,7 +13,7 @@
               <div class="d-none itinerary">
                 <%=itinerary.id%>
               </div>
-              <%= render 'shared/collapsible_section', section_title: "Trip to #{itinerary.destination.city}", section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: collapsed %>
+              <%= render 'shared/collapsible_section', section_title: "Trip to #{itinerary.destination.city}", section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: collapsed, clickable_header: true %>
             <% end %>
           </div>
         <% end %>

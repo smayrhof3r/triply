@@ -18,20 +18,7 @@
       </div>
     </div>
 
-    <% if flight_info[:booking].status != "confirmed" || !user_signed_in? %>
-      <div class="d-flex justify-content-end w-100">
-        <div class="clickable text-sm text-success me-3">
-          <strong><i class="fas fa-check"></i> Add to itinerary</strong>
-        </div>
-        <div class="clickable text-sm text-secondary">
-          <i class="fas fa-search"></i> Change
-        </div>
-      </div>
-    <% else %>
-      <div class="w-100 d-flex justify-content-end">
-        <div class="bg-success text-white card-tag px-2">booked</div>
-      </div>
-    <% end %>
+    <%= render 'shared/booking_status_or_edit_form', flight_info: flight_info %>
 
   </div>
 </div>
