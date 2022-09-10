@@ -1,15 +1,37 @@
 // Specific CSS for your home-page
-.city-name {
-  text-align: center;
-  text-decoration-color: rgb(91, 159, 219);
+.popular-cards-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 24px;
+  z-index: 0;
+
 }
 
-.popular{
-  display:flex;
-  justify-content: space-between;
-  border-radius: 8px;
+.popular-cards {
+  position: relative;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  transition: all .2s ease-in-out; 
+}
+
+.popular-cards:hover{
+  cursor: pointer;
+  transform: scale(1.03);
+}
+
+.popular {
   color: white;
   font-size: 10px;
-  padding: 10px;
-  text-shadow: -1px 0 $gray3, 0 1px $gray3, 1px 0 $gray3, 0 -1px $gray3;
+  text-shadow: 0px 0px 8px rgba(0,0,0,1);
+  height: 300px;
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: $shadow;
+}
+
+@media(max-width: 992px){
+  .popular-cards-container {
+    grid-template-columns: 1fr;
+  }
 }
