@@ -63,9 +63,9 @@ class ItinerariesController < ApplicationController
   end
   def sort_itineraries
     case params[:sort]
-    when "Price ⬇️"
+    when "Price Descending"
       @itineraries = @itineraries.sort_by(&:total_cost).reverse
-    when "Price ⬆️"
+    when "Price Ascending"
       @itineraries = @itineraries.sort_by(&:total_cost)
     when "Shortest flights"
       @itineraries = @itineraries.sort_by(&:total_time)
