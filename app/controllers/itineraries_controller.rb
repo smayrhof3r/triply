@@ -47,6 +47,9 @@ class ItinerariesController < ApplicationController
       session[:params] = {}
       redirect_to '/search', alert: "restart search or view your itineraries from the menu provided"
     else
+      @itineraries = @itineraries.filter! { |i| i != "" }
+      apply_budget_filter
+
       @itineraries = @itineraries.filter { |i| i != "" }.sort_by(&:total_cost).reverse
       update_session_variables
       @images_by_itinerary_id = Image.retrieve_all_by_itinerary(@itineraries)
@@ -96,6 +99,13 @@ class ItinerariesController < ApplicationController
   end
 
   private
+
+  def apply_budget_filter
+    unless params["range_primary"].to_i == 0
+      budget = params["range_primary"].to_i
+      @itineraries.filter! { |i| i.total_cost <= budget }
+    end
+  end
 
   def remove_empty_passenger_groups
     count = params["passenger_group_count"].to_i
@@ -180,13 +190,11 @@ class ItinerariesController < ApplicationController
         status: "shortest",
         offer: shortest_flight
       )
-
     end
     itinerary
   end
 
   def new_passenger_group(group, itinerary)
-
     p = PassengerGroup.new(group.except(:location, :search))
     p.itinerary = itinerary
     p.save
@@ -217,7 +225,6 @@ class ItinerariesController < ApplicationController
   end
 
   def passenger_group_params(i)
-    # NOTE: requires form city to be a valid city from our database!
     adults = params["adults#{i}"]
     children = params["children#{i}"]
     location = Location.find_by_city(params["origin_city#{i}"])
@@ -231,9 +238,6 @@ class ItinerariesController < ApplicationController
   end
 
   def amadeus_search_result
-
-    # result = AMADEUS.shopping.flight_offers_search.get(@search_criteria.merge({max: 10}))
-    # result.data
     AMADEUS.shopping.flight_offers_search.get(@search_criteria.merge({max: 10})).data[0..10]
   end
 
