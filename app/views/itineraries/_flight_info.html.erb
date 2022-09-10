@@ -3,8 +3,8 @@
     <p><%= DateTime.parse(flight["departure_time"]).strftime('%d %b, %Y')%></p>
     <p><%="#{flight["airline"]} #{flight["flight_code"]}"%></p>
   </div>
-  <div class="flight-time py-1 px-5">
-    <div class="flight-time-location bg-light">
+  <div class="d-flex justify-content-around align-items-center">
+    <div class="flight-time-location bg-light pt-2 text-center">
       <h3 class="m-0"><%= DateTime.parse(flight["departure_time"]).strftime('%H:%M')%>h</h3>
       <p><%= flight["departure_city"] %></p>
     </div>
@@ -13,7 +13,7 @@
     <% else %>
       <%= render 'shared/flight_question_icon' %>
     <% end %>
-    <div class="flight-time-location">
+    <div class="flight-time-location pt-2 text-center">
       <h3 class="m-0"><%= DateTime.parse(flight["arrival_time"]).strftime('%H:%M') %>h</h3>
       <p><%= flight["arrival_city"] %></p>
     </div>
