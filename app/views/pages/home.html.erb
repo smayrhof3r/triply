@@ -12,34 +12,41 @@
   <h1>How it works</h1>
   <div class="how-cards">
     <div class="panel border-radius-lg ">
+      <div class="panel-main-content">
         <div class="panel-icon"><%= image_tag "group.png"%></div>
         <h3>Set up a travel group</h3>
-        <p>Set up a travel group with your friends. Tell us where you are all travelling from, preferred region and budget.</p>
+      </div>
+      <div class="panel-description"><p>Set up a travel group with your friends. Tell us where you are all travelling from, preferred region and budget.</p></div>
     </div>
 
     <div class="panel border-radius-lg ">
-        <div class="panel-icon"><%= image_tag "destination.png"%></div>
-        <h3>We recommend the perfect destination</h3>
-        <p>Our destinations optimise cost and flight duration for all of your trevellers, finding the best locations for you as a group.</p>
+        <div class="panel-main-content">
+          <div class="panel-icon"><%= image_tag "destination.png"%></div>
+          <h3>We recommend the perfect destination</h3>
+        </div> 
+        <div class="panel-description"><p>Our destinations optimise cost and flight duration for all of your trevellers, finding the best locations for you as a group.</p></div>
     </div>
 
     <div class="panel border-radius-lg ">
+      <div class="panel-main-content">
         <div class="panel-icon"><%= image_tag "itinerary.png"%></div>
         <h3>Collaborate on your itinerary</h3>
-        <p>Share flight details with your travel group and plan activities for your holidays.</p>
+      </div>
+        <div class="panel-description"><p>Share flight details with your travel group and plan activities for your holidays.</p></div>
     </div>
   </div>
 </div>
 
 <div class="container pt-5 text-center">
-   <h1>Popular destinations</h1>
-       <div class="panel border-radius-lg">
-         <div class=" popular justify-content-between">
-           <%@popular_images.each do |image|%>
-             <div style="background-image: url('<%=image.url%>'); background-size: cover; width:250px; height:300px;  padding:10px 20px;">
-              <h2><strong class="title-colour-white"><%=image.location.city%></strong></h2>
-            </div>
-            <% end %>
-         </div>
-    </div>
+  <h1>Popular destinations</h1>
+  <div class="popular-cards-container">
+    <%@popular_images.each do |image|%>
+      <%= render 'pages/home_modal_lonely_planet', image: image %>
+      <div class="popular-cards">
+        <div class="popular" style="background-image: url('<%=image.url%>'); background-size: cover;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <h2 class="pt-4"><strong><%=image.location.city%></strong></h2>
+        </div>
+      </div>  
+    <% end %> 
+  </div>
 </div>
