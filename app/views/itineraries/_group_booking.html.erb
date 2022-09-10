@@ -29,8 +29,10 @@
   <% end %>
 </div>
 
-<div class="flight-overview-time col-4 border-end border-success shadow-x border-top-left">
-  <% flight_info["flights_return"].each do |f| %>
-    <%= render 'flight_info', flight: f, status: type %>
-  <% end %>
-</div>
+<% if flight_info["flights_return"] %>
+  <div class="flight-overview-time col-4 border-end border-success shadow-x border-top-left">
+      <% flight_info["flights_return"].each do |f| %>
+        <%= render 'flight_info', flight: f, status: type %>
+      <% end %>
+  </div>
+<% end %>
