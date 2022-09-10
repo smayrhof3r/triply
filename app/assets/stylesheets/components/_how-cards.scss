@@ -11,12 +11,19 @@
 
 .panel {
   padding: 20px;
+  align-items: center;
   border-radius: 16px;
   background-color: white;
   box-shadow: $shadow;
+
   .panel-icon img{
     width: 25%;
   }
+  
+  .panel-main-content {
+    height: 60%;
+  }
+
 }
 
 @media(max-width: 992px){
