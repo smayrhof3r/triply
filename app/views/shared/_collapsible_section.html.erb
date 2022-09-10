@@ -1,10 +1,12 @@
 <% bg_collapsed ||= 'bg-secondary' %>
 <% bg_open ||= 'bg-success' %>
 <% p_x ||= '' %>
+<% card_p_x ||= '' %>
+<% card_body_p_x ||= "" %>
 <% text_collapsed ||= 'text-white' %>
 <% text_open ||= 'text-white' %>
 <% clickable_header ||= false %>
-<div class="card h-100 shadow"
+<div class="card h-100 shadow <%=card_p_x%>"
   data-controller="collapsible-sections"
   data-collapsible-sections-target="section"
   data-collapsible-sections-open-value=<%=bg_open%>
@@ -16,14 +18,16 @@
     <h2 class="mb-0">
       <div class="text-lg p-2 <%=collapsed ? text_collapsed : text_open %> text-decoration-none w-100" data-collapsible-sections-target="button" >
         <div class="d-flex justify-content-between">
-          <div><%= section_title %></div>
+          <div>
+              <%= section_title %>
+          </div>
           <div data-action = "click->collapsible-sections#toggleCollapse"><i class="clickable fas fa-<%= collapsed ? 'plus' : 'minus'%>"></i></div>
         </div>
       </div>
     </h2>
   </div>
   <div class="collapse <%= collapsed ? '' : 'show' %>">
-    <div class="card-body">
+    <div class="card-body <%=card_body_p_x%>">
       <%= render section_partial, section_partial_params %>
     </div>
   </div>

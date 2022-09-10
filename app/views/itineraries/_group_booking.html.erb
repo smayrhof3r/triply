@@ -1,4 +1,5 @@
 <% flight_info = group.bookings.filter{ |b| b.status == type }.first.offer %>
+<div class="row">
 <div class="col-4 rounded-start border-top-left py-2">
   <div class="d-flex flex-column h-100 justify-content-between">
     <div>
@@ -36,3 +37,4 @@
       <% end %>
   </div>
 <% end %>
+</div>
