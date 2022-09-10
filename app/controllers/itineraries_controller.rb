@@ -38,7 +38,7 @@ class ItinerariesController < ApplicationController
       # try each destination
       possible_destinations.each do |destination|
         @itineraries << (@user_itineraries[destination] || new_itinerary(destination))
-        source_images(destination) if @itineraries.last.destination.images.empty?
+        source_images(destination) if (!@itineraries.last == "" && @itineraries.last.destination.images.empty?)
       end
     end
 
@@ -128,7 +128,7 @@ class ItinerariesController < ApplicationController
       Image.create(url: photo, location: l)
     end
   end
-  
+
   def apply_budget_filter
     unless params["range_primary"].to_i == 0
       budget = params["range_primary"].to_i
@@ -250,7 +250,9 @@ class ItinerariesController < ApplicationController
   def possible_destinations
     # replace with logic to find matching destinations using the api endpoint if fixed
     # also need to then get the relevant unsplash images if not already in our database (see seed file)
-    [params["destination"]] || Search::DESTINATIONS
+    return Search::DESTINATIONS if (params["destination"].nil? || params["destination"].empty?)
+
+    [params["destination"]]
   end
 
   def passenger_group_params(i)
