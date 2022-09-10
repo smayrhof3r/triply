@@ -38,6 +38,7 @@ class ItinerariesController < ApplicationController
       # try each destination
       possible_destinations.each do |destination|
         @itineraries << (@user_itineraries[destination] || new_itinerary(destination))
+        source_images(destination) if @itineraries.last.destination.images.empty?
       end
     end
 
@@ -118,6 +119,16 @@ class ItinerariesController < ApplicationController
 
   private
 
+  def source_images(destination)
+    l = Location.find_by(city_code: destination)
+    photos = Unsplash::Photo.search(l.city)
+                          .first(5)
+                          .map { |result| result.urls["regular"] }
+    photos.each do |photo|
+      Image.create(url: photo, location: l)
+    end
+  end
+  
   def apply_budget_filter
     unless params["range_primary"].to_i == 0
       budget = params["range_primary"].to_i
@@ -239,7 +250,7 @@ class ItinerariesController < ApplicationController
   def possible_destinations
     # replace with logic to find matching destinations using the api endpoint if fixed
     # also need to then get the relevant unsplash images if not already in our database (see seed file)
-    Search::DESTINATIONS
+    [params["destination"]] || Search::DESTINATIONS
   end
 
   def passenger_group_params(i)
@@ -285,11 +296,14 @@ class ItinerariesController < ApplicationController
     s = segments.map do |segment|
       airline = find_or_create_airline(segment['carrierCode'])
       airline = airline ? airline.name : ""
+
+      airport_from = Airport.find_by(code: segment["departure"]["iataCode"])
+      airport_to = Airport.find_by(code: segment["arrival"]["iataCode"])
       {
         departure_time: segment["departure"]["at"],
         arrival_time: segment["arrival"]["at"],
-        departure_city: Airport.find_by(code: segment["departure"]["iataCode"]).location.city,
-        arrival_city: Airport.find_by(code: segment["arrival"]["iataCode"]).location.city,
+        departure_city: airport_from ? airport_from.location.city : airport_from.name,
+        arrival_city: airport_to ? airport_to.location.city : airport_to.name,
         flight_code: "#{segment['carrierCode']} #{segment['number']}",
         airline: airline,
         duration: ActiveSupport::Duration.parse(segment["duration"])
@@ -324,6 +338,14 @@ class ItinerariesController < ApplicationController
     )
 
     return a
+  end
+
+  def find_or_create_airport(iata)
+    airport = Airport.find_by(code: iata)
+    return airport unless airport.nil?
+
+    data = Faraday.get("https://raw.githubusercontent.com/mwgg/Airports/master/airports.json")
+    airport_info = JSON.parse(data.body)
   end
 
 end
