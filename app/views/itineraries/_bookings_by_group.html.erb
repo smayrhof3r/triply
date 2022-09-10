@@ -35,14 +35,11 @@
             text_open: "text-white",
             bg_open: "bg-secondary" %>
       </div>
-      <div class="clickable text-md text-secondary">
-        <strong class="text-md"><i class="ms-2 text-primary fas fa-search"></i> Choose other flights</strong>
-      </div>
-<% else %>
+    <% else %>
       <div class="row">
         <%= render 'group_booking', group: group, type: "confirmed" %>
       </div>
-      <div class="clickable text-sm text-secondary">
-        <i class="fas fa-search"></i> Change_flights
-      </div>
     <% end %>
+    <div class="clickable text-md text-primary">
+        <strong class="text-md"><i class="ms-2 text-primary fas fa-search"></i> Choose other flights</strong>
+    </div>
