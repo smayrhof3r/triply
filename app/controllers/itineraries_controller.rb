@@ -15,12 +15,12 @@ class ItinerariesController < ApplicationController
     @location = @itinerary.destination
     @permission = Permission.new
     session["user_return_to"] = request.original_url
-
     respond_to do |format|
-      format.html { render 'itineraries/show'}
-      format.text { render partial: "users/small_flight_info_card", locals: { itinerary: @itinerary }, formats: [:html] }
+    format.html { render 'itineraries/show'}
+    format.text { render partial: "users/small_flight_info_card", locals: { itinerary: @itinerary }, formats: [:html] }
     end
   end
+
 
   def index
     if session[:params] == params && !session[:itineraries].empty?
