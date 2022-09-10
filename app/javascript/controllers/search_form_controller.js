@@ -57,6 +57,9 @@ export default class extends Controller {
 
   hideReturnDate() {
     this.oneWayTarget.classList.add("d-none")
+    console.log(this.oneWayTarget.querySelector("input"))
+    this.oneWayTarget.querySelector("input").valueAsDate = null
+    console.log(this.oneWayTarget.querySelector("input"))
   }
 
   showReturnDate() {
@@ -74,10 +77,17 @@ export default class extends Controller {
   }
 
   #hasDates() {
-    if (document.querySelector('.start-date').value && document.querySelector('.end-date').value) { return true }
+    if (document.querySelector('.start-date').value) {
+      let not_needed = this.oneWayTarget.classList.contains("d-none")
+      let date_found = document.querySelector('.end-date').value
+      if ( not_needed || date_found ) {
+       return true
+      }
+    }
 
     let hasStart = document.querySelector('.date-range-start').value
     let hasEnd = document.querySelector('.date-range-end').value
+
     let tripDays = document.querySelector('.trip-days').value
     if (hasStart && hasEnd && tripDays > 0) { return true }
     return false

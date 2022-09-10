@@ -47,14 +47,32 @@ class ItinerariesController < ApplicationController
       session[:params] = {}
       redirect_to '/search', alert: "restart search or view your itineraries from the menu provided"
     else
-      @itineraries = @itineraries.filter! { |i| i != "" }
+
+      @itineraries = @itineraries.filter { |i| i != "" }
+      sort_itineraries
+      filter_direct_flights
       apply_budget_filter
 
-      @itineraries = @itineraries.filter { |i| i != "" }.sort_by(&:total_cost).reverse
       update_session_variables
       @images_by_itinerary_id = Image.retrieve_all_by_itinerary(@itineraries)
     end
 
+  end
+
+  def filter_direct_flights
+    if params["direct_flights"]
+      @itineraries.filter!(&:direct_flight)
+    end
+  end
+  def sort_itineraries
+    case params[:sort]
+    when "Price Descending"
+      @itineraries = @itineraries.sort_by(&:total_cost).reverse
+    when "Price Ascending"
+      @itineraries = @itineraries.sort_by(&:total_cost)
+    when "Shortest flights"
+      @itineraries = @itineraries.sort_by(&:total_time)
+    end
   end
 
   def seed(params)
