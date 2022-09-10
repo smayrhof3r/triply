@@ -1,12 +1,12 @@
-# Booking.delete_all
-# SearchResult.delete_all
-# Search.delete_all
-# Flight.delete_all
-# PassengerGroup.delete_all
-# Itinerary.delete_all
+Booking.delete_all
+SearchResult.delete_all
+Search.delete_all
+Flight.delete_all
+PassengerGroup.delete_all
+Permission.delete_all
+Itinerary.delete_all
 
-Image.delete_all
-
+# Image.delete_all
 # Airport.delete_all
 # Location.delete_all
 
@@ -58,53 +58,53 @@ Image.delete_all
 #   )
 # end
 
-# get some images if its a destination we need
-Search::DESTINATIONS.each do |location|
-  l = Location.find_by_city_code(location)
+# # get some images if its a destination we need
+# Search::DESTINATIONS.each do |location|
+#   l = Location.find_by_city_code(location)
 
-  photos = Unsplash::Photo.search(l.city)
-                          .first(5)
-                          .map { |result| result.urls["regular"] }
-  photos.each do |photo|
-    Image.create(url: photo, location: l)
-  end
-end
-
-# # seed the searches for demo
-
-# searches = [{"origin_city1"=>"London",
-#   "adults1"=>"2",
-#   "children1"=>"2",
-#   "start_date"=>"2022-10-16",
-#   "end_date"=>"2022-10-22"},
-#  {"origin_city1"=>"Paris",
-#   "adults1"=>"4",
-#   "children1"=>"2",
-#   "start_date"=>"2022-10-16",
-#   "end_date"=>"2022-10-22"},
-#   {"origin_city1"=>"Zurich",
-#     "adults1"=>"2",
-#     "children1"=>"0",
-#     "start_date"=>"2022-10-16",
-#     "end_date"=>"2022-10-22"},
-#     {"origin_city1"=>"London",
-#       "adults1"=>"1",
-#       "children1"=>"0",
-#       "start_date"=>"2022-10-16",
-#       "end_date"=>"2022-10-22"},
-#      {"origin_city1"=>"Paris",
-#       "adults1"=>"1",
-#       "children1"=>"0",
-#       "start_date"=>"2022-10-16",
-#       "end_date"=>"2022-10-22"},
-#       {"origin_city1"=>"Zurich",
-#         "adults1"=>"1",
-#         "children1"=>"0",
-#         "start_date"=>"2022-10-16",
-#         "end_date"=>"2022-10-22"}]
-
-
-#   i = ItinerariesController.new
-#   searches.each do |params|
-#     i.seed(params)
+#   photos = Unsplash::Photo.search(l.city)
+#                           .first(5)
+#                           .map { |result| result.urls["regular"] }
+#   photos.each do |photo|
+#     Image.create(url: photo, location: l)
 #   end
+# end
+
+# seed the searches for demo
+
+
+searches = [{"origin_city1"=>"London",
+  "adults1"=>"2",
+  "children1"=>"2",
+  "start_date"=>"2022-10-16",
+  "end_date"=>"2022-10-22"},
+ {"origin_city1"=>"Paris",
+  "adults1"=>"4",
+  "children1"=>"2",
+  "start_date"=>"2022-10-16",
+  "end_date"=>"2022-10-22"},
+  {"origin_city1"=>"Zurich",
+    "adults1"=>"2",
+    "children1"=>"0",
+    "start_date"=>"2022-10-16",
+    "end_date"=>"2022-10-22"},
+    {"origin_city1"=>"London",
+      "adults1"=>"1",
+      "children1"=>"0",
+      "start_date"=>"2022-10-16",
+      "end_date"=>"2022-10-22"},
+     {"origin_city1"=>"Paris",
+      "adults1"=>"1",
+      "children1"=>"0",
+      "start_date"=>"2022-10-16",
+      "end_date"=>"2022-10-22"},
+      {"origin_city1"=>"Zurich",
+        "adults1"=>"1",
+        "children1"=>"0",
+        "start_date"=>"2022-10-16",
+        "end_date"=>"2022-10-22"}]
+
+i = ItinerariesController.new
+searches.each do |params|
+  i.seed(params)
+end

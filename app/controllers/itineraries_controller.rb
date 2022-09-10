@@ -46,6 +46,7 @@ class ItinerariesController < ApplicationController
       update_session_variables
       @images_by_itinerary_id = Image.retrieve_all_by_itinerary(@itineraries)
     end
+
   end
 
   def seed(params)
@@ -53,7 +54,7 @@ class ItinerariesController < ApplicationController
 
       # try each destination
       possible_destinations.each do |destination|
-        puts destination
+
 
         groups = (1..count).to_a.map { |i|
           adults = params["adults#{i}"]
@@ -104,7 +105,7 @@ class ItinerariesController < ApplicationController
       group[:search] = top_search_results(group, destination)
 
       # skip to next destination if not all groups can fly there
-      if group[:search].search_results.empty?
+      if group[:search].amadeus_response.empty?
         valid_destination = false
         break
       end
@@ -136,15 +137,23 @@ class ItinerariesController < ApplicationController
     itinerary = Itinerary.create(destination_id: destination.id, start_date: params["start_date"], end_date: params["end_date"])
     groups.each do |group|
       passenger_group = new_passenger_group(group, itinerary)
-      search_results = group[:search].search_results
-      cheapest_offer = search_results.first.offer_index
-      search_results.filter { |s| s.offer_index == cheapest_offer }.each do |s|
-        Booking.create(
-          passenger_group: passenger_group,
-          search_result_id: s.id,
-          status: "suggested"
-        )
-      end
+      search_results = group[:search].amadeus_response["offers"]
+
+      cheapest_offer = search_results.first
+
+      Booking.create(
+        passenger_group: passenger_group,
+        status: "cheapest",
+        offer: cheapest_offer
+      )
+
+      shortest_flight = search_results.sort_by { |offer| flight_time(offer) }.first
+      Booking.create(
+        passenger_group: passenger_group,
+        status: "shortest",
+        offer: shortest_flight
+      )
+
     end
     itinerary
   end
@@ -167,7 +176,6 @@ class ItinerariesController < ApplicationController
       adults: group[:adults],
       children: group[:children]
     }
-
 
     search = Search.find_by(@search_criteria) || new_search(
       amadeus_search_result, group, destination)
@@ -205,44 +213,68 @@ class ItinerariesController < ApplicationController
   def new_search(amadeus_result, group, destination)
 
     @search = Search.create(@search_criteria)
+    destination_location = Location.find_by_city_code(destination)
+    @search.amadeus_response = {}
+    @search.amadeus_response[:offers] = []
 
     amadeus_result[..10].each_with_index do |result, offer_index|
+      next if result["itineraries"].map{|i| i["segments"].count}.max > 3
+      new_result = {}
 
-      next if result["itineraries"].map{|i| i["segments"].count}.max > 2
-
-      result["itineraries"].each_with_index do |itinerary, leg_index|
-        itinerary["segments"].each do |segment|
-          @flight = new_or_found_flight(segment, group, destination)
-
-          search_result = SearchResult.create(
-            search: @search,
-            flight: @flight,
-            offer_index: offer_index,
-            return_flight: leg_index == 1,
-            cost_per_head: result["price"]["total"].to_f/result["travelerPricings"].count
-          )
-
-        end
+      new_result[:flights_there] = get_flights_array(result["itineraries"].first["segments"], group[:location], destination_location)
+      if result["itineraries"].count > 1
+        new_result[:flights_return] = get_flights_array(result["itineraries"].last["segments"], destination_location, group[:location])
       end
+      new_result[:cost_per_head] = result["price"]["total"].to_f/result["travelerPricings"].count
+      @search.amadeus_response[:offers] << new_result unless new_result.empty?
     end
+    @search.save
     @search
   end
 
-  def new_or_found_flight(segment, group, destination)
-      Flight.find_by(
-        flight_code: "#{segment['carrierCode']} #{segment['number']}",
-        departure_time: segment["departure"]["at"]
-      ) || Flight.create(
+  def get_flights_array(segments, from, to)
+    s = segments.map do |segment|
+      airline = find_or_create_airline(segment['carrierCode'])
+      airline = airline ? airline.name : ""
+      {
         departure_time: segment["departure"]["at"],
         arrival_time: segment["arrival"]["at"],
-        departure_airport_id: airport_id(segment["departure"], group["location"]),
-        arrival_airport_id: airport_id(segment["arrival"], Location.find_by_city_code(destination)),
-        flight_code: "#{segment['carrierCode']} #{segment['number']}"
-      )
+        departure_city: Airport.find_by(code: segment["departure"]["iataCode"]).location.city,
+        arrival_city: Airport.find_by(code: segment["arrival"]["iataCode"]).location.city,
+        flight_code: "#{segment['carrierCode']} #{segment['number']}",
+        airline: airline,
+        duration: ActiveSupport::Duration.parse(segment["duration"])
+      }
+    end
+    return s
   end
 
   def airport_id(flight, location)
     a = Airport.find_by_code(flight["iataCode"]) || Airport.create(code: flight["iataCode"], location: location)
     a.id
   end
+
+  def flight_time(offer)
+    total = offer["flights_there"].map { |f| f["duration"] }.sum
+    total += offer["flights_return"].map { |f| f["duration"] }.sum if offer["flights_return"]
+    total
+  end
+
+  def find_or_create_airline(iata)
+    airline = Airline.find_by(iata_code: iata)
+    return airline unless airline.nil?
+
+    data = Faraday.get('https://raw.githubusercontent.com/jpatokal/openflights/master/data/airlines.dat')
+    airline_info = data.body.gsub("\"", "").split("\n").map { |l| l.split(",") }.filter { |a| a[3] == iata }.flatten
+
+    return nil if airline_info.empty?
+
+    a = Airline.create(
+      iata_code: iata,
+      name: airline_info[1]
+    )
+
+    return a
+  end
+
 end

@@ -1,11 +1,6 @@
-<% if flight_info[:booking].status != "confirmed" || !user_signed_in? %>
-  <div class="d-flex justify-content-end w-100">
-    <div class="clickable text-sm text-success me-3">
-      <strong><i class="fas fa-check"></i> Confirm booking </strong>
-    </div>
-    <div class="clickable text-sm text-secondary">
-      <i class="fas fa-search"></i> Change flights
-    </div>
+<% if type != "confirmed" || !user_signed_in? %>
+  <div class="clickable text-sm text-success me-3">
+    <strong><i class="fas fa-check"></i> Confirm booking </strong>
   </div>
 <% else %>
   <div class="w-100 d-flex justify-content-end">

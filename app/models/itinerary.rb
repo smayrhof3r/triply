@@ -36,8 +36,20 @@ class Itinerary < ApplicationRecord
   def total_cost
     total = 0
     passenger_groups.each do |p|
-      b = Booking.find_by(status: "suggested", passenger_group: p)
-      total += b.search_result.cost_per_head * (p.adults + p.children) if b
+      b = Booking.find_by(status: "cheapest", passenger_group: p)
+      total += b.offer["cost_per_head"] * (p.adults + p.children) if b
+    end
+    total
+  end
+
+  def total_time
+    total = 0
+    passenger_groups.each do |p|
+      b = Booking.find_by(status: "shortest", passenger_group: p)
+      total += b.offer["flights_there"].map {|f| f["duration"]}.sum if b
+      if b.offer["flights_return"]
+        total += b.offer["flights_return"].map {|f| f["duration"]}.sum if b
+      end
     end
     total
   end

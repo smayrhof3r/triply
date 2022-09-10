@@ -4,9 +4,26 @@
     <div class="col-4 bg-success text-white rounded-top border shadow-x border-success pt-2"><h4 class="text-center">Flights home</h4></div>
   </div>
   <% @itinerary.passenger_groups.each do |group|%>
-    <div class="row">
-      <%= render 'group_booking', group: group %>
-    </div>
+    <% if group.bookings.filter { |b| b.status == "confirmed" }.empty? %>
+      <div class="row mb-3">
+        <strong>CHEAPEST</strong>
+        <%= render 'group_booking', group: group, type: "cheapest" %>
+      </div>
+      <div class="row">
+        <strong>SHORTEST</strong>
+        <%= render 'group_booking', group: group, type: "shortest" %>
+      </div>
+      <div class="clickable text-sm text-secondary">
+        <i class="fas fa-search"></i> Choose other flights
+      </div>
+    <% else %>
+      <div class="row">
+        <%= render 'group_booking', group: group, type: "confirmed" %>
+      </div>
+      <div class="clickable text-sm text-secondary">
+        <i class="fas fa-search"></i> Change_flights
+      </div>
+    <% end %>
     <div class="row border border-top-only"></div>
   <% end %>
 </div>
