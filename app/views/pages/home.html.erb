@@ -43,7 +43,7 @@
     <%@popular_images.each do |image|%>
       <%= render 'pages/home_modal_lonely_planet', image: image %>
       <div class="popular-cards">
-        <div class="popular" style="background-image: url('<%=image.url%>'); background-size: cover;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <div class="popular" style="background-image: url('<%=image.url%>'); background-size: cover;" data-bs-toggle="modal" data-bs-target="#exampleModal-<%image.id%>">
           <h2 class="pt-4"><strong><%=image.location.city%></strong></h2>
         </div>
       </div>  
