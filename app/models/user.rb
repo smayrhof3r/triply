@@ -6,6 +6,10 @@ class User < ApplicationRecord
   has_many :permissions
   has_many :itineraries, through: :permissions
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   def relevant_itineraries(params)
     @params_data = (1..params["passenger_group_count"].to_i).to_a.map{|i| group_params(params, i)}
     result = {}

@@ -42,7 +42,7 @@
   <div class="col-12 col-sm-8 col-md-8">
     <div class="pt-3 px-3 itinerary-overview">
       <div class="scroll-bar" data-render-itinerary-in-user-show-page-target="itinerary">
-        <%= render 'users/small_flight_info_card', itinerary: @upcoming_itineraries.first %>
+        <%= render 'users/small_flight_info_card', itinerary: @upcoming_itineraries.first, permission: @permission %>
       </div>
     </div>
   </div>
