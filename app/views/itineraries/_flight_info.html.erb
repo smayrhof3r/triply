@@ -1,8 +1,10 @@
-<div class="card-overview card-overview-info" style="background-color:white;">
-  <p>Departure date: <%= DateTime.parse(flight["departure_time"]).strftime('%d %b, %Y')%></p>
-  <p><%="#{flight["airline"]} #{flight["flight_code"]}"%></p>
+<div class="shadow p-1 my-1 card-overview card-overview-info" style="background-color:white;">
+  <div class="text-sm text-secondary d-flex justify-content-between">
+    <p><%= DateTime.parse(flight["departure_time"]).strftime('%d %b, %Y')%></p>
+    <p><%="#{flight["airline"]} #{flight["flight_code"]}"%></p>
+  </div>
   <div class="flight-time py-1 px-5">
-    <div class="flight-time-location">
+    <div class="flight-time-location bg-light">
       <h3 class="m-0"><%= DateTime.parse(flight["departure_time"]).strftime('%H:%M')%>h</h3>
       <p><%= flight["departure_city"] %></p>
     </div>

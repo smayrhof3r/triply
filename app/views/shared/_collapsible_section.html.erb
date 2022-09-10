@@ -5,6 +5,8 @@
 <% card_body_p_x ||= "" %>
 <% text_collapsed ||= 'text-white' %>
 <% text_open ||= 'text-white' %>
+<% header_text_x ||= 'text-lg' %>
+<% header_p_x ||= 'p-2' %>
 <% clickable_header ||= false %>
 <div class="card h-100 shadow <%=card_p_x%>"
   data-controller="collapsible-sections"
@@ -16,7 +18,7 @@
   >
   <div class="card-header <%=clickable_header ? 'clickable' : '' %> <%= collapsed ? "#{bg_collapsed} rounded" : bg_open %> <%= p_x %>">
     <h2 class="mb-0">
-      <div class="text-lg p-2 <%=collapsed ? text_collapsed : text_open %> text-decoration-none w-100" data-collapsible-sections-target="button" >
+      <div class="<%=header_text_x%> <%=header_p_x%> <%=collapsed ? text_collapsed : text_open %> text-decoration-none w-100" data-collapsible-sections-target="button" >
         <div class="d-flex justify-content-between">
           <div>
               <%= section_title %>
