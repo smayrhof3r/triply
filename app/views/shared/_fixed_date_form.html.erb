@@ -1,4 +1,13 @@
 <div class = "text-center mb-1"><strong>Dates</strong></div>
-<div class = "mb-1 d-flex align-items-center justify-content-end"> <%= radio_button_tag("return", "One-way", checked=false, data: { action: "click->search-form#hideReturnDate"  }) %> <div class="me-3 ms-1"> One way </div> <%= radio_button_tag("return", "Return", checked=true, data: { action: "click->search-form#showReturnDate" }) %> <div class="ms-1"> Return </div></div>
+<% one_way = (params["start_date"] && !params["end_date"]) %>
+<div class = "mb-1 d-flex align-items-center justify-content-end"> <%= radio_button_tag("return", "One-way", checked=one_way, data: { action: "click->search-form#hideReturnDate"  }) %> <div class="me-3 ms-1"> One way </div> <%= radio_button_tag("return", "Return", checked=!one_way, data: { action: "click->search-form#showReturnDate" }) %> <div class="ms-1"> Return </div></div>
 <div class="d-flex align-items-center mb-3"><div class = "me-1">Departing:*</div><%= date_field_tag :start_date, params[:start_date], class: "start-date form-control", min: Date.today + 1, data: { search_form_target: "startDate", action: "input->search-form#setMinReturnDate" }%></div>
-<div class="d-flex align-items-center mb-3" data-search-form-target="oneWay" ><div class = "me-1">Returning:* </div><%= date_field_tag :end_date, params[:end_date], class: "end-date form-control", min: Date.today + 1, data: { search_form_target: "endDate" }%></div>
+
+<div class="d-flex align-items-center mb-3 <%=one_way ? "d-none" : "" %>" data-search-form-target="oneWay" >
+  <div class = "me-1">Returning:* </div>
+  <%= date_field_tag :end_date,
+        params[:end_date],
+        class: "end-date form-control",
+        min: Date.today + 1,
+        data: { search_form_target: "endDate" }%>
+</div>
