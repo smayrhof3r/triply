@@ -23,6 +23,11 @@ class ItinerariesController < ApplicationController
   end
 
   def index
+
+    remove_empty_passenger_groups
+    remove_empty_return_date
+
+
     if session[:params] == params && !session[:itineraries].empty?
       @itineraries = session[:itineraries].map { |i| Itinerary.find_by(id: i) }
     else
@@ -91,6 +96,28 @@ class ItinerariesController < ApplicationController
   end
 
   private
+
+  def remove_empty_passenger_groups
+    count = params["passenger_group_count"].to_i
+    (1..count).to_a.each do |i|
+      next unless invalid_group(i)
+      params.delete("origin_city#{i}")
+      params.delete("adults#{i}")
+      params.delete("children#{i}")
+      params["passenger_group_count"] = (count - 1).to_s
+      count -= 1
+    end
+  end
+
+  def remove_empty_return_date
+    params.delete("end_date") if params["end_date"] == ""
+  end
+
+  def invalid_group(i)
+    invalid_city = (params["origin_city#{i}"] == "")
+    invalid_people = (params["adults#{i}"] == "" && params["children#{i}"] == "")
+    invalid_city || invalid_people
+  end
 
   def new_itinerary(destination)
     valid_destination = true
