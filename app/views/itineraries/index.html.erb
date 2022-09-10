@@ -12,7 +12,7 @@
     <div class="ps-3 pe-3">
         <h1 class="text-center pb-5">Top Recommendations</h1>
 
-    <% @itineraries.sort {|i| i.total_cost}.each do |itinerary| %>
+    <% @itineraries.each do |itinerary| %>
       <div class="pb-3">
         <div class="card-itinerary-recommendation">
           <%= image_tag(@images_by_itinerary_id[itinerary.id]) %>
@@ -24,6 +24,8 @@
             <% end %>
             <% description = itinerary.destination.lonely_planet_data["intro"] %>
             <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
+            <p>Shortest flight option: <%= itinerary.total_time %></p>
+            <p>Cheapest flight option: <%= itinerary.total_cost %></p>
             <% button_text = owned ? "View my itinerary" : "€ #{number_with_precision(itinerary.total_cost, precision: 2, :delimiter => ',')}" %>
             <div class="button pt-3"><%= link_to button_text, itinerary_path(itinerary), class: "btn btn-success text-white fixed-right"%></div>
           </div>

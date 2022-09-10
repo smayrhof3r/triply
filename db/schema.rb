@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_09_090759) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_09_235227) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_090759) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "airlines", force: :cascade do |t|
+    t.string "name"
+    t.string "iata_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "airports", force: :cascade do |t|
     t.bigint "location_id", null: false
     t.string "name"
@@ -56,9 +63,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_09_090759) do
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "search_result_id"
+    t.json "offer", default: {}
     t.index ["passenger_group_id"], name: "index_bookings_on_passenger_group_id"
-    t.index ["search_result_id"], name: "index_bookings_on_search_result_id"
   end
 
   create_table "flights", force: :cascade do |t|

@@ -29,11 +29,20 @@
       <div class="small-card-booking py-3">
         <button class="circle-booking me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
         <div class="small-card-overview-info p-3">
-          <% info = group.flight_info %>
+          <% bookings = group.bookings.filter {|b| b.status == "confirmed" } %>
           <div class="card-departure-info">
-            <% if info[:flight_there].count >= 1 %>
-              <% info[:flight_there].each do |f| %>
-                <%= render partial: 'users/flight_info', locals: {f: f }%>
+            <% if bookings.empty? %>
+              <div class="d-flex justify-content-between align-items-center">
+                <strong><%= group.origin_city.city %></strong>
+                <%= link_to itinerary_path(group.itinerary), class: "btn btn-link text-secondary text-decoration-none" do %>
+                  <i class="fas fa-search"></i> "Choose flights"
+                <% end %>
+              </div>
+            <% else %>
+              <% if bookings.first.offer["flights_there"].count >= 1 %>
+                <% bookings.first.offer["flights_there"].each do |f| %>
+                  <%= render partial: 'users/flight_info', locals: {f: f }%>
+                <% end %>
               <% end %>
             <% end %>
           </div>
@@ -45,21 +54,30 @@
     <%# REFACTOR RETURN FLIGHTS %>
 
     <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
-        <% info = group.flight_info %>
-        <% if info[:flight_return].count >= 1 %>
-          <div class="small-cards-return">
-            <div class="small-card-booking py-3">
-              <button class="circle-booking-up me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
-              <div class="small-card-overview-info-return p-3">
-                <div class="card-departure-info">
-                  <% info[:flight_return].each do |f| %>
-                    <%= render partial: 'users/flight_info', locals: {f: f }%>
-                  <% end %>
+        <% if group.bookings.first.offer["flights_return"].count >= 1 %>
+          <% bookings = group.bookings.filter {|b| b.status == "confirmed" } %>
+            <div class="small-cards-return">
+              <div class="small-card-booking py-3">
+                <button class="circle-booking-up me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
+                <div class="small-card-overview-info-return p-3">
+                  <div class="card-departure-info">
+                    <% if bookings.empty? %>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <strong><%= group.origin_city.city %></strong>
+                        <%= link_to itinerary_path(group.itinerary), class: "btn btn-link text-secondary text-decoration-none" do %>
+                          <i class="fas fa-search"></i> "Choose flights"
+                        <% end %>
+                      </div>
+                    <% else %>
+                      <% bookings.first.offer["flights_return"].each do |f| %>
+                        <%= render partial: 'users/flight_info', locals: {f: f }%>
+                      <% end %>
+                    <% end %>
+                  </div>
                 </div>
               </div>
             </div>
-            <% end %>
-        </div>
-      <% end %>
+        <% end %>
+    <% end %>
   </div>
 </div>

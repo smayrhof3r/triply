@@ -1,14 +1,19 @@
-<div class="card-overview card-overview-info" style="background-color:white;"
-  <p>Departure date: <%= flight.departure_time.strftime('%d %b, %Y')%></p>
+<div class="card-overview card-overview-info" style="background-color:white;">
+  <p>Departure date: <%= DateTime.parse(flight["departure_time"]).strftime('%d %b, %Y')%></p>
+  <p><%="#{flight["airline"]} #{flight["flight_code"]}"%></p>
   <div class="flight-time py-1 px-5">
     <div class="flight-time-location">
-      <h3 class="m-0"><%= flight.departure_time.strftime('%H:%M')%>h</h3>
-      <p><%= flight.city("departure") %></p>
+      <h3 class="m-0"><%= DateTime.parse(flight["departure_time"]).strftime('%H:%M')%>h</h3>
+      <p><%= flight["departure_city"] %></p>
     </div>
-      <i class="fa-solid fa-plane"></i>
-      <div class="flight-time-location">
-      <h3 class="m-0"><%= flight.arrival_time.strftime('%H:%M') %>h</h3>
-      <p><%= flight.city("arrival") %></p>
+    <% if status == "confirmed" %>
+      <%= render 'shared/flight_confirmed_icon' %>
+    <% else %>
+      <%= render 'shared/flight_question_icon' %>
+    <% end %>
+    <div class="flight-time-location">
+      <h3 class="m-0"><%= DateTime.parse(flight["arrival_time"]).strftime('%H:%M') %>h</h3>
+      <p><%= flight["arrival_city"] %></p>
     </div>
   </div>
 </div>

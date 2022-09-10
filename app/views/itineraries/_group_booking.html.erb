@@ -1,4 +1,4 @@
-<% flight_info = group.flight_info%>
+<% flight_info = group.bookings.filter{ |b| b.status == type }.first.offer %>
 <div class="col-4 rounded-start border-top-left py-2">
   <div class="d-flex flex-column h-100 justify-content-between">
     <div>
@@ -6,9 +6,9 @@
         <h3 class = "m-0 p-0">
           <%=group.origin_city.city%>
         </h3>
-        <div class="text-primary text-lg">€ <%=number_with_precision(flight_info[:booking].search_result.cost_per_head*(group.adults+group.children), precision: 2, delimiter: ',')%></div>
+        <div class="text-primary text-lg">€ <%=number_with_precision(flight_info["cost_per_head"]*(group.adults+group.children), precision: 2, delimiter: ',')%></div>
       </div>
-      <div class = "text-primary text-sm">
+      <div class = "text-primary">
         <% group.adults.times do %>
           <i class="fas fa-user mt-2"></i>
         <% end %>
@@ -18,19 +18,19 @@
       </div>
     </div>
 
-    <%= render 'shared/booking_status_or_edit_form', flight_info: flight_info %>
+    <%= render 'shared/booking_status_or_edit_form', type: type %>
 
   </div>
 </div>
 
 <div class="flight-overview-time col-4 border-start border-end border-primary shadow-x border-top-left">
-  <% flight_info[:flight_there].each do |f| %>
-    <%= render 'flight_info', flight: f %>
+  <% flight_info["flights_there"].each do |f| %>
+    <%= render 'flight_info', flight: f, status: type %>
   <% end %>
 </div>
 
 <div class="flight-overview-time col-4 border-end border-success shadow-x border-top-left">
-  <% flight_info[:flight_return].each do |f| %>
-    <%= render 'flight_info', flight: f %>
+  <% flight_info["flights_return"].each do |f| %>
+    <%= render 'flight_info', flight: f, status: type %>
   <% end %>
 </div>

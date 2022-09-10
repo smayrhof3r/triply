@@ -1,11 +1,11 @@
 <% unless flights.empty? %>
   <div class="">
     <% flights.each do |f| %>
-      <div>Departure date: <%= f.departure_time.strftime('%d %b, %Y')%></div>
+      <div>Departure date: <%= DateTime.parse(f["departure_time"]).strftime('%d %b, %Y')%></div>
       <div class="flight-time d-flex align-items-center py-2 px-5 mb-3">
           <div class="flight-time-location me-3">
-            <h3 class="m-0"><%= f.departure_time.strftime('%H:%M')%>h</h3>
-            <div><%=f.city("departure")%></div>
+            <h3 class="m-0"><%= DateTime.parse(f["departure_time"]).strftime('%H:%M')%>h</h3>
+            <div><%=f["departure_city"]%></div>
           </div>
           <% if status == "confirmed" %>
             <%= render 'shared/flight_confirmed_icon' %>
@@ -13,8 +13,8 @@
             <%= render 'shared/flight_question_icon' %>
           <% end %>
           <div class="flight-time-location ms-3">
-            <h3 class="m-0"><%= f.arrival_time.strftime('%H:%M') %>h</h3>
-            <div><%= f.city("arrival") %></div>
+            <h3 class="m-0"><%= DateTime.parse(f["arrival_time"]).strftime('%H:%M') %>h</h3>
+            <div><%= f["arrival_city"] %></div>
           </div>
       </div>
     <% end %>
