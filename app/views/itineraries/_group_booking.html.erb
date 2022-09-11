@@ -1,6 +1,7 @@
 <% flight_info = group.bookings.filter{ |b| b.status == type }.first.offer %>
+<div class="row mx-0">
 <div class="col-4 rounded-start border-top-left py-2">
-  <div class="d-flex flex-column h-100 justify-content-between">
+  <div class="d-flex flex-column h-100">
     <div>
       <div class="d-flex align-items-bottom justify-content-between me-2">
         <h3 class = "m-0 p-0">
@@ -17,22 +18,23 @@
         <% end %>
       </div>
     </div>
-
-    <%= render 'shared/booking_status_or_edit_form', type: type %>
-
+    <div class="h-100 d-flex flex-column justify-content-around align-items-center">
+      <%= render 'shared/booking_status_or_edit_form', type: type %>
+    </div>
   </div>
 </div>
 
-<div class="flight-overview-time col-4 border-start border-end border-primary shadow-x border-top-left">
+<div class="flight-overview-time col-4 bg-primary">
   <% flight_info["flights_there"].each do |f| %>
     <%= render 'flight_info', flight: f, status: type %>
   <% end %>
 </div>
 
 <% if flight_info["flights_return"] %>
-  <div class="flight-overview-time col-4 border-end border-success shadow-x border-top-left">
+  <div class="flight-overview-time col-4 bg-success">
       <% flight_info["flights_return"].each do |f| %>
         <%= render 'flight_info', flight: f, status: type %>
       <% end %>
   </div>
 <% end %>
+</div>
