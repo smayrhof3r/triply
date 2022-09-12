@@ -1,29 +1,32 @@
 <div class="p-3">
   <div class="row">
-    <div class="offset-4 col-4 bg-primary text-white rounded-top shadow-x border border-primary pt-2"><h4 class="text-center">Flights to <%= @location.city %></h4></div>
-    <div class="col-4 bg-success text-white rounded-top border shadow-x border-success pt-2"><h4 class="text-center">Flights home</h4></div>
-  </div>
-  <% @itinerary.passenger_groups.each do |group|%>
-    <% if group.bookings.filter { |b| b.status == "confirmed" }.empty? %>
-      <div class="row mb-3">
-        <strong>CHEAPEST</strong>
-        <%= render 'group_booking', group: group, type: "cheapest" %>
-      </div>
-      <div class="row">
-        <strong>SHORTEST</strong>
-        <%= render 'group_booking', group: group, type: "shortest" %>
-      </div>
-      <div class="clickable text-sm text-secondary">
-        <i class="fas fa-search"></i> Choose other flights
-      </div>
-    <% else %>
-      <div class="row">
-        <%= render 'group_booking', group: group, type: "confirmed" %>
-      </div>
-      <div class="clickable text-sm text-secondary">
-        <i class="fas fa-search"></i> Change_flights
+    <div class="offset-4 col-4 bg-primary text-white rounded-top shadow-x border border-primary pt-2">
+      <h4 class="text-center">
+        Flights to <%= @location.city %>
+      </h4>
+    </div>
+
+    <% if @itinerary.passenger_groups.first.bookings.first.offer["flights_return"] %>
+      <div class="col-4 bg-success text-white rounded-top border shadow-x border-success pt-2">
+        <h4 class="text-center">Flights home</h4>
       </div>
     <% end %>
-    <div class="row border border-top-only"></div>
+  </div>
+  <% @itinerary.passenger_groups.each do |group|%>
+    <div class="row mb-3">
+      <%= render 'shared/collapsible_section',
+          section_title: group.origin_city.city,
+          section_partial: 'itineraries/bookings_by_group',
+          section_partial_params: { group: group },
+          collapsed: true,
+          p_x: "p-1 text-sm",
+          card_p_x: "p-0",
+          card_body_p_x: "p-0",
+          text_collapsed: "text-white",
+          bg_collapsed: "bg-primary",
+          text_open: "text-white",
+          bg_open: "bg-primary" %>
+    </div>
   <% end %>
+
 </div>

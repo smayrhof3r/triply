@@ -23,6 +23,11 @@ class ItinerariesController < ApplicationController
 
 
   def index
+
+    remove_empty_passenger_groups
+    remove_empty_return_date
+
+
     if session[:params] == params && !session[:itineraries].empty?
       @itineraries = session[:itineraries].map { |i| Itinerary.find_by(id: i) }
     else
@@ -33,6 +38,7 @@ class ItinerariesController < ApplicationController
       # try each destination
       possible_destinations.each do |destination|
         @itineraries << (@user_itineraries[destination] || new_itinerary(destination))
+        source_images(destination) if (!@itineraries.last == "" && @itineraries.last.destination.images.empty?)
       end
     end
 
@@ -42,11 +48,32 @@ class ItinerariesController < ApplicationController
       session[:params] = {}
       redirect_to '/search', alert: "restart search or view your itineraries from the menu provided"
     else
-      @itineraries = @itineraries.filter { |i| i != "" }.sort_by(&:total_cost).reverse
+
+      @itineraries = @itineraries.filter { |i| i != "" }
+      sort_itineraries
+      filter_direct_flights
+      apply_budget_filter
+
       update_session_variables
       @images_by_itinerary_id = Image.retrieve_all_by_itinerary(@itineraries)
     end
 
+  end
+
+  def filter_direct_flights
+    if params["direct_flights"]
+      @itineraries.filter!(&:direct_flight)
+    end
+  end
+  def sort_itineraries
+    case params[:sort]
+    when "Price Descending"
+      @itineraries = @itineraries.sort_by(&:total_cost).reverse
+    when "Price Ascending"
+      @itineraries = @itineraries.sort_by(&:total_cost)
+    when "Shortest flights"
+      @itineraries = @itineraries.sort_by(&:total_time)
+    end
   end
 
   def seed(params)
@@ -91,6 +118,45 @@ class ItinerariesController < ApplicationController
   end
 
   private
+
+  def source_images(destination)
+    l = Location.find_by(city_code: destination)
+    photos = Unsplash::Photo.search(l.city)
+                          .first(5)
+                          .map { |result| result.urls["regular"] }
+    photos.each do |photo|
+      Image.create(url: photo, location: l)
+    end
+  end
+
+  def apply_budget_filter
+    unless params["range_primary"].to_i == 0
+      budget = params["range_primary"].to_i
+      @itineraries.filter! { |i| i.total_cost <= budget }
+    end
+  end
+
+  def remove_empty_passenger_groups
+    count = params["passenger_group_count"].to_i
+    (1..count).to_a.each do |i|
+      next unless invalid_group(i)
+      params.delete("origin_city#{i}")
+      params.delete("adults#{i}")
+      params.delete("children#{i}")
+      params["passenger_group_count"] = (count - 1).to_s
+      count -= 1
+    end
+  end
+
+  def remove_empty_return_date
+    params.delete("end_date") if params["end_date"] == ""
+  end
+
+  def invalid_group(i)
+    invalid_city = (params["origin_city#{i}"] == "")
+    invalid_people = (params["adults#{i}"] == "" && params["children#{i}"] == "")
+    invalid_city || invalid_people
+  end
 
   def new_itinerary(destination)
     valid_destination = true
@@ -153,13 +219,11 @@ class ItinerariesController < ApplicationController
         status: "shortest",
         offer: shortest_flight
       )
-
     end
     itinerary
   end
 
   def new_passenger_group(group, itinerary)
-
     p = PassengerGroup.new(group.except(:location, :search))
     p.itinerary = itinerary
     p.save
@@ -186,11 +250,12 @@ class ItinerariesController < ApplicationController
   def possible_destinations
     # replace with logic to find matching destinations using the api endpoint if fixed
     # also need to then get the relevant unsplash images if not already in our database (see seed file)
-    Search::DESTINATIONS
+    return Search::DESTINATIONS if (params["destination"].nil? || params["destination"].empty?)
+
+    [params["destination"]]
   end
 
   def passenger_group_params(i)
-    # NOTE: requires form city to be a valid city from our database!
     adults = params["adults#{i}"]
     children = params["children#{i}"]
     location = Location.find_by_city(params["origin_city#{i}"])
@@ -204,9 +269,6 @@ class ItinerariesController < ApplicationController
   end
 
   def amadeus_search_result
-
-    # result = AMADEUS.shopping.flight_offers_search.get(@search_criteria.merge({max: 10}))
-    # result.data
     AMADEUS.shopping.flight_offers_search.get(@search_criteria.merge({max: 10})).data[0..10]
   end
 
@@ -236,11 +298,14 @@ class ItinerariesController < ApplicationController
     s = segments.map do |segment|
       airline = find_or_create_airline(segment['carrierCode'])
       airline = airline ? airline.name : ""
+
+      airport_from = Airport.find_by(code: segment["departure"]["iataCode"])
+      airport_to = Airport.find_by(code: segment["arrival"]["iataCode"])
       {
         departure_time: segment["departure"]["at"],
         arrival_time: segment["arrival"]["at"],
-        departure_city: Airport.find_by(code: segment["departure"]["iataCode"]).location.city,
-        arrival_city: Airport.find_by(code: segment["arrival"]["iataCode"]).location.city,
+        departure_city: airport_from ? airport_from.location.city : airport_from.name,
+        arrival_city: airport_to ? airport_to.location.city : airport_to.name,
         flight_code: "#{segment['carrierCode']} #{segment['number']}",
         airline: airline,
         duration: ActiveSupport::Duration.parse(segment["duration"])
@@ -275,6 +340,14 @@ class ItinerariesController < ApplicationController
     )
 
     return a
+  end
+
+  def find_or_create_airport(iata)
+    airport = Airport.find_by(code: iata)
+    return airport unless airport.nil?
+
+    data = Faraday.get("https://raw.githubusercontent.com/mwgg/Airports/master/airports.json")
+    airport_info = JSON.parse(data.body)
   end
 
 end

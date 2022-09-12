@@ -54,6 +54,14 @@ class Itinerary < ApplicationRecord
     total
   end
 
+  def direct_flight
+    passenger_groups.each do |p|
+      return false if p.bookings.filter {|b| b.offer["flights_there"].count == 1 }.empty?
+      return false if p.bookings.filter {|b| b.offer["flights_return"].count == 1 }.empty?
+    end
+    true
+  end
+
   def avg_cost
     total_cost / passenger_groups.map { |p| p.adults + p.children }.sum
   end

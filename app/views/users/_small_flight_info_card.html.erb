@@ -5,23 +5,7 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"><strong> Discover <%=itinerary.destination.city%></strong></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="modal-image"><%= image_tag(itinerary.destination.images.first.url) %></div>
-          <%= render 'locations/lonely_planet_description', lonely_planet: itinerary.destination.lonely_planet_data %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success text-white" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= render 'users/modal_lonely_planet', itinerary: itinerary %>
 
   <!-- Cards with flight info -->
   <div class="small-card-overview">
@@ -54,7 +38,7 @@
     <%# REFACTOR RETURN FLIGHTS %>
 
     <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
-        <% if group.bookings.first.offer["flights_return"].count >= 1 %>
+        <% if group.bookings.first.offer["flights_return"] %>
           <% bookings = group.bookings.filter {|b| b.status == "confirmed" } %>
             <div class="small-cards-return">
               <div class="small-card-booking py-3">

@@ -1,36 +1,49 @@
-<%= @groups%>
-<div class="row">
-  <div class="col-12 col-md-4 scroll-bar sticky-column">
-      <%= form_tag itineraries_path, :method => :get do %>
-        <div class="w-100 d-flex align-items-center justify-content-end">
-          <i class="fas fa-sync-alt"></i> <%= submit_tag "Update results", class:"text-end no-button", id:  "submit"  %>
-        </div>
+<%= form_tag itineraries_path, :method => :get do %>
+  <div class="row">
+    <div class="col-12 col-md-4 scroll-bar sticky-column p-4 pt-5">
+      <div class="pe-2" style="text-align:end;">
+        <button class="btn btn-primary align-items-center justify-content-end">
+          <i class="fas fa-sync-alt text-white"></i> <%= submit_tag "Update results", class:"text-end no-button text-white" %>
+        </button>
+      </div>
+      <div class="ps-4">
         <%= render 'itineraries/search_form_body', col_x: 'col-12' %>
-      <% end %>
-  </div>
-  <div class="col-12 offset-md-4 col-md-8">
-    <div class="ps-3 pe-3">
-        <h1 class="text-center pb-5">Top Recommendations</h1>
+      </div>
+    </div>
 
-    <% @itineraries.each do |itinerary| %>
-      <div class="pb-3">
-        <div class="card-itinerary-recommendation">
-          <%= image_tag(@images_by_itinerary_id[itinerary.id]) %>
-          <div class="card-itinerary-recommendation-infos">
-            <% owned = itinerary.users.include?(current_user) %>
-            <h2 class="city-name"><strong><%= itinerary.destination.city %></strong></h2>
-            <% if owned %>
-              <span class="owned-tag px-2 py-1 rounded bg-primary text-white">booked</span>
-            <% end %>
-            <% description = itinerary.destination.lonely_planet_data["intro"] %>
-            <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
-            <p>Shortest flight option: <%= itinerary.total_time %></p>
-            <p>Cheapest flight option: <%= itinerary.total_cost %></p>
-            <% button_text = owned ? "View my itinerary" : "€ #{number_with_precision(itinerary.total_cost, precision: 2, :delimiter => ',')}" %>
-            <div class="button pt-3"><%= link_to button_text, itinerary_path(itinerary), class: "btn btn-success text-white fixed-right"%></div>
+    <div class="col-12 offset-md-4 col-md-8">
+      <div class="ps-3 pe-5">
+        <div class="d-flex my-3 pt-4 justify-content-between align-items-end border-bottom border-success">
+          <h2 class="text-center text-primary m-0">Top Recommendations</h2>
+          <div class="d-flex align-items-center">
+            <%= select_tag :sort, options_for_select([ "Price Descending", "Price Ascending", "Shortest flights", "Direct flights only" ], params[:sort]||"Price ⬇️"), onChange: "this.form.submit()", class: "btn btn-link text-start text-decoration-none text-strong"   %>
+            <%= check_box_tag "direct_flights", true, params["direct_flights"]||false, checked: params["direct_flights"]||false, onChange: "submit()", class: "form-check-input me-2" %><div>  Direct Flights Only</div>
           </div>
         </div>
+        <div class="">
+        <% if @itineraries.empty? %>
+          Sorry - no flights match your criteria!
+        <% end %>
+        <% @itineraries.each do |itinerary| %>
+          <div class="pb-3">
+            <div class="card-itinerary-recommendation">
+              <%= image_tag(@images_by_itinerary_id[itinerary.id]) %>
+              <div class="card-itinerary-recommendation-infos">
+                <% owned = itinerary.users.include?(current_user) %>
+                <h2 class="city-name"><strong><%= itinerary.destination.city %></strong></h2>
+                <% if owned %>
+                  <span class="owned-tag px-2 py-1 rounded bg-primary text-white">booked</span>
+                <% end %>
+                <% description = itinerary.destination.lonely_planet_data["intro"] %>
+                <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
+                <% itinerary.total_time %></p>
+                <% itinerary.total_cost %></p>
+                <% button_text = owned ? "View my itinerary" : "Flights from € #{number_with_precision(itinerary.total_cost, precision: 2, :delimiter => ',')}" %>
+                <div class="button pt-3"><%= link_to button_text, itinerary_path(itinerary), class: "btn btn-success text-white fixed-right"%></div>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
-    <% end %>
-  </div>
-</div>
+    </div>
+<% end %>

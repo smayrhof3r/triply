@@ -1,16 +1,16 @@
-      <div class="row" data-controller="search-form" data-action="click->search-form#updateButton input->search-form#updateButton">
-        <div class="<%= col_x %> mb-3">
-          <%= render 'shared/collapsible_section', section_title: 'Travel Dates', section_partial: 'itineraries/dates_form', section_partial_params: { request: request, params: params }, collapsed: false %>
-        </div>
-        <div class="<%= col_x %> mb-3">
-          <%= render 'shared/collapsible_section', section_title: 'Travellers', section_partial: 'itineraries/passenger_group_form', section_partial_params: { params: params }, collapsed: false %>
-        </div>
-      </div>
+<div class="row ps-3 px-2 pt-3" data-controller="search-form" data-action="click->search-form#updateButton input->search-form#updateButton">
+  <div class="<%= col_x %> mb-3">
+    <%= render 'shared/collapsible_section', section_title: 'Travel Dates', section_partial: 'itineraries/dates_form', section_partial_params: { request: request, params: params }, collapsed: false %>
+  </div>
+  <div class="<%= col_x %> mb-3">
+    <%= render 'shared/collapsible_section', section_title: 'Travellers', section_partial: 'itineraries/passenger_group_form', section_partial_params: { params: params }, collapsed: false %>
+  </div>
 
-      <div class="mb-3">
-        <%= render 'shared/collapsible_section', section_title: 'Destinations', section_partial: 'itineraries/destination_form', section_partial_params: {}, collapsed: true %>
-      </div>
+  <div class="mb-3">
+    <%= render 'shared/collapsible_section', section_title: 'Destinations', section_partial: 'itineraries/destination_form', section_partial_params: {}, collapsed: !params["destination"]||true %>
+  </div>
 
-      <div class="mb-3">
-        <%= render 'shared/collapsible_section', section_title: 'Budget', section_partial: 'itineraries/budget_form', section_partial_params: {}, collapsed: true %>
-      </div>
+  <div class="mb-3">
+    <%= render 'shared/collapsible_section', section_title: 'Budget', section_partial: 'itineraries/budget_form', section_partial_params: {}, collapsed: params["range_primary"].to_i.zero? %>
+  </div>
+</div>

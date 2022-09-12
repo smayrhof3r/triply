@@ -1,10 +1,11 @@
-<form>
-  <label for="destinations">Choose a region:</label>
-  <select name="continents" id="continents">
-    <option value="na">North America</option>
-    <option value="sa">South America</option>
-    <option value="eu">Europe</option>
-    <option value="af">Africa</option>
-    <option value="asia">Asia</option>
-  </select>
-</form>
+<div class="d-flex align-items-center">
+  <%= select_tag :destination,
+                  options_from_collection_for_select(
+                    Location.all.order(:city),
+                    "city_code",
+                    "city"
+                  ),
+                  prompt:"Select a specific destination",
+                  value: params[:destination],
+                  class: 'w-100 origin-city form-control'%>
+  </div>
