@@ -1,5 +1,5 @@
   <div class="row">
-      <div class="col-12 col-md-9">
+      <div class="<%=col_slider%>"> <%#col-12 col-md-9%>
         <div class = slidecontainer>
           <%= range_field_tag :range, params[:range_primary], step: 5, min: 10, max:100000, onchange: "rangePrimary.value=value",  class: "slider"%>
         </div>
@@ -8,7 +8,7 @@
           <div>€100k</div>
         </div>
       </div>
-      <div class="col-12 col-md-3 d-flex justify-content-center align-items-center text-primary budget-value">
+      <div class="<%=col_number_field%> d-flex justify-content-center align-items-center text-primary budget-value">
         €<%= number_field_tag :range_primary, params[:range_primary]||0, id: "rangePrimary", class: "border-none w-100 budget-value" %>
       </div>
   </div>
