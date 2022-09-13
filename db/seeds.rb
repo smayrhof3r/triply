@@ -73,7 +73,7 @@ Itinerary.delete_all
 # seed the searches for demo
 
 
-searches = [{"origin_city1"=>"Lanzhou",
+searches = [{"origin_city1"=>"London",
   "adults1"=>"2",
   "children1"=>"2",
   "start_date"=>"2022-10-16",
