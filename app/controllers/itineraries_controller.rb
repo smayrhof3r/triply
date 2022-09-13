@@ -7,6 +7,8 @@ class ItinerariesController < ApplicationController
     client_secret: ENV['AMADEUS_TEST_API_SECRET']
   })
 
+  @@airport_info = {}
+
   def search
   end
 
@@ -345,9 +347,9 @@ class ItinerariesController < ApplicationController
     airport = Airport.find_by(code: iata)
     return airport unless airport.nil?
 
-    data = Faraday.get("https://raw.githubusercontent.com/mwgg/Airports/master/airports.json") unless @@airport_info
-    @@airport_info ||= JSON.parse(data.body)
-    airport_data = @@airport_info.find { |k, v| v["iata"] == iata }
+    data = Faraday.get("https://raw.githubusercontent.com/mwgg/Airports/master/airports.json") if @@airport_info.empty?
+    @@airport_info = JSON.parse(data.body) if @@airport_info.empty?
+    airport_data = @airport_info.find { |k, v| v["iata"] == iata }
     if airport_data.nil?
       location = Location.find_by(city:"UNKNOWN") || Location.create(city:"UNKNOWN")
       airport = Airport.create(name: iata, code: iata, location: location)
