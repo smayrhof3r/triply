@@ -345,13 +345,20 @@ class ItinerariesController < ApplicationController
     airport = Airport.find_by(code: iata)
     return airport unless airport.nil?
 
-    data = Faraday.get("https://raw.githubusercontent.com/mwgg/Airports/master/airports.json")
+    data = Faraday.get("https://raw.githubusercontent.com/mwgg/Airports/master/airports.json") unless @@airport_info
     @@airport_info ||= JSON.parse(data.body)
     airport_data = @@airport_info.find { |k, v| v["iata"] == iata }
-    if airport_data
-      airport = Airport.create(name: airport_data.last["name"], code: airport_data.last["iata"])
+    if airport_data.nil?
+      location = Location.find_by(city:"UNKNOWN") || Location.create(city:"UNKNOWN")
+      airport = Airport.create(name: iata, code: iata, location: location)
     else
-      airport = Airport.create(name: iata, code: iata)
+      location = Location.find_by(city: airport_data.last["city"]) || Location.create(
+        city: airport_data.last["city"],
+        country: airport_data.last["country"],
+        latitude: airport_data.last["lat"],
+        longitude: airport_data.last["lon"]
+      )
+      airport = Airport.create(name: airport_data.last["name"], code: iata, location: location)
     end
     airport
   end
