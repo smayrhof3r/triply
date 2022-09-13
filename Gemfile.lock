@@ -110,6 +110,9 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise_invitable (2.0.6)
+      actionmailer (>= 5.0)
+      devise (>= 4.6)
     digest (3.1.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -311,6 +314,7 @@ DEPENDENCIES
   cloudinary
   debug
   devise
+  devise_invitable (~> 2.0.0)
   dotenv-rails
   font-awesome-sass (~> 6.1)
   jbuilder
