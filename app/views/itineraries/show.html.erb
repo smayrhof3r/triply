@@ -8,7 +8,7 @@
   <% if !@itinerary.users.include?(current_user) %>
     <%= simple_form_for([@itinerary, @permission], url: itinerary_permissions_path(@itinerary), method: :post ) do |f| %>
       <%= f.input :itinerary_id, input_html: { class: 'd-none' }, label: false %>
-      <%= f.input :user, input_html { class: 'd-none' }, label: false %>
+      <%= f.input :user, input_html: { class: 'd-none' }, label: false %>
       <%= f.button :submit, "Select this destination", data: {turbo_method: :post}, class: "button-destination" %>
     <% end %>
   <% end %>

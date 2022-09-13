@@ -80,8 +80,7 @@ class ItinerariesController < ApplicationController
       count = 1
 
       # try each destination
-      possible_destinations.each do |destination|
-
+      Search::DESTINATIONS.each do |destination|
 
         groups = (1..count).to_a.map { |i|
           adults = params["adults#{i}"]
@@ -250,8 +249,7 @@ class ItinerariesController < ApplicationController
   def possible_destinations
     # replace with logic to find matching destinations using the api endpoint if fixed
     # also need to then get the relevant unsplash images if not already in our database (see seed file)
-
-    return Search::DESTINATIONS if (!params || params["destination"].nil? || params["destination"].empty?)
+    return Search::DESTINATIONS if (params["destination"].nil? || params["destination"].empty?)
 
     [params["destination"]]
   end
@@ -300,8 +298,8 @@ class ItinerariesController < ApplicationController
       airline = find_or_create_airline(segment['carrierCode'])
       airline = airline ? airline.name : ""
 
-      airport_from = Airport.find_by(code: segment["departure"]["iataCode"])
-      airport_to = Airport.find_by(code: segment["arrival"]["iataCode"])
+      airport_from = find_or_create_airport(segment["departure"]["iataCode"])
+      airport_to = find_or_create_airport(segment["arrival"]["iataCode"])
       {
         departure_time: segment["departure"]["at"],
         arrival_time: segment["arrival"]["at"],
@@ -348,7 +346,14 @@ class ItinerariesController < ApplicationController
     return airport unless airport.nil?
 
     data = Faraday.get("https://raw.githubusercontent.com/mwgg/Airports/master/airports.json")
-    airport_info = JSON.parse(data.body)
+    @@airport_info ||= JSON.parse(data.body)
+    airport_data = airport_info.find { |k, v| v["iata"] == iata }
+    if airport_data
+      airport = Airport.create(name: airport_data.last["name"], code: airport_data.last["iata"])
+    else
+      airport = Airport.create(name: iata, code: iata)
+    end
+    airport
   end
 
 end
