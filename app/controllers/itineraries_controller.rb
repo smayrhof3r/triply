@@ -250,7 +250,8 @@ class ItinerariesController < ApplicationController
   def possible_destinations
     # replace with logic to find matching destinations using the api endpoint if fixed
     # also need to then get the relevant unsplash images if not already in our database (see seed file)
-    return Search::DESTINATIONS if (params["destination"].nil? || params["destination"].empty?)
+
+    return Search::DESTINATIONS if (!params || params["destination"].nil? || params["destination"].empty?)
 
     [params["destination"]]
   end
