@@ -4,16 +4,18 @@
       <div class="round-image"><%= image_tag(itinerary.destination.images.first.url) %></div>
       <h3 class="ps-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Your trip to <strong class="text-success" style="text-decoration: underline;"><%=itinerary.destination.city%></strong></h3>
     </div>
-    <div class="btn btn-primary shadow text-white" onclick="document.getElementById('p-form').classList.remove('d-none')">Invite your friends!</div>
+    <div class="btn btn-primary shadow text-white" onclick="document.getElementById('p-form').classList.remove('d-none')">Share</div>
   </div>
   <div class="text-center">
-    <div id="p-form" class="d-none position-fixed bg-white shadow p-3 alert alert-dismissable">
+    <div id="p-form" class="<%= invited_user ? "": "d-none" %> position-fixed bg-white shadow p-3 alert alert-dismissable">
       <div class="text-end"><i class="fas fa-times" onclick="document.getElementById('p-form').classList.add('d-none')"></i></div>
       <%= simple_form_for([itinerary, permission]) do |f| %>
-      <%=   f.association :user, label_method: :full_name, value_method: :id, label_html: {class: 'd-none'}, input_html: {placeholder: 'find your friend'}  %>
-      <%=   f.association :itinerary, label_html: {class: "d-none"}, input_html: {class: "d-none"} %>
-      <%=   f.submit "Invite", class: "btn btn-primary" %>
+        <%=   f.association :user, label_method: :email, value_method: :id, label_html: {class: 'd-none'}, input_html: {placeholder: 'find your friend'}  %>
+        <%=   f.input :role, label_html: {class: "d-none"}, input_html: {class: "d-none"} %>
+        <%=   f.association :itinerary, label_html: {class: "d-none"}, input_html: {class: "d-none"} %>
+        <%=   f.submit "Share", class: "btn btn-primary", onclick: "document.getElementById('p-form').classList.add('d-none')" %>
       <% end %>
+      <%= link_to "Not a member? Invite them!", new_user_invitation_path %>
     </div>
   </div>
   <!-- Modal -->

@@ -7,7 +7,11 @@
 <div class ="container main-image pt-3 text-center box" style= "background-image: url('<%=@location.images.first.url%>'); background-size: cover; background-position: 0px -130px;">
   <% if !@itinerary.users.include?(current_user) %>
     <%= simple_form_for([@itinerary, @permission], url: itinerary_permissions_path(@itinerary), method: :post ) do |f| %>
-      <%= f.input :itinerary_id, input_html: { class: 'd-none' }, label: false %>
+      <div class="d-none">
+      <%= f.input :itinerary_id %>
+      <%= f.input :role %>
+      <%= f.input :user_id %>
+      </div>
       <%= f.button :submit, "Select this destination", data: {turbo_method: :post}, class: "button-destination" %>
     <% end %>
   <% end %>
