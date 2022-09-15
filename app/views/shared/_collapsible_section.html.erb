@@ -20,9 +20,13 @@
     <h2 class="mb-0">
       <div class="<%=header_text_x%> <%=header_p_x%> <%=collapsed ? text_collapsed : text_open %> text-decoration-none w-100" data-collapsible-sections-target="button" >
         <div class="d-flex justify-content-between">
-          <div>
+          <% if block_given? %>
+            <%= yield %>
+          <% else %>
+            <div>
               <%= section_title %>
-          </div>
+            </div>
+          <% end %>
           <div data-action = "click->collapsible-sections#toggleCollapse"><i class="clickable fas fa-<%= collapsed ? 'plus' : 'minus'%>"></i></div>
         </div>
       </div>

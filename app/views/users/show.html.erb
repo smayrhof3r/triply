@@ -13,7 +13,10 @@
               <div class="d-none itinerary">
                 <%=itinerary.id%>
               </div>
-              <%= render 'shared/collapsible_section', section_title: "Trip to #{itinerary.destination.city}", section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: collapsed, clickable_header: true %>
+              <%= render 'shared/collapsible_section', section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: collapsed, clickable_header: true do %>
+                  <div><%= "Trip to #{itinerary.destination.city}" %></div>
+                  <div class="text-sm p-1 rounded bg-primary text-white"><%= Permission.find_by(user: current_user, itinerary: itinerary).role == "owner" ? "" : "Shared with you" %></div>
+              <% end %>
             <% end %>
           </div>
         <% end %>
