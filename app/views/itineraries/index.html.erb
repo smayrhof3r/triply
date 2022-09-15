@@ -22,35 +22,36 @@
         </div>
 
         <div class="">
-        <% if @itineraries.empty? %>
-          Sorry - no flights match your criteria!
-        <% end %>
-        <% @itineraries.each do |itinerary| %>
-          <div class="pb-3">
-            <div class="card-itinerary-recommendation">
-              <%= image_tag(@images_by_itinerary_id[itinerary.id]) %>
-              <div class="card-itinerary-recommendation-infos">
-                <% owned = itinerary.users.include?(current_user) %>
-                <h2 class="city-name"><strong><%= itinerary.destination.city %></strong></h2>
-                <% if owned %>
-                  <span class="owned-tag px-2 py-1 rounded bg-primary text-white">booked</span>
-                <% end %>
-                <% description = itinerary.destination.lonely_planet_data["intro"] %>
-                <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
-                <br>
-                   <div class="row align-items-end">
-                      <div class="col-md-4">
-                        <div style=""><p>Avg time/leg: <strong><%=itinerary.avg_time %></strong>h</p></div>
-                        <div style=""><p>Avg cost/person: <strong><%=number_with_precision(itinerary.avg_cost, precision: 2, :delimiter => ',') %></strong>€ </p></div>
-                      </div>
-                      <div class="col-md-8">
-                      <% button_text = owned ? "   View my itinerary" : "   Explore"%>
-                      <div class="btn btn-success px-9 py-9 align-self-end"><%= link_to button_text, itinerary_path(itinerary), class: "text-white text-decoration-none text-lowercase !important fas fa-plane-departure"%></div></div>
-                     </div>
-                   </div>
+          <% if @itineraries.empty? %>
+            Sorry - no flights match your criteria!
+          <% end %>
+          <% @itineraries.each do |itinerary| %>
+            <div class="pb-3">
+              <div class="card-itinerary-recommendation">
+                <%= image_tag(@images_by_itinerary_id[itinerary.id]) %>
+                <div class="card-itinerary-recommendation-infos">
+                  <% owned = itinerary.users.include?(current_user) %>
+                  <h2 class="city-name"><strong><%= itinerary.destination.city %></strong></h2>
+                  <% if owned %>
+                    <span class="owned-tag px-2 py-1 rounded bg-primary text-white">booked</span>
+                  <% end %>
+                  <% description = itinerary.destination.lonely_planet_data["intro"] %>
+                  <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
+                  <br>
+                    <div class="row align-items-end">
+                        <div class="col-md-4">
+                          <div style=""><p>Avg time/leg: <strong><%=itinerary.avg_time %></strong>h</p></div>
+                          <div style=""><p>Avg cost/person: <strong><%=number_with_precision(itinerary.avg_cost, precision: 2, :delimiter => ',') %></strong>€ </p></div>
+                        </div>
+                        <div class="col-md-8">
+                          <% button_text = owned ? "   View my itinerary" : "   Explore"%>
+                          <div class="btn btn-success px-9 py-9 align-self-end"><i class=" text-white pe-1 fas fa-plane-departure"></i><%= link_to button_text, itinerary_path(itinerary), class: "text-white text-decoration-none"%></div>
+                        </div>
+                    </div>
+                </div>
               </div>
-          </div>
-         <% end %>
-      </div>
+            </div>
+          <% end %>
+         </div>
     </div>
 <% end %>
