@@ -7,6 +7,8 @@ class ItinerariesController < ApplicationController
     client_secret: ENV['AMADEUS_TEST_API_SECRET']
   })
 
+  @@airport_info = {}
+
   def search
   end
 
@@ -15,12 +17,12 @@ class ItinerariesController < ApplicationController
     @location = @itinerary.destination
     @permission = Permission.new
     session["user_return_to"] = request.original_url
-
     respond_to do |format|
-      format.html { render 'itineraries/show'}
-      format.text { render partial: "users/small_flight_info_card", locals: { itinerary: @itinerary }, formats: [:html] }
+    format.html { render 'itineraries/show'}
+    format.text { render partial: "users/small_flight_info_card", locals: { itinerary: @itinerary }, formats: [:html] }
     end
   end
+
 
   def index
 
@@ -80,8 +82,7 @@ class ItinerariesController < ApplicationController
       count = 1
 
       # try each destination
-      possible_destinations.each do |destination|
-
+      Search::DESTINATIONS.each do |destination|
 
         groups = (1..count).to_a.map { |i|
           adults = params["adults#{i}"]
@@ -299,8 +300,8 @@ class ItinerariesController < ApplicationController
       airline = find_or_create_airline(segment['carrierCode'])
       airline = airline ? airline.name : ""
 
-      airport_from = Airport.find_by(code: segment["departure"]["iataCode"])
-      airport_to = Airport.find_by(code: segment["arrival"]["iataCode"])
+      airport_from = find_or_create_airport(segment["departure"]["iataCode"])
+      airport_to = find_or_create_airport(segment["arrival"]["iataCode"])
       {
         departure_time: segment["departure"]["at"],
         arrival_time: segment["arrival"]["at"],
@@ -346,8 +347,22 @@ class ItinerariesController < ApplicationController
     airport = Airport.find_by(code: iata)
     return airport unless airport.nil?
 
-    data = Faraday.get("https://raw.githubusercontent.com/mwgg/Airports/master/airports.json")
-    airport_info = JSON.parse(data.body)
+    data = Faraday.get("https://raw.githubusercontent.com/mwgg/Airports/master/airports.json") if @@airport_info.empty?
+    @@airport_info = JSON.parse(data.body) if @@airport_info.empty?
+    airport_data = @@airport_info.find { |k, v| v["iata"] == iata }
+    if airport_data.nil?
+      location = Location.find_by(city:"UNKNOWN") || Location.create(city:"UNKNOWN")
+      airport = Airport.create(name: iata, code: iata, location: location)
+    else
+      location = Location.find_by(city: airport_data.last["city"]) || Location.create(
+        city: airport_data.last["city"],
+        country: airport_data.last["country"],
+        latitude: airport_data.last["lat"],
+        longitude: airport_data.last["lon"]
+      )
+      airport = Airport.create(name: airport_data.last["name"], code: iata, location: location)
+    end
+    airport
   end
 
 end
