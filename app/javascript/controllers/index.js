@@ -7,6 +7,9 @@ import { application } from "./application"
 import CollapsibleSectionsController from "./collapsible_sections_controller"
 application.register("collapsible-sections", CollapsibleSectionsController)
 
+import ConfirmBookingController from "./confirm_booking_controller"
+application.register("confirm-booking", ConfirmBookingController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 

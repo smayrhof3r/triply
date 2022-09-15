@@ -1,5 +1,5 @@
 <% if type != "confirmed" || !user_signed_in? %>
-  <div class="shadow btn btn-success text-white border border-success">
+  <div class="shadow btn btn-success text-white border border-success" data-action="click->confirm-booking#updateBooking">
     <strong><i class="fas fa-check"></i> Confirm booking </strong>
   </div>
 <% else %>

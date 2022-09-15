@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   resources :passenger_groups, only: [:show] do
-    resources :bookings, only: [:new, :create]
+    resources :bookings, only: [:new, :create, :update]
   end
 
   resources :itineraries, only: [:index, :show] do
