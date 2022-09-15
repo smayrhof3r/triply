@@ -20,6 +20,7 @@
             <%= check_box_tag "direct_flights", true, params["direct_flights"]||false, checked: params["direct_flights"]||false, onChange: "submit()", class: "form-check-input me-2" %><div>  Direct Flights Only</div>
           </div>
         </div>
+
         <div class="">
         <% if @itineraries.empty? %>
           Sorry - no flights match your criteria!
@@ -36,14 +37,15 @@
                 <% end %>
                 <% description = itinerary.destination.lonely_planet_data["intro"] %>
                 <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
-                   <div class="row">
+                <br>
+                   <div class="row align-items-end">
                       <div class="col-md-4">
-                        <div style=""><p>Avg time/leg: <strong><%=itinerary.avg_time %></strong> h</p></div>
-                        <div style=""><p>Avg cost/person: <strong><%=number_with_precision(itinerary.avg_cost, precision: 2, :delimiter => ',') %></strong> € </p></div>
+                        <div style=""><p>Avg time/leg: <strong><%=itinerary.avg_time %></strong>h</p></div>
+                        <div style=""><p>Avg cost/person: <strong><%=number_with_precision(itinerary.avg_cost, precision: 2, :delimiter => ',') %></strong>€ </p></div>
                       </div>
                       <div class="col-md-8">
-                      <% button_text = owned ? "View my itinerary" : " View more"%>
-                      <div class="button pt-3"><%= link_to button_text, itinerary_path(itinerary), class: "btn btn-success text-white fixed-right fas fa-plane-departure"%></div></div>
+                      <% button_text = owned ? "   View my itinerary" : "   Explore"%>
+                      <div class="btn btn-success px-9 py-9 align-self-end"><%= link_to button_text, itinerary_path(itinerary), class: "text-white text-decoration-none text-lowercase !important fas fa-plane-departure"%></div></div>
                      </div>
                    </div>
               </div>
