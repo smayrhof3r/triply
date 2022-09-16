@@ -1,4 +1,4 @@
-<div data-controller="confirm-booking" >
+<div data-controller="confirm-booking" data-confirm-booking-target="booking">
   <% if group.bookings.filter { |b| b.status == "confirmed" }.empty? %>
     <div data-confirm-booking-target="infos">     
       <% cheapest = group.bookings.filter { |b| b.status == "cheapest" }.first %>
@@ -6,44 +6,40 @@
       <% shortest = group.bookings.filter { |b| b.status == "shortest" }.first %>
       <% shortest_time = ((shortest.offer["flights_there"].map {|f| f["duration"]}.sum + shortest.offer["flights_return"].map {|f| f["duration"]}.sum)) %>
       <% people = group.adults+group.children %>
-      <%= form_tag(itinerary_path(@itinerary), method: :get, data: {confirm_booking_target: "form", action: "submit->confirm-booking#updateBooking"}) do %>
-        <div>
-          <div class="">
-            <%= render 'shared/collapsible_section',
-              section_title: "Cheapest Flight | €#{number_with_precision(cheapest.offer["cost_per_head"] * people, precision: 2, delimiter: ',')} | #{ActiveSupport::Duration.build(cheapest_time).inspect.gsub(" hours", "hrs").gsub(" minutes", "min").gsub(" and ", " ")} flight time",
-              section_partial: 'itineraries/group_booking',
-              section_partial_params: { group: group, type: "cheapest" },
-              collapsed: true,
-              p_x: "p-1 text-sm",
-              card_body_p_x: "p-0",
-              header_p_x: "px-2 py-0",
-              header_text_x: "text-lg",
-              text_collapsed: "text-white",
-              bg_collapsed: "bg-secondary",
-              text_open: "text-white",
-              bg_open: "bg-secondary" %>
-          </div>
-          <div class="">
-            <%= render 'shared/collapsible_section',
-              section_title: "Shortest Flight | €#{number_with_precision(shortest.offer["cost_per_head"] * people, precision: 2, delimiter: ',')} | #{ActiveSupport::Duration.build(shortest_time).inspect.gsub(" hours", "hrs").gsub(" minutes", "min").gsub(" and ", " ")} flight time",
-              section_partial: 'itineraries/group_booking',
-              section_partial_params: { group: group, type: "shortest" },
-              collapsed: true,
-              p_x: "p-1 text-sm",
-              card_body_p_x: "p-0",
-              header_p_x: "px-2 py-0",
-              header_text_x: "text-lg",
-              text_collapsed: "text-white",
-              bg_collapsed: "bg-secondary",
-              text_open: "text-white",
-              bg_open: "bg-secondary" %>
-          </div>
-        </div>
-      <% end %>
+      <div class="">
+        <%= render 'shared/collapsible_section',
+          section_title: "Cheapest Flight | €#{number_with_precision(cheapest.offer["cost_per_head"] * people, precision: 2, delimiter: ',')} | #{ActiveSupport::Duration.build(cheapest_time).inspect.gsub(" hours", "hrs").gsub(" minutes", "min").gsub(" and ", " ")} flight time",
+          section_partial: 'itineraries/group_booking',
+          section_partial_params: { group: group, type: "cheapest" },
+          collapsed: true,
+          p_x: "p-1 text-sm",
+          card_body_p_x: "p-0",
+          header_p_x: "px-2 py-0",
+          header_text_x: "text-lg",
+          text_collapsed: "text-white",
+          bg_collapsed: "bg-secondary",
+          text_open: "text-white",
+          bg_open: "bg-secondary" %>
+      </div>
+      <div class="">
+        <%= render 'shared/collapsible_section',
+          section_title: "Shortest Flight | €#{number_with_precision(shortest.offer["cost_per_head"] * people, precision: 2, delimiter: ',')} | #{ActiveSupport::Duration.build(shortest_time).inspect.gsub(" hours", "hrs").gsub(" minutes", "min").gsub(" and ", " ")} flight time",
+          section_partial: 'itineraries/group_booking',
+          section_partial_params: { group: group, type: "shortest" },
+          collapsed: true,
+          p_x: "p-1 text-sm",
+          card_body_p_x: "p-0",
+          header_p_x: "px-2 py-0",
+          header_text_x: "text-lg",
+          text_collapsed: "text-white",
+          bg_collapsed: "bg-secondary",
+          text_open: "text-white",
+          bg_open: "bg-secondary" %>
+      </div>  
     </div>  
     <% else %>
       <div class="row">
-        <%= render 'group_booking', group: group, type: "confirmed" %>
+        <%= render 'itineraries/group_booking', group: group, type: "confirmed" %>
       </div>
     <% end %>
     <div class="clickable text-md text-primary">

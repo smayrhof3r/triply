@@ -3,15 +3,13 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="confirm-booking"
 export default class extends Controller {
 
-  static targets = ['form']
+  static targets = ['booking','form']
 
   connect() {
     // console.log(this.bookingTarget.innerHTML);
   }
 
   updateBooking (event) {
-    console.log(5)
-    console.log(new FormData(this.formTarget))
     event.preventDefault()
     const url = this.formTarget.action
 
@@ -22,17 +20,7 @@ export default class extends Controller {
     })
     .then(response => response.text() )
     .then((data) => {
-      console.log(data)
-    })
-      
+      this.bookingTarget.outerHTML = data
+    })     
   }
-
-  #bookingNotConfirmed () {
-
-  }
-
-  #bookingConfirmed () {
-
-  }
-
 }
