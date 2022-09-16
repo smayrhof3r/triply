@@ -69,6 +69,10 @@ class Itinerary < ApplicationRecord
     total_cost / passenger_groups.map { |p| p.adults + p.children }.sum
   end
 
+  def avg_time
+    total_time/passenger_groups.count/3600
+  end
+
   private
 
   def self.delete_sql(table, ids)

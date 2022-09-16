@@ -90,6 +90,9 @@ gem 'amadeus'
 
 gem 'nokogiri'
 gem 'open-uri'
+
+#inviting users
+gem 'devise_invitable', '~> 2.0.0'
 # for http request
 # gem 'faraday'
 # gem 'faraday-http'

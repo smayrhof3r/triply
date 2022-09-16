@@ -8,6 +8,7 @@
 <% header_text_x ||= 'text-lg' %>
 <% header_p_x ||= 'p-2' %>
 <% clickable_header ||= false %>
+<% section_title ||= "" %>
 <div class="card h-100 shadow <%=card_p_x%>"
   data-controller="collapsible-sections"
   data-collapsible-sections-target="section"
@@ -20,10 +21,12 @@
     <h2 class="mb-0">
       <div class="<%=header_text_x%> <%=header_p_x%> <%=collapsed ? text_collapsed : text_open %> text-decoration-none w-100" data-collapsible-sections-target="button" >
         <div class="d-flex justify-content-between">
-          <div>
-              <%= section_title %>
-          </div>
-          <div data-action = "click->collapsible-sections#toggleCollapse"><i class="clickable fas fa-<%= collapsed ? 'plus' : 'minus'%>"></i></div>
+            <% if section_title.empty? %>
+              <%= yield %>
+            <% else %>
+              <div><%=section_title%></div>
+            <% end %>
+            <div data-action = "click->collapsible-sections#toggleCollapse"><i class="clickable fas fa-<%= collapsed ? 'plus' : 'minus'%>"></i></div>
         </div>
       </div>
     </h2>
