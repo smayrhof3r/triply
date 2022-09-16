@@ -1,10 +1,14 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :permissions
   has_many :itineraries, through: :permissions
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 
   def relevant_itineraries(params)
     @params_data = (1..params["passenger_group_count"].to_i).to_a.map{|i| group_params(params, i)}

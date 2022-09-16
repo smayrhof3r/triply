@@ -16,10 +16,16 @@ class ItinerariesController < ApplicationController
     @itinerary = Itinerary.find(params["id"])
     @location = @itinerary.destination
     @permission = Permission.new
+    @permission.itinerary = @itinerary
+    @permission.user = current_user
+    @permission.role = "owner"
     session["user_return_to"] = request.original_url
+
+    session[:itinerary_shown] = @itinerary.id
     respond_to do |format|
-    format.html { render 'itineraries/show'}
-    format.text { render partial: "users/small_flight_info_card", locals: { itinerary: @itinerary }, formats: [:html] }
+      format.html { render 'itineraries/show'}
+      format.text { render partial: "users/small_flight_info_card", locals: { itinerary: @itinerary, permission: @permission }, formats: [:html] }
+
     end
   end
 
@@ -28,7 +34,6 @@ class ItinerariesController < ApplicationController
 
     remove_empty_passenger_groups
     remove_empty_return_date
-
 
     if session[:params] == params && !session[:itineraries].empty?
       @itineraries = session[:itineraries].map { |i| Itinerary.find_by(id: i) }

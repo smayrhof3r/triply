@@ -13,7 +13,12 @@
               <div class="d-none itinerary">
                 <%=itinerary.id%>
               </div>
-              <%= render 'shared/collapsible_section', section_title: "Trip to #{itinerary.destination.city}", section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: collapsed, clickable_header: true %>
+              <%= render 'shared/collapsible_section', section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: collapsed, clickable_header: true do %>
+                  <div><%= "Trip to #{itinerary.destination.city}" %></div>
+                  <% if Permission.find_by(user: current_user, itinerary: itinerary).role == "guest" %>
+                    <div class="text-sm p-1 rounded bg-primary text-white">Shared with you</div>
+                  <% end %>
+              <% end %>
             <% end %>
           </div>
         <% end %>
@@ -42,7 +47,7 @@
   <div class="col-12 col-sm-8 col-md-8">
     <div class="pt-3 px-3 itinerary-overview">
       <div class="scroll-bar" data-render-itinerary-in-user-show-page-target="itinerary">
-        <%= render 'users/small_flight_info_card', itinerary: @upcoming_itineraries.first %>
+        <%= render 'users/small_flight_info_card', itinerary: @shown_itinerary ? Itinerary.find(@shown_itinerary) : @upcoming_itineraries.first, permission: @permission, invited_user: User.find_by(email: @invited_user) %>
       </div>
     </div>
   </div>

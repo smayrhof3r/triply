@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'airports/index'
-  devise_for :users, controllers: {sessions: 'users/sessions'}
+  devise_for :users, controllers: {sessions: 'users/sessions', invitations: 'users/invitations'}
 
   resources :users, :only => [:show]
   root to: "pages#home"
