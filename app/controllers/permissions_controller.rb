@@ -14,6 +14,11 @@ class PermissionsController < ApplicationController
     end
   end
 
+  def destroy
+    Permission.find(params[:id]).delete
+    redirect_to user_path(current_user)
+  end
+
   protected
 
   def permission_params
