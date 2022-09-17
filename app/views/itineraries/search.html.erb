@@ -1,15 +1,15 @@
-<%= form_tag itineraries_path, :method => :get do %>
+<%= form_tag itineraries_path, :method => :get, data: { controller: "search-form", search_form_target: "form" } do %>
   <h1 class = "text-center text-success border-bottom border-primary my-5 sticky-header">
     <div class="row">
       <div class="col-12 offset-md-1 col-md-10">
         <strong><i class="fas fa-plane"></i> Find your <span class="text-primary">perfect</span> holiday destination</strong>
       </div>
       <div class="col-12 <%= request.url.match?(/search/) ? "col-md-1" : "" %> ">
-        <%= submit_tag "Let's fly!", class: "btn btn-primary text-white floating-button", id: "submit", disabled: true%>
+        <%= submit_tag "Let's fly!", class: "btn btn-primary text-white floating-button", id: "submit", disabled: true, data: {search_form_target: "btn", action: "click->search-form#apiSearch"} %>
       </div>
     </div>
   </h1>
   <div class="container p-3">
-    <%= render 'itineraries/search_form_body', col_x: 'col-6', col_slider: 'col-12 col-md-9', col_number_field: 'col-12 col-md-3' %>
+    <%= render 'itineraries/search_form_body', col_x: 'col-6', col_slider: "", col_number_field: "" %>
   </div>
 <% end %>

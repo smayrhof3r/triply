@@ -4,7 +4,7 @@ import { end } from "@popperjs/core";
 // Connects to data-controller="search-form"
 export default class extends Controller {
 
-  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "flexibleDatePrompt", "fixedDateForm", "fixedDatePrompt", 'startDate', 'endDate', 'startDateRange', 'endDateRange', 'oneWay']
+  static targets = ["btn", "form", "passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "flexibleDatePrompt", "fixedDateForm", "fixedDatePrompt", 'startDate', 'endDate', 'startDateRange', 'endDateRange', 'oneWay']
 
   static values = {
     section: Number
@@ -15,6 +15,23 @@ export default class extends Controller {
 
   }
 
+  apiSearch(event) {
+    event.preventDefault()
+    console.log("apiSearch triggered");
+    console.log(event)
+    // run search
+    const url = '/search_index'
+    fetch(url, { method: "GET", headers: { "Accept": "text/plain" } })
+      .then(response => response.text())
+      .then((data) => {
+        console.log(data)
+      })
+
+    // redirect
+    console.log("ready for main event")
+    this.formTarget.submit()
+  }
+
   addPassengerGroup (event) {
     this.#insertPassengerGroupHTML(event)
     this.#updateGroupCount()
@@ -22,13 +39,18 @@ export default class extends Controller {
   }
 
   updateButton() {
+    console.log("check Triggered")
     let check1 = this.#hasPassengerGroup()
     let check2 = this.#hasDates()
 
     if (check1 && check2) {
       document.getElementById('submit').disabled = false
+      console.log(btnTarget)
+      this.btnTarget.disabled = false
     } else {
       document.getElementById('submit').disabled = true
+      console.log(btnTarget)
+      this.btnTarget.disabled = true
     }
   }
 

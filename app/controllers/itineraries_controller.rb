@@ -23,17 +23,40 @@ class ItinerariesController < ApplicationController
     end
   end
 
+  def search_index
+    # check if search is needed
+    if session[:params] == params && !session[:itineraries].empty?
+      @itineraries = session[:itineraries].map { |i| Itinerary.find_by(id: i) }
+      if @itineraries.count(&:nil?) > 0
+        Itinerary.delete_unclaimed(session[:itineraries]) if session[:itineraries]
+        session[:itineraries] = []
+        session[:params] = {}
+      else
+        return respond_to do |format|
+          format.text
+        end
+      end
+
+    else
+      @user_itineraries = user_signed_in? ? current_user.relevant_itineraries(params) : {}
+
+      possible_destinations.each do |destination|
+        retrieve_search_results(destination) unless @user_itineraries[destination]
+      end
+
+      return respond_to do |format|
+        format.text
+      end
+    end
+  end
 
   def index
-
     remove_empty_passenger_groups
     remove_empty_return_date
-
 
     if session[:params] == params && !session[:itineraries].empty?
       @itineraries = session[:itineraries].map { |i| Itinerary.find_by(id: i) }
     else
-
       @itineraries = []
       @user_itineraries = user_signed_in? ? current_user.relevant_itineraries(params) : {}
 
@@ -50,7 +73,6 @@ class ItinerariesController < ApplicationController
       session[:params] = {}
       redirect_to '/search', alert: "restart search or view your itineraries from the menu provided"
     else
-
       @itineraries = @itineraries.filter { |i| i != "" }
       sort_itineraries
       filter_direct_flights
@@ -59,7 +81,6 @@ class ItinerariesController < ApplicationController
       update_session_variables
       @images_by_itinerary_id = Image.retrieve_all_by_itinerary(@itineraries)
     end
-
   end
 
   def filter_direct_flights
@@ -67,6 +88,7 @@ class ItinerariesController < ApplicationController
       @itineraries.filter!(&:direct_flight)
     end
   end
+
   def sort_itineraries
     case params[:sort]
     when "Price Descending"
@@ -161,6 +183,17 @@ class ItinerariesController < ApplicationController
 
   def new_itinerary(destination)
     valid_destination = true
+
+    retrieve_search_results(destination)
+
+    if !group[:search].amadeus_response.empty?
+      create_itinerary_and_bookings_for(groups, Location.find_by_city_code(destination))
+    else
+      return ""
+    end
+  end
+
+  def retrieve_search_results(destination)
     count = params["passenger_group_count"].to_i
     groups = (1..count).to_a.map { |i| passenger_group_params(i) }
 
@@ -173,15 +206,8 @@ class ItinerariesController < ApplicationController
 
       # skip to next destination if not all groups can fly there
       if group[:search].amadeus_response.empty?
-        valid_destination = false
         break
       end
-    end
-
-    if valid_destination
-      create_itinerary_and_bookings_for(groups, Location.find_by_city_code(destination))
-    else
-      return ""
     end
   end
 

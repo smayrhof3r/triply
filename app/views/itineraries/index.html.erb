@@ -1,9 +1,9 @@
-<%= form_tag itineraries_path, :method => :get do %>
+<%= form_tag itineraries_path, :method => :get, data: { controller: "search-form" } do %>
   <div class="row">
     <div class="col-12 col-md-4 scroll-bar sticky-column p-4 pt-5">
       <div class="pe-2" style="text-align:end;">
         <button class="btn btn-primary align-items-center justify-content-end">
-          <i class="fas fa-sync-alt text-white"></i> <%= submit_tag "Update results", class:"text-end no-button text-white" %>
+          <i class="fas fa-sync-alt text-white"></i> <%= submit_tag "Update results", class:"text-end no-button text-white", data: { search_form_target: "btn", action: "click->search-form#apiSearch"} %>
         </button>
       </div>
       <div class="ps-4">
