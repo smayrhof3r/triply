@@ -7,7 +7,7 @@
       </div>
       <div class="modal-body">
         <div class="modal-image"><%= image_tag(image.url) %></div>
-        <%= render 'locations/lonely_planet_description', lonely_planet: image.location.lonely_planet_data %>
+        <%= render 'locations/lonely_planet_description', lonely_planet: image.location.lonely_planet_data, images: image.location.destination.images %>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success text-white" data-bs-dismiss="modal">Close</button>
