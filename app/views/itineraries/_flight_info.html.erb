@@ -1,7 +1,8 @@
-<div class="shadow p-1 my-1 card-overview card-overview-info" style="background-color:white;">
+<div class="shadow p-1 my-1 card-overview card-overview-info">
   <div class="text-sm text-secondary d-flex justify-content-between">
     <p class="ps-3"><%= DateTime.parse(flight["departure_time"]).strftime('%d %b, %Y')%></p>
-    <p class="pe-3"><%="#{flight["airline"]} #{flight["flight_code"]}"%></p>
+    <p class="pe-3"><%="#{flight["airline"].strip.first(10)}./#{flight["flight_code"]}"%></p>
+
   </div>
   <div class="d-flex justify-content-around align-items-center">
     <div class="flight-time-location bg-light pt-2 text-center" style="background-color:white;">
@@ -13,7 +14,7 @@
     <% else %>
       <%= render 'shared/flight_question_icon' %>
     <% end %>
-    <div class="flight-time-location pt-2 text-center">
+    <div class="flight-time-location pt-2 text-center" style="background-color:white;">
       <h3 class="m-0"><%= DateTime.parse(flight["arrival_time"]).strftime('%H:%M') %>h</h3>
       <p><%= flight["arrival_city"] %></p>
     </div>
