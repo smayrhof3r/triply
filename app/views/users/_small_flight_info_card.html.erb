@@ -35,8 +35,11 @@
   <div class="small-card-overview">
     <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
       <div class="small-card-booking py-3">
-        <button class="circle-booking me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
+
+          <button class="circle-booking me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
+
         <div class="small-card-overview-info p-3">
+        <div class="dotted-line-down"></div>
           <% bookings = group.bookings.filter {|b| b.status == "confirmed" } %>
           <div class="card-departure-info">
             <% if bookings.empty? %>
@@ -68,6 +71,7 @@
               <div class="small-card-booking py-3">
                 <button class="circle-booking-up me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
                 <div class="small-card-overview-info-return p-3">
+                <div class="dotted-line-up"></div>
                   <div class="card-departure-info">
                     <% if bookings.empty? %>
                       <div class="d-flex justify-content-between align-items-center">
