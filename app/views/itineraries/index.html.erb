@@ -39,22 +39,24 @@
                   <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
                   <br>
                     <% button_text = owned ? "View my itinerary" : "Explore"%>
-                    <div class="row align-items-end justify-content-center text-end">
-                      <% if owned %>
-                        <%= link_to itinerary_path(itinerary), class: "col-md-6 btn btn-success text-white px-3 align-self-end" do %>
-                          <i class=" text-white pe-1 fas fa-plane-departure me-2"></i><%=button_text%>
+                    <div class="row">
+                      <div class="d-flex align-items-end justify-content-between">
+                        <% if owned %>
+                          <%= link_to itinerary_path(itinerary), class: "col-md-6 btn btn-success text-white px-3" do %>
+                            <i class=" text-white pe-1 fas fa-plane-departure me-2"></i><%=button_text%>
+                          <% end %>
+                        <% else %>
+                          <div class="text-end">
+                            <div style=""><p>Avg time/leg: <strong><%=itinerary.avg_time %></strong>h</p></div>
+                            <div style=""><p>Avg cost/person: <strong><%=number_with_precision(itinerary.avg_cost, precision: 2, :delimiter => ',') %></strong>€ </p></div>
+                          </div>
+
+                          <%= link_to itinerary_path(itinerary), class: "btn btn-success d-flex align-items-end text-white justify-content-center text-center" do %>
+                            <i class=" text-white pe-1 fas fa-plane-departure me-2"></i><%=button_text%>
+                          <% end %>
+
                         <% end %>
-                      <% else %>
-                        <div class="col-md-7">
-                          <div style=""><p>Avg time/leg: <strong><%=itinerary.avg_time %></strong>h</p></div>
-                          <div style=""><p>Avg cost/person: <strong><%=number_with_precision(itinerary.avg_cost, precision: 2, :delimiter => ',') %></strong>€ </p></div>
-                        </div>
-                        <div class="col-md-3 offset-md-1 d-flex  justify-content-center">
-                        <%= link_to itinerary_path(itinerary), class: "btn btn-success d-flex align-items-center text-white" do %>
-                          <i class=" text-white pe-1 fas fa-plane-departure me-2"></i><%=button_text%>
-                        <% end %>
-                        </div>
-                      <% end %>
+                      </div>
                     </div>
                 </div>
               </div>
