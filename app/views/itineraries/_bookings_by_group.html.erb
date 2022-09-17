@@ -42,7 +42,10 @@
         <%= render 'itineraries/group_booking', group: group, type: "confirmed" %>
       </div>
     <% end %>
-    <div class="clickable text-md text-primary">
+    <div class="clickable text-md text-primary" data-toggle="modal" data-target="#modalChooseFlights">
         <strong class="text-md"><i class="ms-2 text-primary fas fa-search"></i> Choose other flights</strong>
+        <!-- Modal -->
+        <%= render 'itineraries/modal_choose_flights' %>
     </div>
+    
 </div>

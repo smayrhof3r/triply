@@ -2,7 +2,7 @@ class PermissionsController < ApplicationController
 
   def create
     p = Permission.new(permission_params)
-    session[:invited_user] = nil
+    session[:invited_user] = nil 
 
     if p.save && p.role == "owner"
       Itinerary.delete_unclaimed(session[:itineraries])

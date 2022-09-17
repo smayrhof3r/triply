@@ -13,7 +13,8 @@ class UsersController < ApplicationController
     @user_itineraries = @user.itineraries
     @upcoming_itineraries = @user_itineraries.map {|i| i.start_date >= Date.today ? i : nil}.reject(&:nil?)
     @past_itineraries = @user_itineraries.map {|i| i.start_date < Date.today ? i : nil}.reject(&:nil?)
-    unless @shown_itinerary && Itinerary.find_by(id: @shown_itinerary) && current_user.permissions.find_by(itinerary_id: @shown_itinerary)
+    
+    if @shown_itinerary && Itinerary.find_by(id: @shown_itinerary) && current_user.permissions.find_by(itinerary_id: @shown_itinerary) 
       @shown_itinerary = @upcoming_itineraries.first.id
     end
     @permission = Permission.new
