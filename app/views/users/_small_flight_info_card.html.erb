@@ -1,3 +1,4 @@
+<% invited_user ||= false  %>
 <% is_owner = current_user.permissions.find_by(itinerary: itinerary).role == "owner" %>
 <div class="itinerary-overview">
   <div class="destination-title px-5 py-3 d-flex justify-content-between align-items-center">
