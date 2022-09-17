@@ -22,6 +22,7 @@ class ItinerariesController < ApplicationController
     session["user_return_to"] = request.original_url
 
     session[:itinerary_shown] = @itinerary.id
+    @shown_itinerary = @itinerary.id
     respond_to do |format|
       format.html { render 'itineraries/show'}
       format.text { render partial: "users/small_flight_info_card", locals: { itinerary: @itinerary, permission: @permission }, formats: [:html] }
