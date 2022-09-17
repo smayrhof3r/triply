@@ -50,32 +50,22 @@ class ItinerariesController < ApplicationController
 
   def search_index
     # check if search is needed
-    if session[:params] == params && !session[:itineraries].empty?
-      @itineraries = session[:itineraries].map { |i| Itinerary.find_by(id: i) }
-      if @itineraries.count(&:nil?) > 0
-        Itinerary.delete_unclaimed(session[:itineraries]) if session[:itineraries]
-        session[:itineraries] = []
-        session[:params] = {}
-      else
-        return respond_to do |format|
-          format.text
-        end
-      end
+    puts ".................Params for search_index: #{params}"
+    @user_itineraries = user_signed_in? ? current_user.relevant_itineraries(params) : {}
 
-    else
-      @user_itineraries = user_signed_in? ? current_user.relevant_itineraries(params) : {}
-
-      possible_destinations.each do |destination|
-        retrieve_search_results(destination) unless @user_itineraries[destination]
-      end
-
-      return respond_to do |format|
-        format.text
-      end
+    @the_groups = groups
+    possible_destinations.each do |destination|
+      retrieve_search_results(destination) unless @user_itineraries[destination]
     end
+    puts "......LEAVING THE SEARCH....."
+    return respond_to do |format|
+      format.text
+    end
+
   end
 
   def index
+    puts ".....IN THE INDEX NOW....."
     remove_empty_passenger_groups
     remove_empty_return_date
 
@@ -86,10 +76,12 @@ class ItinerariesController < ApplicationController
       @user_itineraries = user_signed_in? ? current_user.relevant_itineraries(params) : {}
 
       # try each destination
+      @the_groups = groups
       possible_destinations.each do |destination|
         @itineraries << (@user_itineraries[destination] || new_itinerary(destination))
         source_images(destination) if (!@itineraries.last == "" && @itineraries.last.destination.images.empty?)
       end
+
     end
 
     if @itineraries.count(&:nil?) > 0
@@ -215,21 +207,23 @@ class ItinerariesController < ApplicationController
 
     retrieve_search_results(destination)
 
-    if !group[:search].amadeus_response.empty?
-      create_itinerary_and_bookings_for(groups, Location.find_by_city_code(destination))
+    if @the_groups.filter { |g| g[:search].amadeus_response.empty? }.empty?
+      return create_itinerary_and_bookings_for(Location.find_by_city_code(destination))
     else
       return ""
     end
   end
 
-  def retrieve_search_results(destination)
+  def groups
     count = params["passenger_group_count"].to_i
-    groups = (1..count).to_a.map { |i| passenger_group_params(i) }
+    (1..count).to_a.map { |i| passenger_group_params(i) }
+  end
 
-    return "" if groups.map { |g| g[:location].city_code }.include?(destination)
+  def retrieve_search_results(destination)
+    return "" if @the_groups.map { |g| g[:location].city_code }.include?(destination)
 
     # find valid destinations and create itineraries
-    groups.each do |group|
+    @the_groups.each do |group|
       # retrieve or find & save top flights
       group[:search] = top_search_results(group, destination)
 
@@ -254,10 +248,10 @@ class ItinerariesController < ApplicationController
     session[:params] = params
   end
 
-  def create_itinerary_and_bookings_for(groups, destination)
+  def create_itinerary_and_bookings_for(destination)
     # for each destination we only create ONE itinerary and set of passenger groups but MANY bookings
     itinerary = Itinerary.create(destination_id: destination.id, start_date: params["start_date"], end_date: params["end_date"])
-    groups.each do |group|
+    @the_groups.each do |group|
       passenger_group = new_passenger_group(group, itinerary)
       search_results = group[:search].amadeus_response["offers"]
 
@@ -276,6 +270,7 @@ class ItinerariesController < ApplicationController
         offer: shortest_flight
       )
     end
+
     itinerary
   end
 
@@ -287,6 +282,7 @@ class ItinerariesController < ApplicationController
   end
 
   def top_search_results(group, destination)
+
     # collect top flights
     @search_criteria = {
       originLocationCode: group[:location].city_code,
@@ -296,6 +292,8 @@ class ItinerariesController < ApplicationController
       adults: group[:adults],
       children: group[:children]
     }
+
+    puts @search_criteria
 
     search = Search.find_by(@search_criteria) || new_search(
       amadeus_search_result, group, destination)
@@ -329,7 +327,7 @@ class ItinerariesController < ApplicationController
   end
 
   def new_search(amadeus_result, group, destination)
-
+    puts "......NEW SEARCH......"
     @search = Search.create(@search_criteria)
     destination_location = Location.find_by_city_code(destination)
     @search.amadeus_response = {}

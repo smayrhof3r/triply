@@ -1,5 +1,7 @@
-import { Controller } from "@hotwired/stimulus"
+import Rails from "@rails/ujs";
+import { Controller } from "@hotwired/stimulus";
 import { end } from "@popperjs/core";
+
 
 // Connects to data-controller="search-form"
 export default class extends Controller {
@@ -17,19 +19,27 @@ export default class extends Controller {
 
   apiSearch(event) {
     event.preventDefault()
-    console.log("apiSearch triggered");
-    console.log(event)
+    console.log("apiSearch triggered")
+    console.log(this.formTarget)
     // run search
-    const url = '/search_index'
-    fetch(url, { method: "GET", headers: { "Accept": "text/plain" } })
+    let loader = '<div class="ring-box d-flex align-items-bottom p-3"><div class="ring">Loading<span></span></div>This step can take a long time as we search the database, but it\'s worth the wait!</div>'
+    document.getElementById("waiting").innerHTML = loader
+
+    const query_string = new URLSearchParams(new FormData(this.formTarget)).toString()
+    const url = `/search_index?${query_string}`
+    console.log(url)
+    console.log('with delay');
+    fetch(url, {
+      method: "GET",
+      headers: { "Accept": "text/plain" } }
+      )
       .then(response => response.text())
       .then((data) => {
         console.log(data)
+        console.log("Done..")
+        Rails.fire(this.formTarget, 'submit');
+        document.getElementById("waiting").innerHTML = ""
       })
-
-    // redirect
-    console.log("ready for main event")
-    this.formTarget.submit()
   }
 
   addPassengerGroup (event) {
