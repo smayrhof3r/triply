@@ -13,11 +13,11 @@
 
     <div class="col-12 offset-md-4 col-md-8">
       <div class="ps-3 pe-5">
-        <div class="d-flex my-3 pt-4 justify-content-between align-items-end border-bottom border-success">
+        <div class="d-flex my-2 pt-4 justify-content-between align-items-end border-bottom border-success">
           <h2 class="text-center text-primary m-0">Top Recommendations</h2>
-          <div class="d-flex align-items-center">
-            <%= select_tag :sort, options_for_select([ "Price Descending", "Price Ascending", "Shortest flights", "Direct flights only" ], params[:sort]||"Price ⬇️"), onChange: "this.form.submit()", class: "btn btn-link text-start text-decoration-none text-strong"   %>
-            <%= check_box_tag "direct_flights", true, params["direct_flights"]||false, checked: params["direct_flights"]||false, onChange: "submit()", class: "form-check-input me-2" %><div>  Direct Flights Only</div>
+          <div class="d-flex justify-content-between align-items-center margin-right: 5px ">
+           <div>Direct Flights Only   </div><%= check_box_tag "direct_flights ", true, params["direct_flights"]||false, checked: params["direct_flights"]||false, onChange: "submit()", class: "form-check-input ms-3"%>
+            <%= select_tag :sort, options_for_select([ "Price Descending", "Price Ascending", "Shortest flights", "Direct flights only" ], params[:sort]||"Price ⬇️"), onChange: "this.form.submit()", class: "btn btn-link align-items-end text-start text-decoration-none text-strong ms-2"%>
           </div>
         </div>
 
@@ -38,6 +38,7 @@
                   <% description = itinerary.destination.lonely_planet_data["intro"] %>
                   <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
                   <br>
+
                     <% button_text = owned ? "View my itinerary" : "Explore"%>
                     <div class="row">
                       <div class="d-flex align-items-end justify-content-between">
