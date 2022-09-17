@@ -15,7 +15,9 @@ Rails.application.routes.draw do
     resources :bookings, only: [:new, :create]
   end
 
-  resources :itineraries, only: [:index, :show] do
+  resources :permissions, only: [:destroy]
+
+  resources :itineraries, only: [:index, :show, :destroy] do
     resources :permissions, only: [:create]
   end
 end
