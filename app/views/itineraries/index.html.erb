@@ -13,11 +13,11 @@
 
     <div class="col-12 offset-md-4 col-md-8">
       <div class="ps-3 pe-5">
-        <div class="d-flex my-3 pt-4 justify-content-between align-items-end border-bottom border-success">
+        <div class="d-flex my-2 pt-4 justify-content-between align-items-end border-bottom border-success">
           <h2 class="text-center text-primary m-0">Top Recommendations</h2>
-          <div class="d-flex align-items-center">
-            <%= select_tag :sort, options_for_select([ "Price Descending", "Price Ascending", "Shortest flights", "Direct flights only" ], params[:sort]||"Price ⬇️"), onChange: "this.form.submit()", class: "btn btn-link text-start text-decoration-none text-strong"   %>
-            <%= check_box_tag "direct_flights", true, params["direct_flights"]||false, checked: params["direct_flights"]||false, onChange: "submit()", class: "form-check-input me-2" %><div>  Direct Flights Only</div>
+          <div class="d-flex justify-content-between align-items-center margin-right: 5px ">
+           <div>Direct Flights Only   </div><%= check_box_tag "direct_flights ", true, params["direct_flights"]||false, checked: params["direct_flights"]||false, onChange: "submit()", class: "form-check-input ms-3"%>
+            <%= select_tag :sort, options_for_select([ "Price Descending", "Price Ascending", "Shortest flights", "Direct flights only" ], params[:sort]||"Price ⬇️"), onChange: "this.form.submit()", class: "btn btn-link align-items-end text-start text-decoration-none text-strong ms-2"%>
           </div>
         </div>
 
@@ -39,7 +39,6 @@
                   <p><%= "#{description.strip.first(200)}#{description.strip.length > 200 ? "..." : ""}" %></p>
                   <br>
                     <div class="row align-items-end">
-<<<<<<< HEAD
                         <div class="col-md-4">
                           <div style=""><p>Avg time/leg: <strong><%=itinerary.avg_time %></strong>h</p></div>
                           <div style=""><p>Avg cost/person: <strong><%=number_with_precision(itinerary.avg_cost, precision: 2, :delimiter => ',') %></strong>€ </p></div>
@@ -48,16 +47,6 @@
                           <% button_text = owned ? "   View my itinerary" : "   Explore"%>
                           <div class="btn btn-success px-9 py-9 align-self-end"><i class=" text-white pefas fa-plane-departure"></i><%= link_to button_text, itinerary_path(itinerary), class: "text-white text-decoration-none"%></div>
                         </div>
-=======
-                        <div class="col-md-8">
-                          <div style=""><p>Avg time/leg: <strong><%=itinerary.avg_time %></strong>h</p></div>
-                          <div style=""><p>Avg cost/person: <strong><%=number_with_precision(itinerary.avg_cost, precision: 2, :delimiter => ',') %></strong>€ </p></div>
-                        </div>
-                        <%= link_to itinerary_path(itinerary), class: "col-md-4" do %>
-                          <% button_text = owned ? "   View my itinerary" : "   Explore"%>
-                          <div class="btn btn-success px-9 py-9 align-self-end"><i class=" text-white pe-1 fas fa-plane-departure"></i><%= link_to button_text, itinerary_path(itinerary), class: "text-white text-decoration-none"%></div>
-                        <% end %>
->>>>>>> 32cf507e58e97a4cea8173f89a8b03a9e2171fb5
                     </div>
                 </div>
               </div>
