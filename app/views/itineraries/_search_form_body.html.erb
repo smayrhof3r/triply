@@ -1,4 +1,4 @@
-<div class="row ps-3 px-2 pt-3" data-controller="search-form" data-action="click->search-form#updateButton input->search-form#updateButton">
+<div class="row ps-3 px-2 pt-3" data-action="click->search-form#updateButton input->search-form#updateButton">
   <div class="<%= col_x %> mb-3">
     <%= render 'shared/collapsible_section', section_title: 'Travel Dates', section_partial: 'itineraries/dates_form', section_partial_params: { request: request, params: params }, collapsed: false %>
   </div>

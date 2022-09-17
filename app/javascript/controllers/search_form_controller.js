@@ -1,10 +1,12 @@
-import { Controller } from "@hotwired/stimulus"
+import Rails from "@rails/ujs";
+import { Controller } from "@hotwired/stimulus";
 import { end } from "@popperjs/core";
+
 
 // Connects to data-controller="search-form"
 export default class extends Controller {
 
-  static targets = ["passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "flexibleDatePrompt", "fixedDateForm", "fixedDatePrompt", 'startDate', 'endDate', 'startDateRange', 'endDateRange', 'oneWay']
+  static targets = ["btn", "form", "passengerCount", "passengerGroupPartial", "city", "adults", "flexibleDateForm", "flexibleDatePrompt", "fixedDateForm", "fixedDatePrompt", 'startDate', 'endDate', 'startDateRange', 'endDateRange', 'oneWay']
 
   static values = {
     section: Number
@@ -15,6 +17,31 @@ export default class extends Controller {
 
   }
 
+  apiSearch(event) {
+    event.preventDefault()
+    console.log("apiSearch triggered")
+    console.log(this.formTarget)
+    // run search
+    let loader = '<div class="ring-box d-flex align-items-bottom p-3"><div class="ring">Loading<span></span></div>This step can take a long time as we search the database, but it\'s worth the wait!</div>'
+    document.getElementById("waiting").innerHTML = loader
+
+    const query_string = new URLSearchParams(new FormData(this.formTarget)).toString()
+    const url = `/search_index?${query_string}`
+    console.log(url)
+    console.log('with delay');
+    fetch(url, {
+      method: "GET",
+      headers: { "Accept": "text/plain" } }
+      )
+      .then(response => response.text())
+      .then((data) => {
+        console.log(data)
+        console.log("Done..")
+        Rails.fire(this.formTarget, 'submit');
+        document.getElementById("waiting").innerHTML = ""
+      })
+  }
+
   addPassengerGroup (event) {
     this.#insertPassengerGroupHTML(event)
     this.#updateGroupCount()
@@ -22,13 +49,18 @@ export default class extends Controller {
   }
 
   updateButton() {
+    console.log("check Triggered")
     let check1 = this.#hasPassengerGroup()
     let check2 = this.#hasDates()
 
     if (check1 && check2) {
       document.getElementById('submit').disabled = false
+      console.log(btnTarget)
+      this.btnTarget.disabled = false
     } else {
       document.getElementById('submit').disabled = true
+      console.log(btnTarget)
+      this.btnTarget.disabled = true
     }
   }
 
