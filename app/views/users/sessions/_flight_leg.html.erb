@@ -2,7 +2,7 @@
   <div class="">
     <% flights.each do |f| %>
       <div>Departure date: <%= DateTime.parse(f["departure_time"]).strftime('%d %b, %Y')%></div>
-      <div class="flight-time d-flex align-items-center py-2 px-5 mb-3">
+      <div class="flight-time d-flex align-items-center justify-content-center py-2 px-5 mb-3">
           <div class="flight-time-location me-3">
             <h3 class="m-0"><%= DateTime.parse(f["departure_time"]).strftime('%H:%M')%>h</h3>
             <div><%=f["departure_city"]%></div>

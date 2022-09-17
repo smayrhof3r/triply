@@ -1,15 +1,11 @@
-<% loc_dep_id = Airport.find(f.departure_airport_id).location_id %>
-<% loc_dep = Location.find(loc_dep_id) %>
-<% loc_arr_id = Airport.find(f.arrival_airport_id).location_id %>
-<% loc_arr = Location.find(loc_arr_id) %>
 <div>
   <p class="border-bottom text-success">
-    Flight from <strong class="text-primary"><%=loc_dep.city%></strong> to <strong class="text-primary"><%=loc_arr.city%></strong>
+    Flight from <strong class="text-primary"><%=f["departure_city"]%></strong> to <strong class="text-primary"><%=f["arrival_city"]%></strong>
   </p>
   <p>
-    Departure: <%= f.departure_time.strftime('%d/%b')%>, <%= f.departure_time.strftime('%H:%M')%>h
+    Departure: <%= DateTime.parse(f["departure_time"]).strftime('%d:%b') %>, <%= DateTime.parse(f["arrival_time"]).strftime('%H:%M') %>h
   </p>
   <p>
-    Arrival: <%= f.arrival_time.strftime('%d/%b')%>, <%= f.arrival_time.strftime('%H:%M')%>h
+    Arrival: <%= DateTime.parse(f["arrival_time"]).strftime('%d:%b') %>, <%= DateTime.parse(f["arrival_time"]).strftime('%H:%M') %>h
   </p>
 </div>

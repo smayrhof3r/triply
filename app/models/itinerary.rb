@@ -47,6 +47,7 @@ class Itinerary < ApplicationRecord
   def total_time
     total = 0
     passenger_groups.each do |p|
+
       b = Booking.find_by(status: "shortest", passenger_group: p) || Booking.find_by(status: "cheapest", passenger_group: p)
 
       total += b.offer["flights_there"].map {|f| f["duration"]}.sum if b && b.offer

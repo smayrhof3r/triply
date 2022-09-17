@@ -12,16 +12,18 @@
         <% end %>
       </div>
     </div>
-
+    
     <% info = group.bookings.filter{ |b| b.status == "confirmed" } %>
     <% if info.empty? %>
       <%= link_to itinerary_path(group.itinerary), class: "btn btn-link text-secondary text-decoration-none" do %>
-        <i class="fas fa-search"></i> "Choose flights"
+        <i class="fas fa-search"></i> Choose flights
       <% end %>
     <% else %>
       <%= render 'shared/collapsible_section', section_title: 'Getting there', section_partial: 'users/sessions/flight_leg', section_partial_params: { flights: info.first.offer["flights_there"], status: "confirmed" }, collapsed: true, bg_collapsed: 'bg-primary', bg_open: 'bg-secondary', p_x: 'p-0' %>
-      <%= render 'shared/collapsible_section', section_title: 'Coming home', section_partial: 'users/sessions/flight_leg', section_partial_params: { flights: info.first.offer["flights_return"] , status: "confirmed" }, collapsed: true, text_collapsed: 'text-primary', bg_collapsed: 'border border-primary', text_open: 'text-white', bg_open: 'bg-secondary', p_x: 'p-0' %>
-      <%= render 'shared/booking_status_or_edit_form', type: "confirmed" %>
+      <%= render 'shared/collapsible_section', section_title: 'Coming home', section_partial: 'users/sessions/flight_leg', section_partial_params: { flights: info.first.offer["flights_return"], status: "confirmed" }, collapsed: true, text_collapsed: 'text-primary', bg_collapsed: 'border border-primary', text_open: 'text-white', bg_open: 'bg-secondary', p_x: 'p-0' %>
+      <%= link_to itinerary_path(group.itinerary), class: "btn btn-link text-secondary text-decoration-none" do %>
+        <i class="fas fa-search"></i> Change flights
+      <% end %>
     <% end %>
   </div>
 <% end %>
