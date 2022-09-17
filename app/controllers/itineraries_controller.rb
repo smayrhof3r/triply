@@ -352,7 +352,6 @@ class ItinerariesController < ApplicationController
     s = segments.map do |segment|
       airline = find_or_create_airline(segment['carrierCode'])
       airline = airline ? airline.name : ""
-
       airport_from = find_or_create_airport(segment["departure"]["iataCode"])
       airport_to = find_or_create_airport(segment["arrival"]["iataCode"])
       {
