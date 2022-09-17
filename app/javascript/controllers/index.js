@@ -27,3 +27,6 @@ application.register("render-itinerary-in-user-show-page", RenderItineraryInUser
 
 import SearchFormController from "./search_form_controller"
 application.register("search-form", SearchFormController)
+
+import ToggleBookingButtonsController from "./toggle_booking_buttons_controller"
+application.register("toggle-booking-buttons", ToggleBookingButtonsController)
