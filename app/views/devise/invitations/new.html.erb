@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="offset-1 col-10 offset-md-3 col-md-6">
+    <div class="p-3 container shadow bg-white border-success">
+      <h1 class = "mb-3 p-0 text-center text-success border-bottom border-primary sticky-header">
+        <%= t "devise.invitations.new.header" %> <span class="text-primary"><i class="fas fa-plane-alt"></i></span>
+      </h1>
+      <%= simple_form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post }) do |f| %>
+        <%= f.error_notification %>
+
+        <% resource.class.invite_key_fields.each do |field| -%>
+          <div class="form-inputs">
+            <%= f.input field %>
+          </div>
+        <% end -%>
+
+        <div class="form-actions text-center">
+          <%= f.button :submit, t("devise.invitations.new.submit_button"), class: "btn btn-primary text-white" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,3 +1,6 @@
+<% permission = Permission.find_by(user: current_user, itinerary: itinerary) %>
+<% owner = permission.role == "owner" %>
+
 <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
 
   <div class="card-overview-info mb-3">
@@ -14,14 +17,24 @@
     </div>
 
     <% info = group.bookings.filter{ |b| b.status == "confirmed" } %>
-    <% if info.empty? %>
-      <%= link_to itinerary_path(group.itinerary), class: "btn btn-link text-secondary text-decoration-none" do %>
-        <i class="fas fa-search"></i> "Choose flights"
-      <% end %>
-    <% else %>
+    <% if !info.empty? %>
       <%= render 'shared/collapsible_section', section_title: 'Getting there', section_partial: 'users/sessions/flight_leg', section_partial_params: { flights: info.first.offer["flights_there"], status: "confirmed" }, collapsed: true, bg_collapsed: 'bg-primary', bg_open: 'bg-secondary', p_x: 'p-0' %>
-      <%= render 'shared/collapsible_section', section_title: 'Coming home', section_partial: 'users/sessions/flight_leg', section_partial_params: { flights: info.first.offer["flights_return"] , status: "confirmed" }, collapsed: true, text_collapsed: 'text-primary', bg_collapsed: 'border border-primary', text_open: 'text-white', bg_open: 'bg-secondary', p_x: 'p-0' %>
-      <%= render 'shared/booking_status_or_edit_form', type: "confirmed" %>
+      <%= render 'shared/collapsible_section', section_title: 'Coming home', section_partial: 'users/sessions/flight_leg', section_partial_params: { flights: info.first.offer["flights_return"], status: "confirmed" }, collapsed: true, text_collapsed: 'text-primary', bg_collapsed: 'border border-primary', text_open: 'text-white', bg_open: 'bg-secondary', p_x: 'p-0' %>
     <% end %>
+    <div class="d-flex justify-content-between">
+      <%= link_to itinerary_path(itinerary), class: "btn btn-link text-secondary text-decoration-none" do %>
+        <i class="fas fa-search"></i> <%= info.empty? ? "Choose flights" : "Change flights" %>
+      <% end %>
+      <% if owner %>
+        <%= link_to itinerary_path(itinerary), data: { turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-link text-secondary text-decoration-none" do %>
+          <i class="fas fa-ban"></i> Delete itinerary
+        <% end %>
+      <% else %>
+        <%= link_to permission_path(permission), data: { turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-link text-secondary text-decoration-none" do %>
+          <i class="fas fa-ban"></i> Remove itinerary
+        <% end %>
+      <% end %>
+    </div>
+
   </div>
 <% end %>

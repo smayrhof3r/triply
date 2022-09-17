@@ -1,5 +1,7 @@
 class ItinerariesController < ApplicationController
   before_action :update_session_url, only: [:search, :index, :show]
+  before_action :retrieve_itinerary, only: [:destroy, :show]
+
   skip_before_action :authenticate_user!
 
   AMADEUS = Amadeus::Client.new({
@@ -12,14 +14,37 @@ class ItinerariesController < ApplicationController
   def search
   end
 
+  def destroy
+
+    if Permission.find_by(user: current_user, itinerary: @itinerary).role == "owner"
+
+      @itinerary.permissions.each(&:delete)
+
+      @itinerary.passenger_groups.each do |p|
+        p.bookings.each(&:delete)
+        p.delete
+      end
+
+      @itinerary.delete
+    end
+
+    redirect_to user_path(current_user)
+  end
+
   def show
-    @itinerary = Itinerary.find(params["id"])
     @location = @itinerary.destination
     @permission = Permission.new
+    @permission.itinerary = @itinerary
+    @permission.user = current_user
+    @permission.role = "owner"
     session["user_return_to"] = request.original_url
+
+    session[:itinerary_shown] = @itinerary.id
+
     respond_to do |format|
-    format.html { render 'itineraries/show'}
-    format.text { render partial: "users/small_flight_info_card", locals: { itinerary: @itinerary }, formats: [:html] }
+      format.html { render 'itineraries/show'}
+      format.text { render partial: "users/small_flight_info_card", locals: { itinerary: @itinerary, permission: @permission }, formats: [:html] }
+
     end
   end
 
@@ -141,6 +166,10 @@ class ItinerariesController < ApplicationController
   end
 
   private
+
+  def retrieve_itinerary
+    @itinerary = Itinerary.find(params[:id])
+  end
 
   def source_images(destination)
     l = Location.find_by(city_code: destination)

@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'airports/index'
-  devise_for :users, controllers: {sessions: 'users/sessions'}
+  devise_for :users, controllers: {sessions: 'users/sessions', invitations: 'users/invitations'}
 
   resources :users, :only => [:show]
   root to: "pages#home"
@@ -11,11 +11,15 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
+  resources :bookings, only: [:edit, :update]
+
   resources :passenger_groups, only: [:show] do
     resources :bookings, only: [:new, :create]
   end
 
-  resources :itineraries, only: [:index, :show] do
+  resources :permissions, only: [:destroy]
+
+  resources :itineraries, only: [:index, :show, :destroy] do
     resources :permissions, only: [:create]
   end
 end

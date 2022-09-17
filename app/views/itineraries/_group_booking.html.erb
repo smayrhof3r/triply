@@ -19,21 +19,21 @@
       </div>
     </div>
     <div class="h-100 d-flex flex-column justify-content-around align-items-center">
-      <%= render 'shared/booking_status_or_edit_form', type: type %>
+      <%= render 'shared/booking_status_or_edit_form', booking: group.bookings.filter{ |b| b.status == type }.first %>
     </div>
   </div>
 </div>
 
 <div class="flight-overview-time col-4 bg-primary">
   <% flight_info["flights_there"].each do |f| %>
-    <%= render 'flight_info', flight: f, status: type %>
+    <%= render 'itineraries/flight_info', flight: f, status: type %>
   <% end %>
 </div>
 
 <% if flight_info["flights_return"] %>
   <div class="flight-overview-time col-4 bg-success">
       <% flight_info["flights_return"].each do |f| %>
-        <%= render 'flight_info', flight: f, status: type %>
+        <%= render 'itineraries/flight_info', flight: f, status: type %>
       <% end %>
   </div>
 <% end %>

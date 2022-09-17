@@ -1,9 +1,10 @@
-<% if type != "confirmed" || !user_signed_in? %>
-  <div class="shadow btn btn-success text-white border border-success">
-    <strong><i class="fas fa-check"></i> Confirm booking </strong>
-  </div>
+<% if booking.status != "confirmed" || !user_signed_in? %>
+  <%= simple_form_for(booking, data: {confirm_booking_target: "form"}) do |f| %>
+  <div class="d-none"><%= f.input :status, input_html: {value: "confirmed"} %></div>
+    <%= f.submit "Confirm booking", class: "shadow btn btn-success text-white border border-success", data: {turbo_method: "PATCH", action: "click->confirm-booking#updateBooking"} %>
+  <% end %>
 <% else %>
-  <div class="w-100 d-flex justify-content-end">
+  <div class="w-100 d-flex justify-content-end pe-2">
     <div class="bg-success text-white card-tag px-2">booked</div>
-  </div>
+  </div> 
 <% end %>

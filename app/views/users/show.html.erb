@@ -6,14 +6,22 @@
         <p class="text-center">You have no past trips</p>
       <% else %>
         <% @upcoming_itineraries.each_with_index do |itinerary, i| %>
+          <% next if itinerary.permissions.empty? %>
           <% collapsed = (i != 0 ? true : false) %>
 
-          <div class = "mb-3" data-action="click->render-itinerary-in-user-show-page#renderItineraryPartial">
+          <div class = "mb-3">
             <%= form_tag(itinerary_path(itinerary), method: :get) do %>
               <div class="d-none itinerary">
                 <%=itinerary.id%>
               </div>
-              <%= render 'shared/collapsible_section', section_title: "Trip to #{itinerary.destination.city}", section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: collapsed, clickable_header: true %>
+              <%= render 'shared/collapsible_section', section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: collapsed, clickable_header: true do %>
+                  <div class="w-100 d-flex align-items-center" data-action="click->render-itinerary-in-user-show-page#renderItineraryPartial">
+                    <div><%= "Trip to #{itinerary.destination.city}" %></div>
+                    <% if Permission.find_by(user: current_user, itinerary: itinerary).role == "guest" %>
+                      <div class="text-sm p-1 rounded bg-primary text-white">Shared with you</div>
+                    <% end %>
+                  </div>
+              <% end %>
             <% end %>
           </div>
         <% end %>
@@ -24,6 +32,7 @@
           <p class="text-center">You have no past trips</p>
         <% else %>
           <% @past_itineraries.each do |itinerary| %>
+            <% next if itinerary.permissions.empty? %>
             <div data-action="click->render-itinerary-in-user-show-page#renderItineraryPartial">
               <%= form_tag(itinerary_path(itinerary), method: :get) do %>
                 <div class="d-none itinerary">
@@ -46,7 +55,7 @@
           <h2 class="m-3 p-3 text-success text-center">You have no itineraries</h2>
           <h4 class="m-3 p-3 text-primary text-center"><strong><%= link_to "Search trip ideas", '/search' %></strong></div>
         <% else %>
-          <%= render 'users/small_flight_info_card', itinerary: @upcoming_itineraries.first %>
+          <%= render 'users/small_flight_info_card', itinerary: @shown_itinerary ? Itinerary.find(@shown_itinerary) : @upcoming_itineraries.first, permission: @permission, invited_user: User.find_by(email: @invited_user) %>
         <% end %>
       </div>
     </div>

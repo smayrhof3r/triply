@@ -23,7 +23,7 @@
         <div class="panel-main-content">
           <div class="panel-icon"><%= image_tag "destination.png"%></div>
           <h3>We recommend the perfect destination</h3>
-        </div> 
+        </div>
         <div class="panel-description"><p>Our destinations optimise cost and flight duration for all of your trevellers, finding the best locations for you as a group.</p></div>
     </div>
 
@@ -45,8 +45,8 @@
         <div class="popular" style="background-image: url('<%=image.url%>'); background-size: cover;" data-bs-toggle="modal" data-bs-target="#exampleModal-<%=image.id%>">
           <h2 class="pt-4"><strong><%=image.location.city%></strong></h2>
         </div>
-      </div>  
-      <%= render 'pages/home_modal_lonely_planet', image: image %>
-    <% end %> 
+      </div>
+      <%= render 'pages/home_modal_lonely_planet', image: image%>
+    <% end %>
   </div>
 </div>

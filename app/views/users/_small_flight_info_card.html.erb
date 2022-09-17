@@ -1,11 +1,35 @@
+<% invited_user ||= false  %>
+<% is_owner = current_user.permissions.find_by(itinerary: itinerary).role == "owner" %>
 <div class="itinerary-overview">
-  <div class="destination-title ps-5 py-3">
-    <div class="round-image"><%= image_tag(itinerary.destination.images.first.url) %></div>
-    <h3 class="ps-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Your trip to <strong class="text-success" style="text-decoration: underline;"><%=itinerary.destination.city%></strong></h3>
+  <div class="destination-title px-5 py-3 d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <div class="round-image"><%= image_tag(itinerary.destination.images.first.url) %></div>
+      <h3 class="ps-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Your trip to <strong class="text-success" style="text-decoration: underline;"><%=itinerary.destination.city%></strong></h3>
+    </div>
+    <% if is_owner %>
+      <div class="btn btn-primary shadow text-white" onclick="document.getElementById('p-form').classList.remove('d-none')"><i class="fas fa-share-alt"></i> Share itinerary with others </div>
+    <% else %>
+      <% owner = itinerary.permissions.find_by(role: "owner").user %>
+      <% name = "#{owner.first_name} #{owner.last_name}" %>
+      <div class="text-secondary"><em>Shared by <%= name == " " ? owner.email : name %></em></div>
+    <% end %>
   </div>
-
+  <% if is_owner %>
+    <div class="text-center">
+      <div id="p-form" class="<%= invited_user ? "": "d-none" %> position-fixed box-shadow bg-primary p-3 alert alert-dismissable">
+        <div class="text-end text-white"><i class="fas fa-times clickable" onclick="document.getElementById('p-form').classList.add('d-none')"></i></div>
+        <%= simple_form_for([itinerary, permission]) do |f| %>
+          <div class="text-end"><%= link_to "Not a member? Invite them!", new_user_invitation_path, class: "text-white" %></div>
+            <%=   f.association :user, label_method: :email, value_method: :id, label: false, input_html: {placeholder: 'find your friend'}, class: "mb-0"  %>
+            <%=   f.input :role, label_html: {class: "d-none"}, input_html: {class: "d-none"} %>
+            <%=   f.association :itinerary, label_html: {class: "d-none"}, input_html: {class: "d-none"} %>
+            <%=   f.submit "Share", class: "btn btn-outline-light", onclick: "document.getElementById('p-form').classList.add('d-none')" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
   <!-- Modal -->
-  <%= render 'users/modal_lonely_planet', itinerary: itinerary %>
+  <%= render 'users/modal_lonely_planet', itinerary: itinerary, images: itinerary.destination.images  %>
 
   <!-- Cards with flight info -->
   <div class="small-card-overview">
