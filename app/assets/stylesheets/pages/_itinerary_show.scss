@@ -22,6 +22,14 @@
   font-size: 18px;
 }
 
+.button-destination:hover {
+  color: white !important;
+  padding: 17px 60px 17px 60px;
+  background-color: $green !important;
+  box-shadow: $shadow;
+  font-size: 19px;
+}
+
 .flight-overview-time {
 
   .card-overview {

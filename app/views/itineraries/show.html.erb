@@ -13,7 +13,7 @@
       <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
       <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
     </ol>
-    <div class="carousel-inner carousel-container">
+    <div class="carousel-inner carousel-container  position-relative">
       <div class="carousel-item active carousel-image carousel-slide">
         <img class="d-block w-100" style="object-fit: cover !important;" src=<%=@location.images[0].url%> alt="First slide">
       </div>
@@ -33,11 +33,14 @@
       <span class="sr-only">Next</span>
     </a>
       <% if !@itinerary.users.include?(current_user) %>
+      <div class=" position-absolute top-50 w-100 d-flex justify-content-center ">
         <%= simple_form_for([@itinerary, @permission], url: itinerary_permissions_path(@itinerary), method: :post ) do |f| %>
           <%= f.input :itinerary_id, input_html: { class: 'd-none' }, label: false %>
           <%= f.button :submit, "Select this destination", data: {turbo_method: :post}, class: "button-destination" %>
         <% end %>
+      </div>
       <% end %>
+
   </div>
 </div>
 
