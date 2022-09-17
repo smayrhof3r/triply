@@ -33,7 +33,7 @@ class PassengerGroup < ApplicationRecord
     if b.empty?
       DateTime.new(1900, 1,1) # sort to beginning
     else
-      b.first.offer[:flights_there].first[:departure_time]
+      b.first.offer["flights_there"].first["departure_time"]
     end
   end
 

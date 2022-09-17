@@ -6,8 +6,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="modal-image"><%= image_tag(itinerary.destination.images.first.url) %></div>
-        <%= render 'locations/lonely_planet_description', lonely_planet: itinerary.destination.lonely_planet_data %>
+        <div class="modal-image"><%= image_tag(images.first.url) %></div>
+        <%= render 'locations/lonely_planet_description', lonely_planet: itinerary.destination.lonely_planet_data, images: images %>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success text-white" data-bs-dismiss="modal">Close</button>

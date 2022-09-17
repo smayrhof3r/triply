@@ -8,12 +8,24 @@
     </a>
   </div>
 
-  <% lonely_planet["sections"].each do |section| %>
-  <h4>
-    <span class = "text-success">
-      <strong><%= section["title"] %></strong>
-    </span>
-  </h4>
-  <p><%= section["body"] %></p>
+  <% lonely_planet["sections"].each_with_index do |section, i| %>
+    <div class="d-flex mb-4">
+      <% if i % 2 == 0 && i < 5 %>
+        <div class="w-20 bg-primary me-3" style="background-image: url('<%=images[4-i].url%>'); background-size: cover;"></div>
+      <% end %>
+      <div class="w-80">
+        <h4>
+          <span class = "text-success">
+            <strong><%= section["title"] %></strong>
+          </span>
+        </h4>
+        <%= section["body"] %>
+      </div>
+      <% if i % 2 == 1 && i < 5 %>
+        <div class="w-20 bg-primary ms-3" style="background-image: url('<%=images[4-i].url%>'); background-size: cover;"></div>
+      <% end %>
+    </div>
   <% end %>
+
+
 </div>
