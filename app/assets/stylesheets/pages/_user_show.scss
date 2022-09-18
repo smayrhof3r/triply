@@ -100,7 +100,7 @@ height: 85vh !important;
     height: 60px;
     object-fit: cover;
     border-radius: 50%;
-   }   
+   }
 }
 
 .destination-title {
@@ -142,6 +142,14 @@ height: 85vh !important;
   width: 350px;
   border: 1px solid $green;
   border-radius: 8px;
+  position: relative;
+  }
+
+  .small-card-overview-info-return {
+    width: 350px;
+    border: 1px solid $blue;
+    border-radius: 8px;
+    position:relative;
   }
 
   p {
@@ -157,20 +165,29 @@ height: 85vh !important;
   border: 1px solid $green;
   background-color: $green;
   position:relative;
+  z-index: 5;
   }
 
-
-
-  .circle-booking:after {
-  content:"";
-  position: absolute;
-  left: 50%;
-  top: 270%;
-  transform: translate(0, -50%);
-  z-index: -1;
-  height: 140px;
-  border-left: 2px dotted $green;
+  .circle-booking-up {
+    width: 35px;
+    height: 35px;
+    border-radius: 50px;
+    border: 1px solid $blue;
+    background-color: $blue;
+    position:relative;
+    z-index: 5;
   }
+
+  // .circle-booking:after {
+  // content:"";
+  // position: absolute;
+  // left: 50%;
+  // top: 270%;
+  // transform: translate(0, -50%);
+  // z-index: -1;
+  // height: 140px;
+  // border-left: 2px dotted $green;
+  // }
 
   .small-card-booking {
   display: flex;
@@ -182,32 +199,36 @@ height: 85vh !important;
   top: 82px;
   }
 
-  .small-card-overview-info-return {
-  width: 350px;
-  border: 1px solid $blue;
-  border-radius: 8px;
-  position:relative;
-  }
 
 
-  .circle-booking-up {
-  width: 35px;
-  height: 35px;
-  border-radius: 50px;
-  border: 1px solid $blue;
-  background-color: $blue;
-  position:relative;  
-  }
 
-  .circle-booking-up:after {
-  content:"";
+
+
+  // .circle-booking-up:after {
+  // content:"";
+  // position: absolute;
+  // left: 50%;
+  // top: -50px;
+  // transform: translate(0, -50%);
+  // z-index: 1;
+  // bottom:35px;
+  // height: 110px;
+  // border-left: 2px dotted $blue;
+  // }
+}
+
+.dotted-line-down {
   position: absolute;
-  left: 50%;
-  top: -50px;
-  transform: translate(0, -50%);
-  z-index: 1;
-  bottom:35px;
-  height: 110px;
+  height: 100%;
+  left: -35px;
+  bottom: -60%;
+  border-left: 2px dotted $green;
+}
+
+.dotted-line-up {
+  position: absolute;
+  height: 100%;
+  left: -35px;
+  top: -50%;
   border-left: 2px dotted $blue;
-  }
 }
