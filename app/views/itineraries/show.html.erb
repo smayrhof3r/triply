@@ -4,57 +4,58 @@
     </div>
 </div>
 
-
- <%# carousel %>
-<div class ="container text-center box">
-  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner carousel-container  position-relative">
-      <div class="carousel-item active carousel-image carousel-slide">
-        <img class="d-block w-100" style="object-fit: cover !important;" src=<%=@location.images[0].url%> alt="First slide">
+<div data-controller="toggle-booking-buttons">
+  <%# carousel %>
+  <div class ="container text-center box">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner carousel-container  position-relative">
+        <div class="carousel-item active carousel-image carousel-slide">
+          <img class="d-block w-100" style="object-fit: cover !important;" src=<%=@location.images[0].url%> alt="First slide">
+        </div>
+        <div class="carousel-item carousel-slide">
+          <img class="d-block w-100" style="object-fit: cover !important;" src=<%=@location.images[1].url%> alt="Second slide">
+        </div>
+        <div class="carousel-item carousel-slide">
+          <img class="d-block w-100" style="object-fit: cover !important;" src=<%=@location.images[2].url%> alt="Third slide">
+        </div>
       </div>
-      <div class="carousel-item carousel-slide">
-        <img class="d-block w-100" style="object-fit: cover !important;" src=<%=@location.images[1].url%> alt="Second slide">
-      </div>
-      <div class="carousel-item carousel-slide">
-        <img class="d-block w-100" style="object-fit: cover !important;" src=<%=@location.images[2].url%> alt="Third slide">
-      </div>
-    </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-      <% if !@itinerary.users.include?(current_user) %>
-      <div class=" position-absolute top-50 w-100 d-flex justify-content-center ">
-        <%= simple_form_for([@itinerary, @permission], url: itinerary_permissions_path(@itinerary), method: :post ) do |f| %>
-          <div class="d-none">
-            <%= f.input :itinerary_id, label: false %>
-            <%= f.input :user_id, label: false %>
-            <%= f.input :role, label: false %>
-          </div>
-          <%= f.button :submit, "Select this destination", class: "button-destination" %>
+      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+        <% if !@itinerary.users.include?(current_user) %>
+        <div class=" position-absolute top-50 w-100 d-flex justify-content-center ">
+          <%= simple_form_for([@itinerary, @permission], url: itinerary_permissions_path(@itinerary), method: :post ) do |f| %>
+            <div class="d-none">
+              <%= f.input :itinerary_id, label: false %>
+              <%= f.input :user_id, label: false %>
+              <%= f.input :role, label: false %>
+            </div>
+            <%= f.button :submit, "Select this destination", class: "button-destination", data: { action: "click->toggle-booking-buttons#enableButtons" } %>
+          <% end %>
+        </div>
         <% end %>
-      </div>
-      <% end %>
 
+    </div>
   </div>
-</div>
 
-<%# carousel end  %>
+  <%# carousel end  %>
 
-<div class="container mt-3">
-    <div class="mb-3">
-      <%= render 'shared/collapsible_section', section_title: "Learn more about #{@location.city}", section_partial: 'locations/lonely_planet_description', section_partial_params: { lonely_planet: @itinerary.destination.lonely_planet_data, images: @itinerary.destination.images }, collapsed: true, bg_collapsed: 'bg-primary' %>
-    </div>
-    <div class="mb-3">
-      <%= render 'shared/collapsible_section', section_title: 'Flights Overview', section_partial: 'itineraries/group_flights_overview', section_partial_params: { itinerary: @itinerary }, collapsed: false %>
-    </div>
+  <div class="container mt-3">
+      <div class="mb-3">
+        <%= render 'shared/collapsible_section', section_title: "Learn more about #{@location.city}", section_partial: 'locations/lonely_planet_description', section_partial_params: { lonely_planet: @itinerary.destination.lonely_planet_data, images: @itinerary.destination.images }, collapsed: true, bg_collapsed: 'bg-primary' %>
+      </div>
+      <div class="mb-3">
+        <%= render 'shared/collapsible_section', section_title: 'Flights Overview', section_partial: 'itineraries/group_flights_overview', section_partial_params: { itinerary: @itinerary }, collapsed: false %>
+      </div>
+  </div>
 </div>
