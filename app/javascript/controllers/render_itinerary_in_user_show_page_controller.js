@@ -6,14 +6,11 @@ export default class extends Controller {
   static targets = ['itinerary']
 
   connect() {
-    console.log(this.itineraryTarget.innerHTML);
   }
 
   renderItineraryPartial (event) {
-    console.log(parseInt(event.currentTarget.querySelector('.itinerary').innerHTML))
-    console.log(event.currentTarget.querySelector('form').action)
-    event.preventDefault()
     const url = event.currentTarget.querySelector('form').action
+    console.log(url)
     fetch(url, { method: "GET", headers: { "Accept": "text/plain" } })
       .then(response => response.text())
       .then((data) => {

@@ -38,8 +38,8 @@
 
           <button class="circle-booking me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
 
-        <div class="small-card-overview-info p-3">
-        <div class="dotted-line-down"></div>
+        <div class="small-card-overview-info p-3 bg-success">
+        <div class="line line-down line-green"></div>
           <% bookings = group.bookings.filter {|b| b.status == "confirmed" } %>
           <div class="card-departure-info">
             <% if bookings.empty? %>
@@ -51,9 +51,10 @@
               </div>
             <% else %>
               <% if bookings.first.offer["flights_there"].count >= 1 %>
-                <% bookings.first.offer["flights_there"].each do |f| %>
-                  <%= render partial: 'users/flight_info', locals: {f: f }%>
+                <% bookings.first.offer["flights_there"][0..-2].each do |f| %>
+                  <%= render partial: 'users/flight_info', locals: {f: f, mb_x: "mb-3" }%>
                 <% end %>
+                <%= render partial: 'users/flight_info', locals: {f: bookings.first.offer["flights_there"].last, mb_x: "" }%>
               <% end %>
             <% end %>
           </div>
@@ -70,8 +71,8 @@
             <div class="small-cards-return">
               <div class="small-card-booking py-3">
                 <button class="circle-booking-up me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
-                <div class="small-card-overview-info-return p-3">
-                <div class="dotted-line-up"></div>
+                <div class="small-card-overview-info-return p-3 bg-primary">
+                <div class="line line-up line-blue"></div>
                   <div class="card-departure-info">
                     <% if bookings.empty? %>
                       <div class="d-flex justify-content-between align-items-center">
@@ -81,9 +82,10 @@
                         <% end %>
                       </div>
                     <% else %>
-                      <% bookings.first.offer["flights_return"].each do |f| %>
-                        <%= render partial: 'users/flight_info', locals: {f: f }%>
+                      <% bookings.first.offer["flights_return"][0..-2].each do |f| %>
+                        <%= render partial: 'users/flight_info', locals: { f: f, mb_x: "mb-3" }%>
                       <% end %>
+                      <%= render partial: 'users/flight_info', locals: { f: bookings.first.offer["flights_return"].last, mb_x: "" }%>
                     <% end %>
                   </div>
                 </div>

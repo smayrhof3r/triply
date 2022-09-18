@@ -3,7 +3,7 @@
 
 <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
 
-  <div class="card-overview-info mb-3">
+  <div class="card-overview-info mt-3">
     <div class="border-bottom border-success origin-city d-flex justify-content-between align-items-bottom">
       <div>Travellers from <span class="text-primary"><strong><%= group.origin_city.city %></strong></span></div>
       <div>
@@ -21,11 +21,15 @@
       <%= render 'shared/collapsible_section', section_title: 'Getting there', section_partial: 'users/sessions/flight_leg', section_partial_params: { flights: info.first.offer["flights_there"], status: "confirmed" }, collapsed: true, bg_collapsed: 'bg-primary', bg_open: 'bg-secondary', p_x: 'p-0' %>
       <%= render 'shared/collapsible_section', section_title: 'Coming home', section_partial: 'users/sessions/flight_leg', section_partial_params: { flights: info.first.offer["flights_return"], status: "confirmed" }, collapsed: true, text_collapsed: 'text-primary', bg_collapsed: 'border border-primary', text_open: 'text-white', bg_open: 'bg-secondary', p_x: 'p-0' %>
     <% end %>
-    <div class="d-flex justify-content-between">
-      <%= link_to itinerary_path(itinerary), class: "btn btn-link text-secondary text-decoration-none" do %>
+    <div class="d-flex justify-content-between border-bottom">
+      <%= link_to itinerary_path(itinerary), class: "p-0 m-0 w-100 text-end text-xsm btn btn-link text-secondary text-decoration-none" do %>
         <i class="fas fa-search"></i> <%= info.empty? ? "Choose flights" : "Change flights" %>
       <% end %>
-      <% if owner %>
+    </div>
+  </div>
+<% end %>
+<div class="text-start">
+ <% if owner %>
         <%= link_to itinerary_path(itinerary), data: { turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-link text-secondary text-decoration-none" do %>
           <i class="fas fa-ban"></i> Delete itinerary
         <% end %>
@@ -33,8 +37,5 @@
         <%= link_to permission_path(permission), data: { turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-link text-secondary text-decoration-none" do %>
           <i class="fas fa-ban"></i> Remove itinerary
         <% end %>
-      <% end %>
-    </div>
-
-  </div>
-<% end %>
+  <% end %>
+</div>
