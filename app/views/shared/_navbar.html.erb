@@ -6,6 +6,9 @@
       <%= image_tag "triply-horizontal.png"%>
     <% end %>
     <div class = "d-flex align-items-center">
+      <% if user_signed_in? %>
+        <div class="me-5 text-secondary"><em><%= "Welcome back, #{current_user.first_name || current_user.email}" %></em></div>
+      <% end %>
       <% unless request.original_url.match?(/search/) %>
         <%= link_to '/search', class: "me-3 btn btn-sm btn-success text-white" do %>
             <i class="fas fa-search-location"></i> New Search
