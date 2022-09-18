@@ -8,20 +8,16 @@
         <% @upcoming_itineraries.each_with_index do |itinerary, i| %>
           <% next if itinerary.permissions.empty? %>
           <% collapsed = (i != 0 ? true : false) %>
-
           <div class = "mb-3">
-            <%= form_tag(itinerary_path(itinerary), method: :get) do %>
-              <div class="d-none itinerary">
-                <%=itinerary.id%>
-              </div>
-              <%= render 'shared/collapsible_section', section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: collapsed, clickable_header: true, card_body_p_x: "py-0 my-0" do %>
-                  <div class="w-100 d-flex align-items-center" data-action="click->render-itinerary-in-user-show-page#renderItineraryPartial">
+              <%= render 'shared/collapsible_section', section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: collapsed, clickable_header: false, card_body_p_x: "py-0 my-0" do %>
+                <div class="w-100 d-flex align-items-center clickable" data-action="click->render-itinerary-in-user-show-page#renderItineraryPartial">
+                  <%= form_tag(itinerary_path(itinerary), method: :get) do %>
                     <div><%= "Trip to #{itinerary.destination.city}" %></div>
                     <% if Permission.find_by(user: current_user, itinerary: itinerary).role == "guest" %>
                       <div class="ms-3 text-sm p-1 rounded bg-primary text-white">Shared with you</div>
                     <% end %>
-                  </div>
-              <% end %>
+                  <% end %>
+                </div>
             <% end %>
           </div>
         <% end %>
@@ -34,11 +30,13 @@
           <% @past_itineraries.each do |itinerary| %>
             <% next if itinerary.permissions.empty? %>
             <div data-action="click->render-itinerary-in-user-show-page#renderItineraryPartial">
-              <%= form_tag(itinerary_path(itinerary), method: :get) do %>
-                <div class="d-none itinerary">
-                  <%=itinerary.id%>
-                </div>
-                <%= render 'shared/collapsible_section', section_title: "Trip to #{itinerary.destination.city}", section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: true %>
+              <%= render 'shared/collapsible_section', section_partial: 'users/sessions/single_trip_info', section_partial_params: { itinerary: itinerary }, collapsed: true do %>
+                <%= form_tag(itinerary_path(itinerary), method: :get) do %>
+                  <div><%= "Trip to #{itinerary.destination.city}" %></div>
+                  <% if Permission.find_by(user: current_user, itinerary: itinerary).role == "guest" %>
+                    <div class="ms-3 text-sm p-1 rounded bg-primary text-white">Shared with you</div>
+                  <% end %>
+                <% end %>
               <% end %>
             </div>
           <% end %>
