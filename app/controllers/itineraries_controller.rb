@@ -51,12 +51,21 @@ class ItinerariesController < ApplicationController
   def search_index
     # check if search is needed
     puts ".................Params for search_index: #{params}"
+    remove_empty_passenger_groups
+    remove_empty_return_date
+
+    session[:params] = params
+    session[:itineraries] = []
+
     @user_itineraries = user_signed_in? ? current_user.relevant_itineraries(params) : {}
 
     @the_groups = groups
     possible_destinations.each do |destination|
-      retrieve_search_results(destination) unless @user_itineraries[destination]
+      itinerary = @user_itineraries[destination] || new_itinerary(destination)
+      session[:itineraries] << itinerary.id if itinerary != ""
+      source_images(destination) if (itinerary == "" && itinerary.destination.images.empty?)
     end
+
     puts "......LEAVING THE SEARCH....."
     return respond_to do |format|
       format.text
@@ -65,13 +74,15 @@ class ItinerariesController < ApplicationController
   end
 
   def index
+
     puts ".....IN THE INDEX NOW....."
     remove_empty_passenger_groups
     remove_empty_return_date
 
-    if session[:params] == params && !session[:itineraries].empty?
+    if (session[:params] == params || session[:params].except("action") == params.permit(params.keys).to_h.except("action")) && !session[:itineraries].empty?
       @itineraries = session[:itineraries].map { |i| Itinerary.find_by(id: i) }
     else
+      raise
       @itineraries = []
       @user_itineraries = user_signed_in? ? current_user.relevant_itineraries(params) : {}
 
@@ -96,6 +107,7 @@ class ItinerariesController < ApplicationController
       apply_budget_filter
 
       update_session_variables
+      raise
       @images_by_itinerary_id = Image.retrieve_all_by_itinerary(@itineraries)
     end
   end
@@ -216,7 +228,7 @@ class ItinerariesController < ApplicationController
 
   def groups
     count = params["passenger_group_count"].to_i
-    (1..count).to_a.map { |i| passenger_group_params(i) }
+    (1..count).to_a.map { |i| passenger_group_params(i) }.filter { |p| p != false }
   end
 
   def retrieve_search_results(destination)
@@ -310,16 +322,20 @@ class ItinerariesController < ApplicationController
   end
 
   def passenger_group_params(i)
-    adults = params["adults#{i}"]
-    children = params["children#{i}"]
-    location = Location.find_by_city(params["origin_city#{i}"])
+    if params["adults#{i}"] && params["children#{i}"] && params["origin_city#{i}"]
+      adults = params["adults#{i}"]
+      children = params["children#{i}"]
+      location = Location.find_by_city(params["origin_city#{i}"])
 
-    {
-      adults: adults,
-      children: children,
-      location: location,
-      origin_city_id: location.id
-    }
+      {
+        adults: adults,
+        children: children,
+        location: location,
+        origin_city_id: location.id
+      }
+    else
+      false
+    end
   end
 
   def amadeus_search_result
