@@ -14,7 +14,6 @@ export default class extends Controller {
 
   connect() {
     console.log('search form controller active');
-
   }
 
   apiSearch(event) {
@@ -25,10 +24,13 @@ export default class extends Controller {
     let loader = '<div class="ring-box d-flex align-items-bottom p-3"><div class="ring">Loading<span></span></div>This step can take a long time as we search the database, but it\'s worth the wait!</div>'
     document.getElementById("waiting").innerHTML = loader
 
+    this.apiSearchOnly();
+  }
+
+  apiSearchOnly() {
     const query_string = new URLSearchParams(new FormData(this.formTarget)).toString()
     const url = `/search_index?${query_string}`
-    console.log(url)
-    console.log('with delay');
+
     fetch(url, {
       method: "GET",
       headers: { "Accept": "text/plain" } }

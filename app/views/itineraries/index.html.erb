@@ -19,8 +19,9 @@
         <div class="d-flex my-2 pt-4 justify-content-between align-items-end border-bottom border-success">
           <h2 class="text-center text-primary m-0">Top Recommendations</h2>
           <div class="d-flex justify-content-between align-items-center margin-right: 5px ">
-           <div>Direct Flights Only   </div><%= check_box_tag "direct_flights ", true, params["direct_flights"]||false, checked: params["direct_flights"]||false, onChange: "submit()", class: "form-check-input ms-3"%>
-            <%= select_tag :sort, options_for_select([ "Price Descending", "Price Ascending", "Shortest flights", "Direct flights only" ], params[:sort]||"Price ⬇️"), onChange: "this.form.submit()", class: "btn btn-link align-items-end text-start text-decoration-none text-strong ms-2"%>
+
+           <div>Direct Flights Only   </div><%= check_box_tag "direct_flights", true, params["direct_flights"]||false, checked: params["direct_flights"]||false, data: { action: "input->search-form#apiSearchOnly" }, class: "form-check-input ms-3"%>
+            <%= select_tag :sort, options_for_select([ "Price Descending", "Price Ascending", "Shortest flights" ], params[:sort]||"Price ⬇️"), data: { action: "input->search-form#apiSearchOnly" }, class: "btn btn-link align-items-end text-start text-decoration-none text-strong ms-2"%>
           </div>
         </div>
 
