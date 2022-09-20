@@ -235,8 +235,10 @@ class ItinerariesController < ApplicationController
   end
 
   def update_session_url
-    session[:previous_request_url] = session[:current_request_url]
-    session[:current_request_url] = request.original_url
+    unless session[:current_request_url] == request.original_url
+      session[:previous_request_url] = session[:current_request_url]
+      session[:current_request_url] = request.original_url
+    end
   end
 
   def update_session_variables
