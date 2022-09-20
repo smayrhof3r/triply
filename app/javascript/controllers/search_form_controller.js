@@ -52,6 +52,8 @@ export default class extends Controller {
     console.log("check Triggered")
     let check1 = this.#hasPassengerGroup()
     let check2 = this.#hasDates()
+    console.log(check1)
+    console.log(check2)
 
     if (check1 && check2) {
       document.getElementById('submit').disabled = false
