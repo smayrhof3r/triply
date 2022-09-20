@@ -103,10 +103,10 @@ export default class extends Controller {
   }
 
   #hasPassengerGroup() {
-    let check = false
+    let check = true
     this.passengerGroupPartialTargets.forEach((group) => {
-      if (group.querySelector('.origin-city').value.length >= 3 && group.querySelector('.adults').value > 0) {
-        check = true
+      if (group.querySelector('.origin-city').value.length < 3 || group.querySelector('.adults').value == 0) {
+        check = false
       }
     })
     return check
