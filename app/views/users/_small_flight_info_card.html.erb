@@ -43,9 +43,9 @@
           <% bookings = group.bookings.filter {|b| b.status == "confirmed" } %>
           <div class="card-departure-info">
             <% if bookings.empty? %>
-              <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center text-white">
                 <strong><%= group.origin_city.city %></strong>
-                <%= link_to itinerary_path(group.itinerary), class: "btn btn-link text-secondary text-decoration-none" do %>
+                <%= link_to itinerary_path(group.itinerary), class: "btn btn-link text-secondary text-decoration-none text-white" do %>
                   <i class="fas fa-search"></i> "Choose flights"
                 <% end %>
               </div>
@@ -75,9 +75,9 @@
                 <div class="line line-up line-blue"></div>
                   <div class="card-departure-info">
                     <% if bookings.empty? %>
-                      <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex justify-content-between align-items-center text-white">
                         <strong><%= group.origin_city.city %></strong>
-                        <%= link_to itinerary_path(group.itinerary), class: "btn btn-link text-secondary text-decoration-none" do %>
+                        <%= link_to itinerary_path(group.itinerary), class: "btn btn-link text-secondary text-decoration-none text-white" do %>
                           <i class="fas fa-search"></i> "Choose flights"
                         <% end %>
                       </div>
