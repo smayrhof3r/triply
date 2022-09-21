@@ -30,16 +30,15 @@
   <% end %>
   <!-- Modal -->
   <%= render 'users/modal_lonely_planet', itinerary: itinerary, images: itinerary.destination.images  %>
-
+  <% groups = PassengerGroup.order_by_flight_info(itinerary.passenger_groups) %>
   <!-- Cards with flight info -->
   <div class="small-card-overview">
-    <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
-      <div class="small-card-booking py-3">
 
-          <button class="circle-booking me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
-
+    <% groups.each do |group| %>
+      <div class="small-card-booking position-relative">
+        <div class="line line-green"></div>
+        <button class="circle-booking me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
         <div class="small-card-overview-info p-3 bg-success">
-        <div class="line line-down line-green"></div>
           <% bookings = group.bookings.filter {|b| b.status == "confirmed" } %>
           <div class="card-departure-info">
             <% if bookings.empty? %>
@@ -60,19 +59,30 @@
           </div>
         </div>
       </div>
+      <div class="small-card-booking position-relative">
+        <div class="line line-green">.</div>
+        <button class="circle-booking bg-transparent me-3 text-white">.</button>
+        <div class="small-card-overview-info p-0 text-white border-white">.</div>
+      </div>
     <% end %>
     <div class="small-card-destination" data-bs-toggle="modal" data-bs-target="#exampleModal"><h4><strong><%=itinerary.destination.city%></strong></h4></div>
 
     <%# REFACTOR RETURN FLIGHTS %>
 
-    <% PassengerGroup.order_by_flight_info(itinerary.passenger_groups).each do |group| %>
+    <% groups.each_with_index do |group, i| %>
+        <div class="small-card-booking position-relative">
+          <div class="line line-blue">.</div>
+          <button class="circle-booking bg-transparent me-3 text-white">.</button>
+          <div class="small-card-overview-info p-0 text-white border-white">.</div>
+        </div>
+
         <% if group.bookings.first.offer["flights_return"] %>
           <% bookings = group.bookings.filter {|b| b.status == "confirmed" } %>
             <div class="small-cards-return">
-              <div class="small-card-booking py-3">
+              <div class="small-card-booking position-relative">
+                <div class="line line-blue"></div>
                 <button class="circle-booking-up me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
                 <div class="small-card-overview-info-return p-3 bg-primary">
-                <div class="line line-up line-blue"></div>
                   <div class="card-departure-info">
                     <% if bookings.empty? %>
                       <div class="d-flex justify-content-between align-items-center text-white">
@@ -91,6 +101,7 @@
                 </div>
               </div>
             </div>
+
         <% end %>
     <% end %>
   </div>
