@@ -53,16 +53,16 @@ class ItinerariesController < ApplicationController
     remove_empty_passenger_groups
     remove_empty_return_date
 
-    if (session[:params].except("action", "direct_flights", "sort") == params.permit(params.keys).to_h.except("action", "direct_flights", "sort")) && !session[:itineraries].empty?
-      puts "SEARCH_INDEX.................Params: #{params}"
+    if existing_ajax_results
+      puts "SEARCH_INDEX.................Params: #{params}" if params
       puts "NO AJAX REQUIRED"
       return respond_to do |format|
         format.text
       end
     else
-      puts "SEARCH_INDEX.................Params: #{params}"
+      puts "SEARCH_INDEX.................Params: #{params}" if params
       session[:params] = params
-      Itinerary.delete_unclaimed(session[:itineraries]) unless session[:itineraries].empty?
+      Itinerary.delete_unclaimed(session[:itineraries]) unless !session[:itineraries] || session[:itineraries].empty?
       session[:itineraries] = []
 
       @user_itineraries = user_signed_in? ? current_user.relevant_itineraries(params) : {}
@@ -86,10 +86,11 @@ class ItinerariesController < ApplicationController
     puts ".....IN THE INDEX NOW....."
     remove_empty_passenger_groups
     remove_empty_return_date
-    puts "INDEX.................session params: #{session[:params].except("action")}"
-    puts "INDEX.................session params: #{params.permit(params.keys).to_h.except("action")}"
-    puts "INDEX.................equal = #{session[:params].except("action") == params.permit(params.keys).to_h.except("action")}"
-    if (session[:params].except("action", "direct_flights", "sort") == params.except("action", "direct_flights", "sort") || session[:params].except("action", "direct_flights", "sort") == params.permit(params.keys).to_h.except("action", "direct_flights", "sort")) && !session[:itineraries].empty?
+    puts "INDEX.................session params: #{session[:params].except("action")}" if session[:params]
+    puts "INDEX.................session params: #{params.permit(params.keys).to_h.except("action")}" if params
+    puts "INDEX.................equal = #{session[:params].except("action") == params.permit(params.keys).to_h.except("action")}" if session[:params]
+
+    if existing_search_results
       @itineraries = session[:itineraries].map { |i| Itinerary.find_by(id: i) }
     else
       puts "AJAX DIDNT WORK (PARAMS NOT SAME)", "direct_flights", "sort"
@@ -450,4 +451,11 @@ class ItinerariesController < ApplicationController
     airport
   end
 
+  def existing_search_results
+    session[:params] && (session[:params].except("action", "direct_flights", "sort") == params.except("action", "direct_flights", "sort") || session[:params].except("action", "direct_flights", "sort") == params.permit(params.keys).to_h.except("action", "direct_flights", "sort")) && !session[:itineraries].empty?
+  end
+
+  def existing_ajax_results
+    session[:params] && (session[:params].except("action", "direct_flights", "sort") == params.permit(params.keys).to_h.except("action", "direct_flights", "sort")) && !session[:itineraries].empty?
+  end
 end
