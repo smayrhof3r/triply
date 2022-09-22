@@ -1,8 +1,12 @@
 class BookingsController < ApplicationController
-  def update 
+  def update
+
     @booking = Booking.find(params["id"])
+    puts "BOOKING..........#{@booking}"
     @booking.update(booking_params)
+    puts "UPDATED BOOKING..........#{@booking}"
     @booking.save
+    puts "SAVED BOOKING..........#{@booking}"
 
     if @booking.status == "confirmed"
       @booking.passenger_group.bookings.each do |b|
@@ -14,7 +18,7 @@ class BookingsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to itinerary_path(@booking.passenger_group.itinerary)}
-      format.text { render partial: "itineraries/bookings_by_group", locals: { group: @booking.passenger_group }, formats: [:html] }  
+      format.text { render partial: "itineraries/bookings_by_group", locals: { group: @booking.passenger_group }, formats: [:html] }
     end
   end
 

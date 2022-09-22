@@ -1,8 +1,10 @@
 <div class = "container">
 
     <div class ="pt-2">
-      <%= link_to session[:previous_request_url], class: "btn btn-link p-0 m-0 text-secondary text-decoration-none" do %>
-        <i class="fas fa-arrow-alt-circle-left"></i> Back to <%= session[:previous_request_url].match(/user/) ? "my itineraries" : "search results" %>
+      <% if session && session[:previous_request_url] %>
+        <%= link_to session[:previous_request_url], class: "btn btn-link p-0 m-0 text-secondary text-decoration-none" do %>
+          <i class="fas fa-arrow-alt-circle-left"></i> Back to <%= session[:previous_request_url].match(/user/) ? "my itineraries" : "search results" %>
+        <% end %>
       <% end %>
       <h1 class = "pt-4">Discover <strong class="title-colour"><%= @location.city%></strong></h1>
     </div>
