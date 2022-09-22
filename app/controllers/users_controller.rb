@@ -19,10 +19,12 @@ class UsersController < ApplicationController
       @shown_itinerary ||= @past_itineraries.first.id unless @past_itineraries.empty?
 
     end
-    @permission = Permission.new
-    @permission.itinerary_id = session[:itinerary_shown] || @upcoming_itineraries.first.id
-    @permission.role = "guest"
-    @permission.user = User.find_by(email: session[:invited_user]) if session[:invited_user]
+    if session[:itinerary_shown] || !@upcoming_itineraries.empty?
+      @permission = Permission.new
+      @permission.itinerary_id = session[:itinerary_shown] || @upcoming_itineraries.first.id
+      @permission.role = "guest"
+      @permission.user = User.find_by(email: session[:invited_user]) if session[:invited_user]
+    end
     session[:current_request_url] = request.original_url
   end
 end
