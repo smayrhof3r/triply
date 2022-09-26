@@ -62,13 +62,13 @@
             <%= render 'users/small_flight_info_card', itinerary: itinerary %>
           </div>
         <% end %>
-      <div class="chat clickable border-light">
-        <div class = "d-flex justify-content-between align-items-center bg-primary text-white p-2 ">
+      <div class="chat border-light" data-controller="chat">
+        <div class = "clickable d-flex justify-content-between align-items-center bg-primary text-white p-2" data-action="click->chat#toggle">
           <i class="fas fa-comments"></i>
-          <i class="fas fa-chevron-up"></i>
-          <i class="fas fa-chevron-up d-none"></i>
+          <i data-chat-target="showIcon" class="fas fa-chevron-up"></i>
+          <i data-chat-target="hideIcon" class="fas fa-chevron-down d-none"></i>
         </div>
-        <div class="chat-messages d-none"></div>
+        <div data-chat-target="messageBox" class="chat-messages d-none border border-primary"></div>
       </div>
     </div>
   </div>
