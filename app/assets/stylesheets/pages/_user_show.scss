@@ -246,8 +246,11 @@ height: 85vh !important;
   position: absolute;
   bottom: 57px;
   width: 65%;
+  z-index: 10;
 }
 
 .chat-messages {
   height: 40vh;
+  background-color: white;
+
 }
