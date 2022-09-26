@@ -241,12 +241,13 @@ height: 85vh !important;
   border-left: 2px dotted $blue;
 }
 
-.chat-box {
-  height: 100vh;
-  position: absolute;
-  top: 0;
-}
+
 .chat {
   position: absolute;
-  bottom: 0;
+  bottom: 57px;
+  width: 65%;
+}
+
+.chat-messages {
+  height: 40vh;
 }

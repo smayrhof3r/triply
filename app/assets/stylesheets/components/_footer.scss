@@ -1,17 +1,17 @@
 body {
     min-height:100vh;
-    padding-bottom: 50px; 
-    position:relative; 
+    padding-bottom: 50px;
+    position:relative;
   }
 
-  
+
   .footer {
     border-top: 1px solid $green;
     position: absolute;
     bottom: 0;
     width: 100%;
     align-items: center;
-
+    height: 50px;
     a {
       color: $green;
       text-decoration: none;
