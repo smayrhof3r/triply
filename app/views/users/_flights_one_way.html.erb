@@ -1,0 +1,45 @@
+<% groups.each do |group| %>
+      <% if flight_direction == "return" %>
+        <div class="small-card-booking position-relative">
+          <div class="line line-<%=line_color%> text-white">.</div>
+          <button class="circle-booking-<%=flight_direction%> bg-transparent me-3 text-white">.</button>
+          <div class="small-card-overview-info-<%=flight_direction%> p-0 text-white border-white">.</div>
+        </div>
+      <div class="small-cards-return">
+      <% end %>
+
+      <div class="small-card-booking position-relative">
+        <div class="line line-<%=line_color%>"></div>
+        <button class="circle-booking-<%=flight_direction%> me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
+        <div class="small-card-overview-info-<%=flight_direction%> bg-color-<%=flight_direction%> p-3">
+          <% bookings = group.bookings.filter {|b| b.status == "confirmed" } %>
+          <div class="card-departure-info">
+            <% if bookings.empty? %>
+              <div class="d-flex justify-content-between align-items-center text-white">
+                <strong><%= group.origin_city.city %></strong>
+                <%= link_to itinerary_path(group.itinerary), class: "btn btn-link text-secondary text-decoration-none text-white" do %>
+                  <i class="fas fa-search"></i> "Choose flights"
+                <% end %>
+              </div>
+            <% else %>
+              <% if bookings.first.offer["flights_#{flight_direction}"].count >= 1 %>
+                <% bookings.first.offer["flights_#{flight_direction}"][0..-2].each do |f| %>
+                  <%= render partial: 'users/flight_info', locals: {f: f, mb_x: "mb-3" }%>
+                <% end %>
+                <%= render partial: 'users/flight_info', locals: {f: bookings.first.offer["flights_#{flight_direction}"].last, mb_x: "" }%>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <% if flight_direction == "return" %>
+        </div>
+      <% end %>
+      <% if flight_direction == "there" %>
+        <div class="small-card-booking position-relative">
+          <div class="line line-<%=line_color%> text-white">.</div>
+          <button class="circle-booking-<%=flight_direction%> bg-transparent me-3 text-white">.</button>
+          <div class="small-card-overview-info-<%=flight_direction%> p-0 text-white border-white">.</div>
+        </div>
+      <% end %>
+    <% end %>

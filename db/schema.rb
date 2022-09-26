@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_14_195315) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_26_171942) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -111,6 +111,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_14_195315) do
     t.json "lonely_planet", default: {}
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.string "content"
+    t.bigint "user_id", null: false
+    t.bigint "itinerary_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["itinerary_id"], name: "index_messages_on_itinerary_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
   create_table "passenger_groups", force: :cascade do |t|
     t.bigint "itinerary_id", null: false
     t.bigint "origin_city_id"
@@ -191,6 +201,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_14_195315) do
   add_foreign_key "flights", "airports", column: "departure_airport_id"
   add_foreign_key "images", "locations"
   add_foreign_key "itineraries", "locations", column: "destination_id"
+  add_foreign_key "messages", "itineraries"
+  add_foreign_key "messages", "users"
   add_foreign_key "passenger_groups", "itineraries"
   add_foreign_key "passenger_groups", "locations", column: "origin_city_id"
   add_foreign_key "permissions", "itineraries"

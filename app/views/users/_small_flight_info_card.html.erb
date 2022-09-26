@@ -34,75 +34,11 @@
   <!-- Cards with flight info -->
   <div class="small-card-overview">
 
-    <% groups.each do |group| %>
-      <div class="small-card-booking position-relative">
-        <div class="line line-green"></div>
-        <button class="circle-booking me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
-        <div class="small-card-overview-info p-3 bg-success">
-          <% bookings = group.bookings.filter {|b| b.status == "confirmed" } %>
-          <div class="card-departure-info">
-            <% if bookings.empty? %>
-              <div class="d-flex justify-content-between align-items-center text-white">
-                <strong><%= group.origin_city.city %></strong>
-                <%= link_to itinerary_path(group.itinerary), class: "btn btn-link text-secondary text-decoration-none text-white" do %>
-                  <i class="fas fa-search"></i> "Choose flights"
-                <% end %>
-              </div>
-            <% else %>
-              <% if bookings.first.offer["flights_there"].count >= 1 %>
-                <% bookings.first.offer["flights_there"][0..-2].each do |f| %>
-                  <%= render partial: 'users/flight_info', locals: {f: f, mb_x: "mb-3" }%>
-                <% end %>
-                <%= render partial: 'users/flight_info', locals: {f: bookings.first.offer["flights_there"].last, mb_x: "" }%>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-      <div class="small-card-booking position-relative">
-        <div class="line line-green text-white">.</div>
-        <button class="circle-booking bg-transparent me-3 text-white">.</button>
-        <div class="small-card-overview-info p-0 text-white border-white">.</div>
-      </div>
-    <% end %>
+    <%= render 'flights_one_way', groups: groups, line_color: "green", flight_direction: "there" %>
+
     <div class="small-card-destination" data-bs-toggle="modal" data-bs-target="#exampleModal"><h4><strong><%=itinerary.destination.city%></strong></h4></div>
 
-    <%# REFACTOR RETURN FLIGHTS %>
+    <%= render 'flights_one_way', groups: groups, line_color: "blue", flight_direction: "return" %>
 
-    <% groups.each_with_index do |group, i| %>
-        <div class="small-card-booking position-relative">
-          <div class="line line-blue text-white">.</div>
-          <button class="circle-booking bg-transparent me-3 text-white">.</button>
-          <div class="small-card-overview-info p-0 text-white border-white">.</div>
-        </div>
-
-        <% if group.bookings.first.offer["flights_return"] %>
-          <% bookings = group.bookings.filter {|b| b.status == "confirmed" } %>
-            <div class="small-cards-return">
-              <div class="small-card-booking position-relative">
-                <div class="line line-blue"></div>
-                <button class="circle-booking-up me-3"><i class="fa-solid fa-plane text-white fa-rotate-90"></i></button>
-                <div class="small-card-overview-info-return p-3 bg-primary">
-                  <div class="card-departure-info">
-                    <% if bookings.empty? %>
-                      <div class="d-flex justify-content-between align-items-center text-white">
-                        <strong><%= group.origin_city.city %></strong>
-                        <%= link_to itinerary_path(group.itinerary), class: "btn btn-link text-secondary text-decoration-none text-white" do %>
-                          <i class="fas fa-search"></i> "Choose flights"
-                        <% end %>
-                      </div>
-                    <% else %>
-                      <% bookings.first.offer["flights_return"][0..-2].each do |f| %>
-                        <%= render partial: 'users/flight_info', locals: { f: f, mb_x: "mb-3" }%>
-                      <% end %>
-                      <%= render partial: 'users/flight_info', locals: { f: bookings.first.offer["flights_return"].last, mb_x: "" }%>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-        <% end %>
-    <% end %>
   </div>
 </div>

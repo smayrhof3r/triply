@@ -3,6 +3,7 @@ class Itinerary < ApplicationRecord
   has_many :passenger_groups #, dependent: :destroy
   has_many :permissions #, dependent: :destroy
   has_many :users, through: :permissions
+  has_many :messages
 
   def self.delete_unclaimed(ids = [])
 

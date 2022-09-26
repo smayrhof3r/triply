@@ -138,11 +138,16 @@ height: 85vh !important;
     border: 2px solid $blue;
   }
 
-  .small-card-overview-info {
-  width: 350px;
-  border: 1px solid $green;
-  border-radius: 8px;
-  position: relative;
+  .small-card-overview-info-there {
+    width: 350px;
+    border: 1px solid $green;
+    border-radius: 8px;
+    position: relative;
+
+  }
+
+  .bg-color-there {
+    background-color: $green;
   }
 
   .small-card-overview-info-return {
@@ -150,6 +155,10 @@ height: 85vh !important;
     border: 1px solid $blue;
     border-radius: 8px;
     position:relative;
+
+  }
+  .bg-color-return {
+    background-color: $blue;
   }
 
   p {
@@ -158,7 +167,7 @@ height: 85vh !important;
   }
 
 
-  .circle-booking {
+  .circle-booking-there {
   width: 35px;
   height: 35px;
   border-radius: 50px;
@@ -168,7 +177,7 @@ height: 85vh !important;
   border: none;
   }
 
-  .circle-booking-up {
+  .circle-booking-return {
     width: 35px;
     height: 35px;
     border-radius: 50px;
