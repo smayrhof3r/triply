@@ -52,13 +52,19 @@
 
   <div class="col-12 col-sm-8 col-md-8">
     <div class="pt-3 px-3 itinerary-overview">
-      <div class="scroll-bar" data-render-itinerary-in-user-show-page-target="itinerary">
         <% if @upcoming_itineraries.empty? %>
           <h2 class="m-3 p-3 text-success text-center">You have no itineraries</h2>
-          <h4 class="m-3 p-3 text-primary text-center"><strong><%= link_to "Search trip ideas", '/search' %></strong></div>
+          <h4 class="m-3 p-3 text-primary text-center"><strong><%= link_to "Search trip ideas", '/search' %></strong></h4>
         <% else %>
-          <%= render 'users/small_flight_info_card', itinerary: @shown_itinerary ? Itinerary.find(@shown_itinerary) : @upcoming_itineraries.first, permission: @permission, invited_user: User.find_by(email: @invited_user) %>
+          <% itinerary = @shown_itinerary ? Itinerary.find(@shown_itinerary) : @upcoming_itineraries.first %>
+          <%= render 'users/itinerary_header', itinerary: itinerary, permission: @permission, invited_user: User.find_by(email: @invited_user) %>
+          <div class="scroll-bar" data-render-itinerary-in-user-show-page-target="itinerary">
+            <%= render 'users/small_flight_info_card', itinerary: itinerary %>
+          </div>
         <% end %>
+      <div class="chat-hidden d-flex justify-content-between align-items-center bg-primary text-white p-2 border-light">
+        <i class="fas fa-comments"></i>
+        <i class="fas fa-chevron-up"></i>
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 .scroll-bar {
   /* Scroll height needs fixing */
- height: 100%;
+ height: 69vh;
  overflow: scroll;
  overflow-x: hidden;
  overflow-y: scroll;
@@ -239,4 +239,14 @@ height: 85vh !important;
 
 .line-blue {
   border-left: 2px dotted $blue;
+}
+
+.chat-box {
+  height: 100vh;
+  position: absolute;
+  top: 0;
+}
+.chat {
+  position: absolute;
+  bottom: 0;
 }
