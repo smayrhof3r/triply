@@ -1,9 +1,11 @@
 # Triply
-## What this app does
+## ✈️ What this app does
 
 
-## Key features
+
+## ⭐ Key features
 
 
-## APIs
+
+## 🌐 APIs
 
