@@ -1,6 +1,6 @@
 # Triply
 ## ✈️ What this app does
-Triply is a travel site for finding the best flights and destinations for a group coming from multiple destinations. If you have family overseas and are always struggling to figure out the best place to meet, with decent flights for everyone, then this site is for you! URL: [www.triply.world](triply)
+Triply is a travel site for finding the best flights and destinations for a group coming from multiple destinations. If you have family overseas and are always struggling to figure out the best place to meet, with decent flights for everyone, then this site is for you! URL: [triply](https://www.triply.world)
 
 
 ## ⭐ Key features
