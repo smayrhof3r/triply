@@ -17,13 +17,13 @@ Triply is a travel site for finding the best flights and destinations for a grou
 - Web scraping from LonelyPlanet.com
 
 ## Technology Stack
-Ruby on Rails, using
-Ruby
-AJAX
-Javascript (ES6)
-APIs
-Stimulus
-Bootstrap
+- Ruby on Rails, using
+- Ruby
+- AJAX
+- Javascript (ES6)
+- APIs
+- Stimulus
+- Bootstrap
 
 ## Outstanding issues or additional features to build in the future
 - ability to set a date range for when you want to come and go
