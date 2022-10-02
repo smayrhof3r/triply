@@ -1,6 +1,6 @@
 # Triply
 ## ✈️ What this app does
-Triply is a travel site for finding the best flights and destinations for a group coming from multiple destinations. If you have family overseas and are always struggling to figure out the best place to meet, with decent flights for everyone, then this site is for you!
+Triply is a travel site for finding the best flights and destinations for a group coming from multiple destinations. If you have family overseas and are always struggling to figure out the best place to meet, with decent flights for everyone, then this site is for you! URL: [www.triply.world](triply)
 
 
 ## ⭐ Key features
@@ -20,8 +20,10 @@ Triply is a travel site for finding the best flights and destinations for a grou
 Ruby on Rails, using
 Ruby
 AJAX
-Javascript
+Javascript (ES6)
 APIs
+Stimulus
+Bootstrap
 
 ## Outstanding issues or additional features to build in the future
 - ability to set a date range for when you want to come and go
